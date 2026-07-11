@@ -139,8 +139,8 @@ input::placeholder{color:#C9A2B5}
 
           <div id="by-block">
             <label class="lbl" id="by-label">Divide by</label>
-            <input id="i-by" class="inp len-field" value="3" placeholder="4 &middot; 1.5 &middot; 2/3">
-            <div class="note">Whole numbers, decimals or fractions &mdash; e.g. 3, 1.5, 2/3</div>
+            <input id="i-by" class="inp len-field" value="3" placeholder="4 &middot; 1.5 &middot; 2/3 &middot; 2&prime;6&Prime;">
+            <div class="note" id="by-note">Number (3 &middot; 1.5 &middot; 2/3) &mdash; or another length (2&prime;-6&Prime;) for the ratio</div>
           </div>
         </div>
 
@@ -155,12 +155,12 @@ input::placeholder{color:#C9A2B5}
             <button class="copy" id="copy-res">Copy</button>
           </div>
           <div class="kv first">
-            <span class="k">Total inches</span>
-            <span class="v" id="res-total"></span>
+            <span class="k" id="res-l1">Total inches</span>
+            <span class="v" id="res-v1"></span>
           </div>
           <div class="kv">
-            <span class="k">Decimal</span>
-            <span class="v">&asymp; <span id="res-dec"></span></span>
+            <span class="k" id="res-l2">Decimal</span>
+            <span class="v" id="res-v2"></span>
           </div>
         </div>
       </div>
@@ -229,7 +229,7 @@ input::placeholder{color:#C9A2B5}
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
 
-  var S = { tab: 'length', op: 'div', fi: 4, ti: 6, res: null, err: '', copied: '', _ct: null };
+  var S = { tab: 'length', op: 'div', fi: 4, ti: 6, res: null, kind: 'length', err: '', copied: '', _ct: null };
 
   // ---- exact rational math on safe integers ----
   function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a || 1; }
@@ -278,6 +278,46 @@ input::placeholder{color:#C9A2B5}
     else main = sign + w + '″';
     var totalIn = sign + (d === 1 ? n + '″' : n + '/' + d + '″');
     return { main: main, totalIn: totalIn, dec: sign + decStr(fr(n, d), 3) + '″' };
+  }
+
+  // 面积格式化:f 为平方英寸的有理数。1 ft² = 144 in²
+  function fmtArea(f) {
+    var n = f.n, d = f.d;
+    var W = Math.floor(n / d), remN = n - W * d;
+    var ft2 = Math.floor(W / 144), w = W % 144;
+    var frac = remN > 0 ? fr(remN, d) : null;
+    var fracS = frac ? frac.n + '/' + frac.d : '';
+    var inS = w > 0 ? (w + (fracS ? ' ' + fracS : '')) : (fracS || '0');
+    var main;
+    if (ft2 > 0) main = ft2 + ' ft²' + ((w > 0 || frac) ? ' ' + inS + ' in²' : '');
+    else main = inS + ' in²';
+    var total = (d === 1 ? n : n + '/' + d) + ' in²';
+    var ftFrac = fr(n, d * 144);
+    var dec = (ftFrac ? decStr(ftFrac, 3) : (n / d / 144).toFixed(3)) + ' ft²';
+    return { main: main, total: total, dec: dec };
+  }
+
+  // 比例格式化:F 为无量纲有理数
+  function fmtRatio(F) {
+    return {
+      main: decStr(F, 3) + '×',
+      ratio: F.n + ':' + F.d,
+      percent: decStr(fMul(F, fr(100)), 2) + '%'
+    };
+  }
+
+  // 结果卡片统一格式:main + 两行明细(标签随 kind 变化)
+  function formatResult(kind, f) {
+    if (kind === 'area') {
+      var a = fmtArea(f);
+      return { main: a.main, l1: 'Square inches', v1: a.total, l2: 'Decimal', v2: '≈ ' + a.dec };
+    }
+    if (kind === 'ratio') {
+      var r = fmtRatio(f);
+      return { main: r.main, l1: 'As a ratio', v1: r.ratio, l2: 'Percent', v2: '≈ ' + r.percent };
+    }
+    var m = fmtFtIn(f);
+    return { main: m.main, l1: 'Total inches', v1: m.totalIn, l2: 'Decimal', v2: '≈ ' + m.dec };
   }
 
   var PRE = [
@@ -354,6 +394,7 @@ input::placeholder{color:#C9A2B5}
     $('second-block').hidden = !isLenOp;
     $('by-block').hidden = isLenOp;
     $('by-label').textContent = S.op === 'div' ? 'Divide by' : 'Multiply by';
+    $('by-note').textContent = 'Number (3 · 1.5 · 2/3) — or another length (2′-6″) for the ' + (S.op === 'div' ? 'ratio' : 'area');
   }
 
   function renderLenResult() {
@@ -362,15 +403,17 @@ input::placeholder{color:#C9A2B5}
     var show = !!S.res && !S.err;
     $('len-res').hidden = !show;
     if (show) {
-      var m = fmtFtIn(S.res);
+      var m = formatResult(S.kind, S.res);
       $('res-main').textContent = m.main;
-      $('res-total').textContent = m.totalIn;
-      $('res-dec').textContent = m.dec;
+      $('res-l1').textContent = m.l1;
+      $('res-v1').textContent = m.v1;
+      $('res-l2').textContent = m.l2;
+      $('res-v2').textContent = m.v2;
     }
   }
 
   function calc() {
-    var err = '', res = null;
+    var err = '', res = null, kind = 'length';
     var A = parseLength($('i-len1').value, 'First length');
     if (A.err) err = A.err;
     else if (S.op === 'add' || S.op === 'sub') {
@@ -382,15 +425,28 @@ input::placeholder{color:#C9A2B5}
         else res = out;
       }
     } else {
-      var by = parseNum($('i-by').value);
-      if (!by || by.n <= 0) err = (S.op === 'div' ? 'Divisor' : 'Multiplier') + ' must be a number greater than 0.';
-      else {
-        var out2 = S.op === 'div' ? fDiv(A.f, by) : fMul(A.f, by);
-        if (!out2) err = 'Numbers got too large — try smaller values.';
-        else res = out2;
+      var byS = ($('i-by').value || '').trim();
+      if (/[′'″"’”]/.test(byS)) {
+        // by 带长度单位:×→面积,÷→比例
+        var B2 = parseLength(byS, 'Second length');
+        if (B2.err) err = B2.err;
+        else if (S.op === 'div' && B2.f.n === 0) err = "Can't divide by a zero length — enter a length greater than 0.";
+        else {
+          var out3 = S.op === 'div' ? fDiv(A.f, B2.f) : fMul(A.f, B2.f);
+          if (!out3) err = 'Numbers got too large — try smaller values.';
+          else { res = out3; kind = S.op === 'div' ? 'ratio' : 'area'; }
+        }
+      } else {
+        var by = parseNum(byS);
+        if (!by || by.n <= 0) err = (S.op === 'div' ? 'Divisor' : 'Multiplier') + ' must be a number greater than 0.';
+        else {
+          var out2 = S.op === 'div' ? fDiv(A.f, by) : fMul(A.f, by);
+          if (!out2) err = 'Numbers got too large — try smaller values.';
+          else res = out2;
+        }
       }
     }
-    S.err = err; S.res = res; S.copied = '';
+    S.err = err; S.res = res; S.kind = kind; S.copied = '';
     updateCopyLabels();
     renderLenResult();
   }
@@ -488,7 +544,7 @@ input::placeholder{color:#C9A2B5}
 
   $('btn-calc').addEventListener('click', calc);
   $('copy-res').addEventListener('click', function () {
-    if (S.res) copyText(fmtFtIn(S.res).main, 'res');
+    if (S.res) copyText(formatResult(S.kind, S.res).main, 'res');
   });
 
   buildChips('chips-from', 'f');
