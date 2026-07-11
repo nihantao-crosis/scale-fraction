@@ -1,0 +1,15 @@
+{
+  "name": "Scale & Fraction — Architect's imperial calculator",
+  "short_name": "Scale&Fraction",
+  "description": "建筑英制长度分数计算与图纸比例换算工具",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ECEDF0",
+  "theme_color": "#16171B",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

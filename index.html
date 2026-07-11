@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scale &amp; Fraction — Architect&rsquo;s imperial calculator</title>
+<meta name="theme-color" content="#16171B">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Scale&amp;Fraction">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#ECEDF0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;color:#22242B}
+a{color:#D81F26}a:hover{color:#EF2A32}
+input::placeholder{color:#9AA0AB}
+
+.wrap{min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:28px 16px 60px}
+.card{width:390px;background:#F4F5F7;border:1px solid rgba(0,0,0,.08);border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.07);overflow:hidden}
+
+.hdr{background:#16171B;padding:16px 18px 14px;display:flex;align-items:center;gap:10px}
+.logo{width:30px;height:30px;border-radius:9px;background:#D81F26;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px}
+.hdr-title{color:#fff;font-size:15px;font-weight:700;line-height:1.2}
+.hdr-sub{color:rgba(255,255,255,.55);font-size:11px}
+
+.content{padding:14px 14px 22px;display:flex;flex-direction:column;gap:12px}
+.panel{display:flex;flex-direction:column;gap:12px}
+
+.seg{display:flex;background:#EEF0F2;border-radius:10px;padding:3px;gap:2px}
+.seg button{flex:1;padding:8px 0;border:none;border-radius:8px;background:transparent;color:#767A86;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.seg.ops button{padding:7px 0;font-size:16px}
+.seg button.on{background:#fff;color:#16171B;box-shadow:0 1px 4px rgba(18,18,22,.10)}
+
+.box{background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(18,18,22,.06);padding:16px;display:flex;flex-direction:column;gap:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lbl{display:block;font-size:12px;font-weight:600;color:#4A4D57;margin-bottom:6px}
+.lbl .hint{font-weight:400;color:#9AA0AB}
+.inp{width:100%;padding:9px 12px;font-size:15px;font-family:inherit;color:#22242B;background:#F5F6F8;border:1.5px solid #E4E6EA;border-radius:10px;outline:none}
+.inp:focus{border-color:#D81F26;background:#fff}
+.fracrow{display:flex;align-items:center;gap:8px}
+.fracrow .inp{flex:1}
+.slash{font-size:18px;color:#9AA0AB;font-weight:600}
+.second{border-top:1px dashed #E4E6EA;padding-top:12px;display:flex;flex-direction:column;gap:12px}
+.note{font-size:11px;color:#9AA0AB;margin-top:5px}
+
+.calc-btn{width:100%;padding:12px 0;border:none;border-radius:10px;background:#D81F26;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.calc-btn:active{transform:scale(.98)}
+
+.err{background:#FBE2E3;color:#B01218;border-radius:8px;padding:9px 12px;font-size:12.5px;font-weight:600}
+
+.result{background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(18,18,22,.06);padding:16px;border-left:5px solid #D81F26}
+.res-tag{font-size:11px;font-weight:700;letter-spacing:.8px;color:#767A86;margin-bottom:6px}
+.res-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.res-main{font-size:29px;font-weight:800;color:#16171B;font-family:ui-monospace,Menlo,monospace}
+.copy{padding:7px 12px;border:none;border-radius:8px;background:#FDE6E7;color:#D81F26;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.copy:active{transform:scale(.96)}
+.kv{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0 0}
+.kv.first{border-top:1px solid #EEF0F2;margin-top:10px}
+.kv .k{font-size:12px;color:#767A86}
+.kv .v{font-size:13px;font-weight:600;color:#22242B;font-family:ui-monospace,Menlo,monospace}
+
+.sc-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+.sc-title{font-size:12px;font-weight:700;letter-spacing:.6px;color:#4A4D57}
+.sc-unit{font-size:10.5px;color:#9AA0AB}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:6px 10px;border-radius:8px;border:1.5px solid transparent;background:#F5F6F8;color:#4A4D57;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:700}
+.chip.on{border-color:#D81F26;background:#FEF3F3;color:#D81F26}
+.cu{margin-top:8px;font-size:14px}
+.swap-row{display:flex;align-items:center;gap:10px}
+.swap-line{flex:1;height:1px;background:#EEF0F2}
+.swap-btn{padding:5px 14px;border-radius:999px;border:1.5px solid #E4E6EA;background:#fff;color:#4A4D57;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit}
+.swap-btn:active{transform:scale(.96)}
+
+.s-main{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.s-mult{font-size:29px;font-weight:800;color:#16171B;font-family:ui-monospace,Menlo,monospace}
+.badge{border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:700}
+.badge.up{background:#FDE6E7;color:#D81F26}
+.badge.down{background:#E8F1FD;color:#2563A8}
+.badge.same{background:#EEF0F2;color:#6B6F7A}
+.s-pair{font-size:11.5px;color:#767A86;margin-bottom:8px}
+.s-kv{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-top:1px solid #EEF0F2;gap:8px}
+.s-kv .k{font-size:12px;color:#767A86}
+.s-kv .vwrap{display:inline-flex;align-items:center;gap:8px}
+.s-kv .v{font-size:16px;font-weight:700;color:#16171B;font-family:ui-monospace,Menlo,monospace}
+.copy-sm{border:none;background:#FDE6E7;color:#D81F26;border-radius:7px;padding:5px 9px;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit}
+.copy-sm:active{transform:scale(.96)}
+.s-note{font-size:10.5px;line-height:1.5;color:#9A6614;background:#FDF3DD;border-radius:8px;padding:7px 10px;margin-top:6px}
+
+[hidden]{display:none !important}
+
+@media (max-width:430px){
+  .wrap{padding:12px 10px 40px}
+  .card{width:100%;border-radius:14px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+
+    <div class="hdr">
+      <div class="logo">&Prime;</div>
+      <div>
+        <div class="hdr-title">Scale &amp; Fraction</div>
+        <div class="hdr-sub">Architect&rsquo;s imperial calculator</div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="seg" id="tabs">
+        <button id="tab-len" class="on">Length &amp; fractions</button>
+        <button id="tab-scale">Drawing scale</button>
+      </div>
+
+      <!-- ============ Length & fractions ============ -->
+      <div class="panel" id="panel-len">
+
+        <div class="box">
+          <div class="grid2">
+            <div>
+              <label class="lbl">Feet &prime; <span class="hint">first length</span></label>
+              <input id="i-ft" class="inp len-field" value="3" inputmode="numeric" placeholder="3">
+            </div>
+            <div>
+              <label class="lbl">Inches &Prime; <span class="hint">0&ndash;11</span></label>
+              <input id="i-inch" class="inp len-field" value="10" inputmode="numeric" placeholder="10">
+            </div>
+          </div>
+          <div>
+            <label class="lbl">Fraction of an inch <span class="hint">optional</span></label>
+            <div class="fracrow">
+              <input id="i-num" class="inp len-field" inputmode="numeric" placeholder="1">
+              <span class="slash">/</span>
+              <input id="i-den" class="inp len-field" inputmode="numeric" placeholder="2">
+            </div>
+          </div>
+          <div>
+            <label class="lbl">Operation</label>
+            <div class="seg ops" id="ops">
+              <button data-op="add">&plus;</button>
+              <button data-op="sub">&minus;</button>
+              <button data-op="mul">&times;</button>
+              <button data-op="div" class="on">&divide;</button>
+            </div>
+          </div>
+
+          <div class="second" id="second-block" hidden>
+            <div class="grid2">
+              <div>
+                <label class="lbl">Feet &prime; <span class="hint">second length</span></label>
+                <input id="i-ft2" class="inp len-field" inputmode="numeric" placeholder="0">
+              </div>
+              <div>
+                <label class="lbl">Inches &Prime; <span class="hint">0&ndash;11</span></label>
+                <input id="i-inch2" class="inp len-field" inputmode="numeric" placeholder="0">
+              </div>
+            </div>
+            <div>
+              <label class="lbl">Fraction of an inch <span class="hint">optional</span></label>
+              <div class="fracrow">
+                <input id="i-num2" class="inp len-field" inputmode="numeric" placeholder="0">
+                <span class="slash">/</span>
+                <input id="i-den2" class="inp len-field" inputmode="numeric" placeholder="0">
+              </div>
+            </div>
+          </div>
+
+          <div id="by-block">
+            <label class="lbl" id="by-label">Divide by</label>
+            <input id="i-by" class="inp len-field" value="3" placeholder="4 &middot; 1.5 &middot; 2/3">
+            <div class="note">Whole numbers, decimals or fractions &mdash; e.g. 3, 1.5, 2/3</div>
+          </div>
+        </div>
+
+        <button class="calc-btn" id="btn-calc">Calculate</button>
+
+        <div class="err" id="len-err" hidden></div>
+
+        <div class="result" id="len-res" hidden>
+          <div class="res-tag">RESULT</div>
+          <div class="res-row">
+            <div class="res-main" id="res-main"></div>
+            <button class="copy" id="copy-res">Copy</button>
+          </div>
+          <div class="kv first">
+            <span class="k">Total inches</span>
+            <span class="v" id="res-total"></span>
+          </div>
+          <div class="kv">
+            <span class="k">Decimal</span>
+            <span class="v">&asymp; <span id="res-dec"></span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ Drawing scale ============ -->
+      <div class="panel" id="panel-scale" hidden>
+
+        <div class="box">
+          <div>
+            <div class="sc-head">
+              <span class="sc-title">FROM &mdash; drawing is at</span>
+              <span class="sc-unit">&Prime; per 1&prime;-0&Prime;</span>
+            </div>
+            <div class="chips" id="chips-from"></div>
+            <input id="i-cuF" class="inp cu" placeholder="Paper inches per 1&#8242;-0&#8243; &mdash; e.g. 1/64 or 1.5" hidden>
+          </div>
+
+          <div class="swap-row">
+            <div class="swap-line"></div>
+            <button class="swap-btn" id="btn-swap">&uarr;&darr; swap</button>
+            <div class="swap-line"></div>
+          </div>
+
+          <div>
+            <div class="sc-head">
+              <span class="sc-title">TO &mdash; print it at</span>
+              <span class="sc-unit">&Prime; per 1&prime;-0&Prime;</span>
+            </div>
+            <div class="chips" id="chips-to"></div>
+            <input id="i-cuT" class="inp cu" placeholder="Paper inches per 1&#8242;-0&#8243; &mdash; e.g. 3" hidden>
+          </div>
+        </div>
+
+        <div class="err" id="s-err" hidden></div>
+
+        <div class="result" id="s-res" hidden>
+          <div class="s-main">
+            <span class="s-mult" id="s-mult"></span>
+            <span class="badge" id="s-badge"></span>
+          </div>
+          <div class="s-pair" id="s-pair"></div>
+          <div class="s-kv">
+            <span class="k">Printer &middot; relative increment</span>
+            <span class="vwrap">
+              <span class="v" id="s-printer"></span>
+              <button class="copy-sm" id="copy-pr">Copy</button>
+            </span>
+          </div>
+          <div class="s-kv">
+            <span class="k">InDesign &middot; absolute scale</span>
+            <span class="vwrap">
+              <span class="v" id="s-ind"></span>
+              <button class="copy-sm" id="copy-ind">Copy</button>
+            </span>
+          </div>
+          <div class="s-note">Relative increment &mdash; some print drivers expect the absolute % (the InDesign value) in their Scale field. Check yours once.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+
+  var S = { tab: 'length', op: 'div', fi: 4, ti: 6, res: null, err: '', copied: '', _ct: null };
+
+  // ---- exact rational math on safe integers ----
+  function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a || 1; }
+  function fr(n, d) {
+    d = d === undefined ? 1 : d;
+    if (!isFinite(n) || !isFinite(d) || d === 0) return null;
+    if (d < 0) { n = -n; d = -d; }
+    if (Math.abs(n) > 4e15 || d > 4e15) return null;
+    var g = gcd(n, d);
+    return { n: n / g, d: d / g };
+  }
+  function fAdd(x, y) { return fr(x.n * y.d + y.n * x.d, x.d * y.d); }
+  function fMul(x, y) { return fr(x.n * y.n, x.d * y.d); }
+  function fDiv(x, y) { if (!y || y.n === 0) return null; return fr(x.n * y.d, x.d * y.n); }
+
+  function parseNum(s) {
+    s = (s || '').trim();
+    if (!s || s.length > 12) return null;
+    var m = s.match(/^(\d+)\s+(\d+)\s*\/\s*(\d+)$/);
+    if (m) { var d1 = parseInt(m[3], 10); if (!d1) return null; return fr(parseInt(m[1], 10) * d1 + parseInt(m[2], 10), d1); }
+    m = s.match(/^(\d+)\s*\/\s*(\d+)$/);
+    if (m) { var d2 = parseInt(m[2], 10); if (!d2) return null; return fr(parseInt(m[1], 10), d2); }
+    m = s.match(/^(\d*)\.(\d+)$/);
+    if (m && m[2].length <= 6) { var k = Math.pow(10, m[2].length); return fr(parseInt(m[1] || '0', 10) * k + parseInt(m[2], 10), k); }
+    if (/^\d+$/.test(s)) return fr(parseInt(s, 10));
+    return null;
+  }
+
+  function decStr(f, dp) {
+    var v = f.n / f.d;
+    var s = v.toFixed(dp === undefined ? 3 : dp);
+    if (s.indexOf('.') >= 0) s = s.replace(/0+$/, '').replace(/\.$/, '');
+    return s;
+  }
+
+  function fmtFtIn(f) {
+    var n = f.n, d = f.d;
+    var neg = n < 0; if (neg) n = -n;
+    var W = Math.floor(n / d), rem = n - W * d;
+    var ft = Math.floor(W / 12), w = W % 12;
+    var fx = rem > 0 ? fr(rem, d) : null;
+    var sign = neg ? '−' : '';
+    var main;
+    if (ft > 0) main = sign + ft + '′-' + w + (fx ? ' ' + fx.n + '/' + fx.d : '') + '″';
+    else if (fx) main = sign + (w > 0 ? w + ' ' : '') + fx.n + '/' + fx.d + '″';
+    else main = sign + w + '″';
+    var totalIn = sign + (d === 1 ? n + '″' : n + '/' + d + '″');
+    return { main: main, totalIn: totalIn, dec: sign + decStr(fr(n, d), 3) + '″' };
+  }
+
+  var PRE = [
+    ['1/16″', 1, 16], ['3/32″', 3, 32], ['1/8″', 1, 8], ['3/16″', 3, 16],
+    ['1/4″', 1, 4], ['3/8″', 3, 8], ['1/2″', 1, 2], ['3/4″', 3, 4],
+    ['1″', 1, 1], ['1 1/2″', 3, 2], ['3″', 3, 1], ['Full 1:1', 12, 1]
+  ];
+
+  function sideFr(idx, cu) { return idx === -1 ? parseNum(cu) : fr(PRE[idx][1], PRE[idx][2]); }
+  function sideLabel(idx, f) { return idx === -1 ? (f ? decStr(f, 4) + '″' : '?') : PRE[idx][0].replace(' 1:1', ''); }
+
+  function readLen(ftS, inS, numS, denS, which) {
+    var ok = [ftS, inS, numS, denS].every(function (v) { return /^\d*$/.test((v || '').trim()); });
+    if (!ok) return { err: which + ': feet, inches and fraction fields take whole numbers only.' };
+    var ftv = parseInt((ftS || '').trim() || '0', 10);
+    var inv = parseInt((inS || '').trim() || '0', 10);
+    var numv = parseInt((numS || '').trim() || '0', 10);
+    var denv = parseInt((denS || '').trim() || '0', 10);
+    if (inv > 11) return { err: which + ': inches must be 0–11 — use the feet field for 12″ and up.' };
+    if (numv > 0 && denv === 0) return { err: which + ": fraction denominator can't be 0." };
+    var f = fr(ftv * 12 + inv);
+    if (numv > 0) f = fAdd(f, fr(numv, denv));
+    return { f: f };
+  }
+
+  // ---- clipboard ----
+  function copyText(t, tag) {
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    } catch (e) {}
+    try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t); } catch (e) {}
+    S.copied = tag;
+    updateCopyLabels();
+    clearTimeout(S._ct);
+    S._ct = setTimeout(function () { S.copied = ''; updateCopyLabels(); }, 1400);
+  }
+
+  function updateCopyLabels() {
+    $('copy-res').textContent = S.copied === 'res' ? 'Copied ✓' : 'Copy';
+    $('copy-pr').textContent = S.copied === 'pr' ? '✓' : 'Copy';
+    $('copy-ind').textContent = S.copied === 'ind' ? '✓' : 'Copy';
+  }
+
+  // ---- length tab ----
+  function renderOps() {
+    var btns = $('ops').querySelectorAll('button');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('on', btns[i].dataset.op === S.op);
+    var isLenOp = S.op === 'add' || S.op === 'sub';
+    $('second-block').hidden = !isLenOp;
+    $('by-block').hidden = isLenOp;
+    $('by-label').textContent = S.op === 'div' ? 'Divide by' : 'Multiply by';
+  }
+
+  function renderLenResult() {
+    $('len-err').hidden = !S.err;
+    $('len-err').textContent = S.err;
+    var show = !!S.res && !S.err;
+    $('len-res').hidden = !show;
+    if (show) {
+      var m = fmtFtIn(S.res);
+      $('res-main').textContent = m.main;
+      $('res-total').textContent = m.totalIn;
+      $('res-dec').textContent = m.dec;
+    }
+  }
+
+  function calc() {
+    var err = '', res = null;
+    var A = readLen($('i-ft').value, $('i-inch').value, $('i-num').value, $('i-den').value, 'First length');
+    if (A.err) err = A.err;
+    else if (S.op === 'add' || S.op === 'sub') {
+      var B = readLen($('i-ft2').value, $('i-inch2').value, $('i-num2').value, $('i-den2').value, 'Second length');
+      if (B.err) err = B.err;
+      else {
+        var out = fAdd(A.f, S.op === 'sub' ? fr(-B.f.n, B.f.d) : B.f);
+        if (!out) err = 'Numbers got too large — try smaller values.';
+        else res = out;
+      }
+    } else {
+      var by = parseNum($('i-by').value);
+      if (!by || by.n <= 0) err = (S.op === 'div' ? 'Divisor' : 'Multiplier') + ' must be a number greater than 0.';
+      else {
+        var out2 = S.op === 'div' ? fDiv(A.f, by) : fMul(A.f, by);
+        if (!out2) err = 'Numbers got too large — try smaller values.';
+        else res = out2;
+      }
+    }
+    S.err = err; S.res = res; S.copied = '';
+    updateCopyLabels();
+    renderLenResult();
+  }
+
+  // ---- scale tab ----
+  function buildChips(containerId, side) {
+    var box = $(containerId);
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i <= PRE.length; i++) {
+      var idx = i === PRE.length ? -1 : i;
+      var b = document.createElement('button');
+      b.className = 'chip';
+      b.textContent = idx === -1 ? 'Custom…' : PRE[idx][0];
+      b.dataset.idx = String(idx);
+      b.addEventListener('click', (function (ix) {
+        return function () {
+          if (side === 'f') S.fi = ix; else S.ti = ix;
+          S.copied = '';
+          updateCopyLabels();
+          renderScale();
+        };
+      })(idx));
+      frag.appendChild(b);
+    }
+    box.appendChild(frag);
+  }
+
+  function markChips(containerId, cur) {
+    var btns = $(containerId).querySelectorAll('.chip');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('on', parseInt(btns[i].dataset.idx, 10) === cur);
+  }
+
+  function renderScale() {
+    markChips('chips-from', S.fi);
+    markChips('chips-to', S.ti);
+    $('i-cuF').hidden = S.fi !== -1;
+    $('i-cuT').hidden = S.ti !== -1;
+
+    var cuF = $('i-cuF').value, cuT = $('i-cuT').value;
+    var sErr = '';
+    var fFrom = sideFr(S.fi, cuF);
+    var fTo = sideFr(S.ti, cuT);
+    if (S.fi === -1 && (cuF || '').trim() && (!fFrom || fFrom.n <= 0)) sErr = 'FROM custom scale: enter paper inches per 1′-0″, greater than 0 — e.g. 1/64 or 1.5';
+    else if (S.ti === -1 && (cuT || '').trim() && (!fTo || fTo.n <= 0)) sErr = 'TO custom scale: enter paper inches per 1′-0″, greater than 0 — e.g. 3';
+    var sOk = !sErr && fFrom && fFrom.n > 0 && fTo && fTo.n > 0;
+
+    $('s-err').hidden = !sErr;
+    $('s-err').textContent = sErr;
+    $('s-res').hidden = !sOk;
+    if (!sOk) return;
+
+    var F = fDiv(fTo, fFrom);
+    var v = F.n / F.d;
+    $('s-mult').textContent = decStr(F, 2) + '×';
+    var word = v > 1 ? 'Enlarge' : (v < 1 ? 'Reduce' : 'No change');
+    var badge = $('s-badge');
+    badge.textContent = word;
+    badge.className = 'badge ' + (v > 1 ? 'up' : (v < 1 ? 'down' : 'same'));
+    var rel = (v - 1) * 100;
+    var sPrinter = (rel > 0 ? '+' : rel < 0 ? '−' : '') + Math.abs(rel).toFixed(2).replace(/0+$/, '').replace(/\.$/, '') + '%';
+    var sInd = (v * 100).toFixed(2).replace(/0+$/, '').replace(/\.$/, '') + '%';
+    $('s-printer').textContent = sPrinter;
+    $('s-ind').textContent = sInd;
+    $('s-pair').textContent = sideLabel(S.fi, fFrom) + ' = 1′-0″  →  ' + sideLabel(S.ti, fTo) + ' = 1′-0″';
+    $('copy-pr').onclick = function () { copyText(sPrinter, 'pr'); };
+    $('copy-ind').onclick = function () { copyText(sInd, 'ind'); };
+  }
+
+  // ---- tabs ----
+  function renderTabs() {
+    $('tab-len').classList.toggle('on', S.tab === 'length');
+    $('tab-scale').classList.toggle('on', S.tab === 'scale');
+    $('panel-len').hidden = S.tab !== 'length';
+    $('panel-scale').hidden = S.tab !== 'scale';
+  }
+
+  // ---- wiring ----
+  $('tab-len').addEventListener('click', function () { S.tab = 'length'; renderTabs(); });
+  $('tab-scale').addEventListener('click', function () { S.tab = 'scale'; renderTabs(); });
+
+  var opBtns = $('ops').querySelectorAll('button');
+  for (var i = 0; i < opBtns.length; i++) {
+    opBtns[i].addEventListener('click', function () {
+      S.op = this.dataset.op; S.err = '';
+      renderOps(); renderLenResult();
+    });
+  }
+
+  var lenFields = document.querySelectorAll('.len-field');
+  for (var j = 0; j < lenFields.length; j++) {
+    lenFields[j].addEventListener('input', function () {
+      if (S.err) { S.err = ''; renderLenResult(); }
+    });
+  }
+
+  $('btn-calc').addEventListener('click', calc);
+  $('copy-res').addEventListener('click', function () {
+    if (S.res) copyText(fmtFtIn(S.res).main, 'res');
+  });
+
+  buildChips('chips-from', 'f');
+  buildChips('chips-to', 't');
+  $('i-cuF').addEventListener('input', renderScale);
+  $('i-cuT').addEventListener('input', renderScale);
+  $('btn-swap').addEventListener('click', function () {
+    var t = S.fi; S.fi = S.ti; S.ti = t;
+    var a = $('i-cuF').value; $('i-cuF').value = $('i-cuT').value; $('i-cuT').value = a;
+    renderScale();
+  });
+
+  renderTabs();
+  renderOps();
+  renderLenResult();
+  renderScale();
+
+  // PWA:HTTPS 或 localhost 下注册离线缓存;直接以 file:// 打开单文件仍可正常使用
+  if ('serviceWorker' in navigator &&
+      (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+    navigator.serviceWorker.register('./sw.js').catch(function () {});
+  }
+})();
+</script>
+</body>
+</html>
