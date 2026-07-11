@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Scale &amp; Fraction — Architect&rsquo;s imperial calculator</title>
-<meta name="theme-color" content="#16171B">
+<meta name="theme-color" content="#C2255C">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
@@ -13,80 +13,76 @@
 <meta name="apple-mobile-web-app-title" content="Scale&amp;Fraction">
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#ECEDF0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;color:#22242B}
-a{color:#D81F26}a:hover{color:#EF2A32}
-input::placeholder{color:#9AA0AB}
+body{margin:0;background:#F7E4EC;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;color:#3F2230}
+a{color:#C2255C}a:hover{color:#D6336C}
+input::placeholder{color:#C9A2B5}
 
 .wrap{min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:28px 16px 60px}
-.card{width:390px;background:#F4F5F7;border:1px solid rgba(0,0,0,.08);border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.07);overflow:hidden}
+.card{width:390px;background:#FBF0F5;border:1px solid rgba(166,30,77,.12);border-radius:16px;box-shadow:0 2px 10px rgba(120,30,70,.08);overflow:hidden}
 
-.hdr{background:#16171B;padding:16px 18px 14px;display:flex;align-items:center;gap:10px}
-.logo{width:30px;height:30px;border-radius:9px;background:#D81F26;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px}
+.hdr{background:#C2255C;padding:16px 18px 14px;display:flex;align-items:center;gap:10px}
+.logo{width:30px;height:30px;border-radius:9px;background:#FFD9E6;display:flex;align-items:center;justify-content:center;color:#B01D53;font-weight:800;font-size:15px}
 .hdr-title{color:#fff;font-size:15px;font-weight:700;line-height:1.2}
-.hdr-sub{color:rgba(255,255,255,.55);font-size:11px}
+.hdr-sub{color:rgba(255,255,255,.72);font-size:11px}
 
 .content{padding:14px 14px 22px;display:flex;flex-direction:column;gap:12px}
 .panel{display:flex;flex-direction:column;gap:12px}
 
-.seg{display:flex;background:#EEF0F2;border-radius:10px;padding:3px;gap:2px}
-.seg button{flex:1;padding:8px 0;border:none;border-radius:8px;background:transparent;color:#767A86;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.seg{display:flex;background:#F3DCE7;border-radius:10px;padding:3px;gap:2px}
+.seg button{flex:1;padding:8px 0;border:none;border-radius:8px;background:transparent;color:#A0708A;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
 .seg.ops button{padding:7px 0;font-size:16px}
-.seg button.on{background:#fff;color:#16171B;box-shadow:0 1px 4px rgba(18,18,22,.10)}
+.seg button.on{background:#fff;color:#4A1D33;box-shadow:0 1px 4px rgba(90,20,50,.12)}
 
-.box{background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(18,18,22,.06);padding:16px;display:flex;flex-direction:column;gap:12px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.lbl{display:block;font-size:12px;font-weight:600;color:#4A4D57;margin-bottom:6px}
-.lbl .hint{font-weight:400;color:#9AA0AB}
-.inp{width:100%;padding:9px 12px;font-size:15px;font-family:inherit;color:#22242B;background:#F5F6F8;border:1.5px solid #E4E6EA;border-radius:10px;outline:none}
-.inp:focus{border-color:#D81F26;background:#fff}
-.fracrow{display:flex;align-items:center;gap:8px}
-.fracrow .inp{flex:1}
-.slash{font-size:18px;color:#9AA0AB;font-weight:600}
-.second{border-top:1px dashed #E4E6EA;padding-top:12px;display:flex;flex-direction:column;gap:12px}
-.note{font-size:11px;color:#9AA0AB;margin-top:5px}
+.box{background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(120,30,70,.07);padding:16px;display:flex;flex-direction:column;gap:12px}
+.lbl{display:block;font-size:12px;font-weight:600;color:#6E4A5D;margin-bottom:6px}
+.lbl .hint{font-weight:400;color:#B58BA1}
+.inp{width:100%;padding:9px 12px;font-size:15px;font-family:inherit;color:#3F2230;background:#FBF2F6;border:1.5px solid #EFD5E1;border-radius:10px;outline:none}
+.inp:focus{border-color:#C2255C;background:#fff}
+.second{border-top:1px dashed #EFD5E1;padding-top:12px;display:flex;flex-direction:column;gap:12px}
+.note{font-size:11px;color:#B58BA1;margin-top:5px}
 
-.calc-btn{width:100%;padding:12px 0;border:none;border-radius:10px;background:#D81F26;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.calc-btn{width:100%;padding:12px 0;border:none;border-radius:10px;background:#C2255C;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
 .calc-btn:active{transform:scale(.98)}
 
-.err{background:#FBE2E3;color:#B01218;border-radius:8px;padding:9px 12px;font-size:12.5px;font-weight:600}
+.err{background:#FFE3E3;color:#C92A2A;border-radius:8px;padding:9px 12px;font-size:12.5px;font-weight:600}
 
-.result{background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(18,18,22,.06);padding:16px;border-left:5px solid #D81F26}
-.res-tag{font-size:11px;font-weight:700;letter-spacing:.8px;color:#767A86;margin-bottom:6px}
+.result{background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(120,30,70,.07);padding:16px;border-left:5px solid #C2255C}
+.res-tag{font-size:11px;font-weight:700;letter-spacing:.8px;color:#A0708A;margin-bottom:6px}
 .res-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.res-main{font-size:29px;font-weight:800;color:#16171B;font-family:ui-monospace,Menlo,monospace}
-.copy{padding:7px 12px;border:none;border-radius:8px;background:#FDE6E7;color:#D81F26;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.res-main{font-size:29px;font-weight:800;color:#3D1128;font-family:ui-monospace,Menlo,monospace}
+.copy{padding:7px 12px;border:none;border-radius:8px;background:#FADCE8;color:#C2255C;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
 .copy:active{transform:scale(.96)}
 .kv{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0 0}
-.kv.first{border-top:1px solid #EEF0F2;margin-top:10px}
-.kv .k{font-size:12px;color:#767A86}
-.kv .v{font-size:13px;font-weight:600;color:#22242B;font-family:ui-monospace,Menlo,monospace}
+.kv.first{border-top:1px solid #F6E4ED;margin-top:10px}
+.kv .k{font-size:12px;color:#A0708A}
+.kv .v{font-size:13px;font-weight:600;color:#3F2230;font-family:ui-monospace,Menlo,monospace}
 
 .sc-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
-.sc-title{font-size:12px;font-weight:700;letter-spacing:.6px;color:#4A4D57}
-.sc-unit{font-size:10.5px;color:#9AA0AB}
+.sc-title{font-size:12px;font-weight:700;letter-spacing:.6px;color:#6E4A5D}
+.sc-unit{font-size:10.5px;color:#B58BA1}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{padding:6px 10px;border-radius:8px;border:1.5px solid transparent;background:#F5F6F8;color:#4A4D57;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:700}
-.chip.on{border-color:#D81F26;background:#FEF3F3;color:#D81F26}
+.chip{padding:6px 10px;border-radius:8px;border:1.5px solid transparent;background:#FBF2F6;color:#6E4A5D;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:700}
+.chip.on{border-color:#C2255C;background:#FDEBF2;color:#C2255C}
 .cu{margin-top:8px;font-size:14px}
 .swap-row{display:flex;align-items:center;gap:10px}
-.swap-line{flex:1;height:1px;background:#EEF0F2}
-.swap-btn{padding:5px 14px;border-radius:999px;border:1.5px solid #E4E6EA;background:#fff;color:#4A4D57;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit}
+.swap-line{flex:1;height:1px;background:#F6E4ED}
+.swap-btn{padding:5px 14px;border-radius:999px;border:1.5px solid #EFD5E1;background:#fff;color:#6E4A5D;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit}
 .swap-btn:active{transform:scale(.96)}
 
 .s-main{display:flex;align-items:center;gap:10px;margin-bottom:4px}
-.s-mult{font-size:29px;font-weight:800;color:#16171B;font-family:ui-monospace,Menlo,monospace}
+.s-mult{font-size:29px;font-weight:800;color:#3D1128;font-family:ui-monospace,Menlo,monospace}
 .badge{border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:700}
-.badge.up{background:#FDE6E7;color:#D81F26}
+.badge.up{background:#FADCE8;color:#C2255C}
 .badge.down{background:#E8F1FD;color:#2563A8}
-.badge.same{background:#EEF0F2;color:#6B6F7A}
-.s-pair{font-size:11.5px;color:#767A86;margin-bottom:8px}
-.s-kv{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-top:1px solid #EEF0F2;gap:8px}
-.s-kv .k{font-size:12px;color:#767A86}
+.badge.same{background:#F1E7EC;color:#8A6E7B}
+.s-pair{font-size:11.5px;color:#A0708A;margin-bottom:8px}
+.s-kv{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-top:1px solid #F6E4ED;gap:8px}
+.s-kv .k{font-size:12px;color:#A0708A}
 .s-kv .vwrap{display:inline-flex;align-items:center;gap:8px}
-.s-kv .v{font-size:16px;font-weight:700;color:#16171B;font-family:ui-monospace,Menlo,monospace}
-.copy-sm{border:none;background:#FDE6E7;color:#D81F26;border-radius:7px;padding:5px 9px;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit}
+.s-kv .v{font-size:16px;font-weight:700;color:#3D1128;font-family:ui-monospace,Menlo,monospace}
+.copy-sm{border:none;background:#FADCE8;color:#C2255C;border-radius:7px;padding:5px 9px;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit}
 .copy-sm:active{transform:scale(.96)}
-.s-note{font-size:10.5px;line-height:1.5;color:#9A6614;background:#FDF3DD;border-radius:8px;padding:7px 10px;margin-top:6px}
+.s-note{font-size:10.5px;line-height:1.5;color:#96547A;background:#F9E7F0;border-radius:8px;padding:7px 10px;margin-top:6px}
 
 [hidden]{display:none !important}
 
@@ -119,23 +115,10 @@ input::placeholder{color:#9AA0AB}
       <div class="panel" id="panel-len">
 
         <div class="box">
-          <div class="grid2">
-            <div>
-              <label class="lbl">Feet &prime; <span class="hint">first length</span></label>
-              <input id="i-ft" class="inp len-field" value="3" inputmode="numeric" placeholder="3">
-            </div>
-            <div>
-              <label class="lbl">Inches &Prime; <span class="hint">0&ndash;11</span></label>
-              <input id="i-inch" class="inp len-field" value="10" inputmode="numeric" placeholder="10">
-            </div>
-          </div>
           <div>
-            <label class="lbl">Fraction of an inch <span class="hint">optional</span></label>
-            <div class="fracrow">
-              <input id="i-num" class="inp len-field" inputmode="numeric" placeholder="1">
-              <span class="slash">/</span>
-              <input id="i-den" class="inp len-field" inputmode="numeric" placeholder="2">
-            </div>
+            <label class="lbl">Length <span class="hint">first length</span></label>
+            <input id="i-len1" class="inp len-field" value="3'10&quot;" placeholder="3&prime;-10 1/2&Prime;">
+            <div class="note">Everything in one box &mdash; 3&prime;-10 1/2&Prime; &middot; 5 1/2 &middot; 2/3 &middot; 46.5 &middot; plain numbers are inches, add &prime; for feet</div>
           </div>
           <div>
             <label class="lbl">Operation</label>
@@ -148,23 +131,9 @@ input::placeholder{color:#9AA0AB}
           </div>
 
           <div class="second" id="second-block" hidden>
-            <div class="grid2">
-              <div>
-                <label class="lbl">Feet &prime; <span class="hint">second length</span></label>
-                <input id="i-ft2" class="inp len-field" inputmode="numeric" placeholder="0">
-              </div>
-              <div>
-                <label class="lbl">Inches &Prime; <span class="hint">0&ndash;11</span></label>
-                <input id="i-inch2" class="inp len-field" inputmode="numeric" placeholder="0">
-              </div>
-            </div>
             <div>
-              <label class="lbl">Fraction of an inch <span class="hint">optional</span></label>
-              <div class="fracrow">
-                <input id="i-num2" class="inp len-field" inputmode="numeric" placeholder="0">
-                <span class="slash">/</span>
-                <input id="i-den2" class="inp len-field" inputmode="numeric" placeholder="0">
-              </div>
+              <label class="lbl">Length <span class="hint">second length</span></label>
+              <input id="i-len2" class="inp len-field" placeholder="0&prime;-6&Prime;">
             </div>
           </div>
 
@@ -320,18 +289,39 @@ input::placeholder{color:#9AA0AB}
   function sideFr(idx, cu) { return idx === -1 ? parseNum(cu) : fr(PRE[idx][1], PRE[idx][2]); }
   function sideLabel(idx, f) { return idx === -1 ? (f ? decStr(f, 4) + '″' : '?') : PRE[idx][0].replace(' 1:1', ''); }
 
-  function readLen(ftS, inS, numS, denS, which) {
-    var ok = [ftS, inS, numS, denS].every(function (v) { return /^\d*$/.test((v || '').trim()); });
-    if (!ok) return { err: which + ': feet, inches and fraction fields take whole numbers only.' };
-    var ftv = parseInt((ftS || '').trim() || '0', 10);
-    var inv = parseInt((inS || '').trim() || '0', 10);
-    var numv = parseInt((numS || '').trim() || '0', 10);
-    var denv = parseInt((denS || '').trim() || '0', 10);
-    if (inv > 11) return { err: which + ': inches must be 0–11 — use the feet field for 12″ and up.' };
-    if (numv > 0 && denv === 0) return { err: which + ": fraction denominator can't be 0." };
-    var f = fr(ftv * 12 + inv);
-    if (numv > 0) f = fAdd(f, fr(numv, denv));
-    return { f: f };
+  // 单框长度解析:3'-10 1/2" · 3′10″ · 5 1/2 · 2/3 · 46.5 · 3.5'(不带单位默认英寸)
+  function parseLength(s, which) {
+    s = (s || '').trim();
+    if (!s) return { f: fr(0) };
+    var GUIDE = which + ': use a format like 3′-10 1/2″, 5 1/2, 2/3 or 46.5 — plain numbers are inches, add ′ for feet.';
+    if (s.length > 24) return { err: GUIDE };
+    s = s.replace(/[′’]/g, "'").replace(/[″”]/g, '"').replace(/[−–—]/g, '-').replace(/\s+/g, ' ');
+    var m = s.match(/^(?:(\d+(?:\.\d+)?|\.\d+)\s*'\s*-?\s*)?(?:(\d+)\s+(\d+)\s*\/\s*(\d+)|(\d+)\s*\/\s*(\d+)|(\d+(?:\.\d+)?|\.\d+))?\s*"?\s*$/);
+    if (!m || (!m[1] && !m[2] && !m[5] && !m[7])) return { err: GUIDE };
+    var total = fr(0);
+    if (m[1]) {
+      var ftF = parseNum(m[1]);
+      if (!ftF) return { err: GUIDE };
+      total = fMul(ftF, fr(12));
+    }
+    var inches = null;
+    if (m[2]) {
+      var d1 = parseInt(m[4], 10);
+      if (!d1) return { err: which + ": fraction denominator can't be 0." };
+      inches = fAdd(fr(parseInt(m[2], 10)), fr(parseInt(m[3], 10), d1));
+    } else if (m[5]) {
+      var d2 = parseInt(m[6], 10);
+      if (!d2) return { err: which + ": fraction denominator can't be 0." };
+      inches = fr(parseInt(m[5], 10), d2);
+    } else if (m[7]) {
+      inches = parseNum(m[7]);
+      if (!inches) return { err: GUIDE };
+    }
+    if (m[1] && inches && inches.n / inches.d >= 12)
+      return { err: which + ': inches must be 0–11 when feet are given — e.g. 4′-2″ instead of 3′-14″.' };
+    if (total && inches) total = fAdd(total, inches);
+    if (!total) return { err: 'Numbers got too large — try smaller values.' };
+    return { f: total };
   }
 
   // ---- clipboard ----
@@ -381,10 +371,10 @@ input::placeholder{color:#9AA0AB}
 
   function calc() {
     var err = '', res = null;
-    var A = readLen($('i-ft').value, $('i-inch').value, $('i-num').value, $('i-den').value, 'First length');
+    var A = parseLength($('i-len1').value, 'First length');
     if (A.err) err = A.err;
     else if (S.op === 'add' || S.op === 'sub') {
-      var B = readLen($('i-ft2').value, $('i-inch2').value, $('i-num2').value, $('i-den2').value, 'Second length');
+      var B = parseLength($('i-len2').value, 'Second length');
       if (B.err) err = B.err;
       else {
         var out = fAdd(A.f, S.op === 'sub' ? fr(-B.f.n, B.f.d) : B.f);
