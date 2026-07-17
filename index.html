@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scale &amp; Fraction — Architect&rsquo;s imperial calculator</title>
-<meta name="theme-color" content="#C2255C">
+<title>Scale &amp; Fraction — Architect&rsquo;s Imperial Calculator</title>
+<meta name="theme-color" content="#A61E4D">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
@@ -13,76 +13,82 @@
 <meta name="apple-mobile-web-app-title" content="Scale&amp;Fraction">
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#F7E4EC;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;color:#3F2230}
-a{color:#C2255C}a:hover{color:#D6336C}
-input::placeholder{color:#C9A2B5}
+body{margin:0;text-transform:uppercase;background:#F7E9EF;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;color:#22242B}
+a{color:#D6336C}a:hover{color:#E64980}
+input::placeholder{color:#9AA0AB}
+button,input{text-transform:uppercase}
 
 .wrap{min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:28px 16px 60px}
-.card{width:390px;background:#FBF0F5;border:1px solid rgba(166,30,77,.12);border-radius:16px;box-shadow:0 2px 10px rgba(120,30,70,.08);overflow:hidden}
+.card{width:390px;background:#FBF2F6;border:1px solid rgba(0,0,0,.08);border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.07);overflow:hidden}
 
-.hdr{background:#C2255C;padding:16px 18px 14px;display:flex;align-items:center;gap:10px}
-.logo{width:30px;height:30px;border-radius:9px;background:#FFD9E6;display:flex;align-items:center;justify-content:center;color:#B01D53;font-weight:800;font-size:15px}
+.hdr{background:#A61E4D;padding:16px 18px 14px;display:flex;align-items:center;gap:10px}
+.logo{width:30px;height:30px;border-radius:9px;background:#D6336C;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px}
 .hdr-title{color:#fff;font-size:15px;font-weight:700;line-height:1.2}
-.hdr-sub{color:rgba(255,255,255,.72);font-size:11px}
+.hdr-sub{color:rgba(255,255,255,.55);font-size:11px}
 
 .content{padding:14px 14px 22px;display:flex;flex-direction:column;gap:12px}
 .panel{display:flex;flex-direction:column;gap:12px}
 
-.seg{display:flex;background:#F3DCE7;border-radius:10px;padding:3px;gap:2px}
-.seg button{flex:1;padding:8px 0;border:none;border-radius:8px;background:transparent;color:#A0708A;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
-.seg.ops button{padding:7px 0;font-size:16px}
-.seg button.on{background:#fff;color:#4A1D33;box-shadow:0 1px 4px rgba(90,20,50,.12)}
+.seg{display:flex;background:#F5E2EB;border-radius:10px;padding:3px;gap:2px}
+.seg button{flex:1;padding:8px 0;border:none;border-radius:8px;background:transparent;color:#767A86;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.seg button.on{background:#fff;color:#A61E4D;box-shadow:0 1px 4px rgba(18,18,22,.10)}
 
-.box{background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(120,30,70,.07);padding:16px;display:flex;flex-direction:column;gap:12px}
-.lbl{display:block;font-size:12px;font-weight:600;color:#6E4A5D;margin-bottom:6px}
-.lbl .hint{font-weight:400;color:#B58BA1}
-.inp{width:100%;padding:9px 12px;font-size:15px;font-family:inherit;color:#3F2230;background:#FBF2F6;border:1.5px solid #EFD5E1;border-radius:10px;outline:none}
-.inp:focus{border-color:#C2255C;background:#fff}
-.second{border-top:1px dashed #EFD5E1;padding-top:12px;display:flex;flex-direction:column;gap:12px}
-.note{font-size:11px;color:#B58BA1;margin-top:5px}
+.box{background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(18,18,22,.06);padding:16px;display:flex;flex-direction:column;gap:12px}
 
-.calc-btn{width:100%;padding:12px 0;border:none;border-radius:10px;background:#C2255C;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
-.calc-btn:active{transform:scale(.98)}
+.expr{width:100%;padding:12px 14px;font-size:20px;text-align:right;font-family:ui-monospace,Menlo,monospace;color:#22242B;background:#FAF4F7;border:1.5px solid #EFD5E1;border-radius:10px;outline:none}
+.expr:focus{border-color:#D6336C;background:#fff}
+.live{font-size:11px;color:#9AA0AB;margin-top:6px;text-align:right;min-height:15px}
 
-.err{background:#FFE3E3;color:#C92A2A;border-radius:8px;padding:9px 12px;font-size:12.5px;font-weight:600}
+.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.key{height:46px;border-radius:10px;border:1px solid #F5E2EB;font-size:18px;font-weight:600;font-family:ui-monospace,Menlo,monospace;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#fff;color:#22242B}
+.key:active{transform:scale(.94)}
+.key.op{background:#F9D8E5;color:#D6336C;border-color:#F9D8E5}
+.key.unit{color:#D6336C}
+.key.dim{color:#9AA0AB;font-size:15px}
+.key.clr{color:#D6336C;grid-column:span 2}
+.key.eq{grid-column:span 2;background:#D6336C;color:#fff;border-color:#D6336C}
+.keys-note{font-size:10.5px;color:#9AA0AB;line-height:1.5;text-align:center}
 
-.result{background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(120,30,70,.07);padding:16px;border-left:5px solid #C2255C}
-.res-tag{font-size:11px;font-weight:700;letter-spacing:.8px;color:#A0708A;margin-bottom:6px}
+.err{background:#FBE2E3;color:#B01218;border-radius:8px;padding:9px 12px;font-size:12.5px;font-weight:600}
+
+.result{background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(18,18,22,.06);padding:16px;border-left:5px solid #D6336C}
+.res-tag{font-size:11px;font-weight:700;letter-spacing:.8px;color:#767A86;margin-bottom:6px}
 .res-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.res-main{font-size:29px;font-weight:800;color:#3D1128;font-family:ui-monospace,Menlo,monospace}
-.copy{padding:7px 12px;border:none;border-radius:8px;background:#FADCE8;color:#C2255C;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.res-main{font-size:29px;font-weight:800;color:#A61E4D;font-family:ui-monospace,Menlo,monospace}
+.copy{padding:7px 12px;border:none;border-radius:8px;background:#F9D8E5;color:#D6336C;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
 .copy:active{transform:scale(.96)}
-.kv{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0 0}
-.kv.first{border-top:1px solid #F6E4ED;margin-top:10px}
-.kv .k{font-size:12px;color:#A0708A}
-.kv .v{font-size:13px;font-weight:600;color:#3F2230;font-family:ui-monospace,Menlo,monospace}
+.rows{margin-top:10px}
+.row{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-top:1px solid #F5E2EB}
+.row .k{font-size:12px;color:#767A86}
+.row .v{font-size:13px;font-weight:600;color:#22242B;font-family:ui-monospace,Menlo,monospace}
 
 .sc-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
-.sc-title{font-size:12px;font-weight:700;letter-spacing:.6px;color:#6E4A5D}
-.sc-unit{font-size:10.5px;color:#B58BA1}
+.sc-title{font-size:12px;font-weight:700;letter-spacing:.6px;color:#4A4D57}
+.sc-unit{font-size:10.5px;color:#9AA0AB}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{padding:6px 10px;border-radius:8px;border:1.5px solid transparent;background:#FBF2F6;color:#6E4A5D;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:700}
-.chip.on{border-color:#C2255C;background:#FDEBF2;color:#C2255C}
-.cu{margin-top:8px;font-size:14px}
+.chip{padding:6px 10px;border-radius:8px;border:1.5px solid transparent;background:#FAF4F7;color:#4A4D57;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:700}
+.chip.on{border-color:#D6336C;background:#FBE7F0;color:#D6336C}
+.cu{margin-top:8px;font-size:14px;padding:9px 12px;font-family:inherit;text-align:left;width:100%;color:#22242B;background:#FAF4F7;border:1.5px solid #EFD5E1;border-radius:10px;outline:none}
+.cu:focus{border-color:#D6336C;background:#fff}
 .swap-row{display:flex;align-items:center;gap:10px}
-.swap-line{flex:1;height:1px;background:#F6E4ED}
-.swap-btn{padding:5px 14px;border-radius:999px;border:1.5px solid #EFD5E1;background:#fff;color:#6E4A5D;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit}
+.swap-line{flex:1;height:1px;background:#F5E2EB}
+.swap-btn{padding:5px 14px;border-radius:999px;border:1.5px solid #EFD5E1;background:#fff;color:#4A4D57;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit}
 .swap-btn:active{transform:scale(.96)}
 
 .s-main{display:flex;align-items:center;gap:10px;margin-bottom:4px}
-.s-mult{font-size:29px;font-weight:800;color:#3D1128;font-family:ui-monospace,Menlo,monospace}
+.s-mult{font-size:29px;font-weight:800;color:#A61E4D;font-family:ui-monospace,Menlo,monospace}
 .badge{border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:700}
-.badge.up{background:#FADCE8;color:#C2255C}
+.badge.up{background:#F9D8E5;color:#D6336C}
 .badge.down{background:#E8F1FD;color:#2563A8}
-.badge.same{background:#F1E7EC;color:#8A6E7B}
-.s-pair{font-size:11.5px;color:#A0708A;margin-bottom:8px}
-.s-kv{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-top:1px solid #F6E4ED;gap:8px}
-.s-kv .k{font-size:12px;color:#A0708A}
+.badge.same{background:#F5E2EB;color:#6B6F7A}
+.s-pair{font-size:11.5px;color:#767A86;margin-bottom:8px}
+.s-kv{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-top:1px solid #F5E2EB;gap:8px}
+.s-kv .k{font-size:12px;color:#767A86}
 .s-kv .vwrap{display:inline-flex;align-items:center;gap:8px}
-.s-kv .v{font-size:16px;font-weight:700;color:#3D1128;font-family:ui-monospace,Menlo,monospace}
-.copy-sm{border:none;background:#FADCE8;color:#C2255C;border-radius:7px;padding:5px 9px;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit}
+.s-kv .v{font-size:16px;font-weight:700;color:#A61E4D;font-family:ui-monospace,Menlo,monospace}
+.copy-sm{border:none;background:#F9D8E5;color:#D6336C;border-radius:7px;padding:5px 9px;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit}
 .copy-sm:active{transform:scale(.96)}
-.s-note{font-size:10.5px;line-height:1.5;color:#96547A;background:#F9E7F0;border-radius:8px;padding:7px 10px;margin-top:6px}
+.s-note{font-size:10.5px;line-height:1.5;color:#9A6614;background:#FDF3DD;border-radius:8px;padding:7px 10px;margin-top:6px}
 
 [hidden]{display:none !important}
 
@@ -100,68 +106,38 @@ input::placeholder{color:#C9A2B5}
       <div class="logo">&Prime;</div>
       <div>
         <div class="hdr-title">Scale &amp; Fraction</div>
-        <div class="hdr-sub">Architect&rsquo;s imperial calculator</div>
+        <div class="hdr-sub">Architect&rsquo;s Imperial Calculator</div>
       </div>
     </div>
 
     <div class="content">
 
       <div class="seg" id="tabs">
-        <button id="tab-len" class="on">Length &amp; fractions</button>
-        <button id="tab-scale">Drawing scale</button>
+        <button id="tab-len" class="on">Length &amp; Fractions</button>
+        <button id="tab-scale">Drawing Scale</button>
       </div>
 
-      <!-- ============ Length & fractions ============ -->
+      <!-- ============ Length & fractions:表达式计算器 ============ -->
       <div class="panel" id="panel-len">
 
         <div class="box">
           <div>
-            <label class="lbl">Length <span class="hint">first length</span></label>
-            <input id="i-len1" class="inp len-field" value="3'10&quot;" placeholder="3&prime;-10 1/2&Prime;">
-            <div class="note">Everything in one box &mdash; 3&prime;-10 1/2&Prime; &middot; 5 1/2 &middot; 2/3 &middot; 46.5 &middot; plain numbers are inches, add &prime; for feet</div>
+            <input id="i-expr" class="expr" value="3'-10&quot; &divide; 3" placeholder="3'-10 1/2&quot; &divide; 3">
+            <div class="live" id="live-hint"></div>
           </div>
-          <div>
-            <label class="lbl">Operation</label>
-            <div class="seg ops" id="ops">
-              <button data-op="add">&plus;</button>
-              <button data-op="sub">&minus;</button>
-              <button data-op="mul">&times;</button>
-              <button data-op="div" class="on">&divide;</button>
-            </div>
-          </div>
-
-          <div class="second" id="second-block" hidden>
-            <div>
-              <label class="lbl">Length <span class="hint">second length</span></label>
-              <input id="i-len2" class="inp len-field" placeholder="0&prime;-6&Prime;">
-            </div>
-          </div>
-
-          <div id="by-block">
-            <label class="lbl" id="by-label">Divide by</label>
-            <input id="i-by" class="inp len-field" value="3" placeholder="4 &middot; 1.5 &middot; 2/3 &middot; 2&prime;6&Prime;">
-            <div class="note" id="by-note">Number (3 &middot; 1.5 &middot; 2/3) &mdash; or another length (2&prime;-6&Prime;) for the ratio</div>
-          </div>
+          <div class="keys" id="keypad"></div>
+          <div class="keys-note">Length &times;/&divide; Number = Length &nbsp;&middot;&nbsp; Length &times; Length = Area &nbsp;&middot;&nbsp; Length &divide; Length = Ratio</div>
         </div>
-
-        <button class="calc-btn" id="btn-calc">Calculate</button>
 
         <div class="err" id="len-err" hidden></div>
 
         <div class="result" id="len-res" hidden>
-          <div class="res-tag">RESULT</div>
+          <div class="res-tag" id="res-kind">RESULT</div>
           <div class="res-row">
             <div class="res-main" id="res-main"></div>
             <button class="copy" id="copy-res">Copy</button>
           </div>
-          <div class="kv first">
-            <span class="k" id="res-l1">Total inches</span>
-            <span class="v" id="res-v1"></span>
-          </div>
-          <div class="kv">
-            <span class="k" id="res-l2">Decimal</span>
-            <span class="v" id="res-v2"></span>
-          </div>
+          <div class="rows" id="res-rows"></div>
         </div>
       </div>
 
@@ -171,26 +147,26 @@ input::placeholder{color:#C9A2B5}
         <div class="box">
           <div>
             <div class="sc-head">
-              <span class="sc-title">FROM &mdash; drawing is at</span>
-              <span class="sc-unit">&Prime; per 1&prime;-0&Prime;</span>
+              <span class="sc-title">FROM &mdash; Drawing Is At</span>
+              <span class="sc-unit">&Prime; Per 1&prime;-0&Prime;</span>
             </div>
             <div class="chips" id="chips-from"></div>
-            <input id="i-cuF" class="inp cu" placeholder="Paper inches per 1&#8242;-0&#8243; &mdash; e.g. 1/64 or 1.5" hidden>
+            <input id="i-cuF" class="cu" placeholder="Paper Inches Per 1&#8242;-0&#8243; &mdash; e.g. 1/64 Or 1.5" hidden>
           </div>
 
           <div class="swap-row">
             <div class="swap-line"></div>
-            <button class="swap-btn" id="btn-swap">&uarr;&darr; swap</button>
+            <button class="swap-btn" id="btn-swap">&uarr;&darr; Swap</button>
             <div class="swap-line"></div>
           </div>
 
           <div>
             <div class="sc-head">
-              <span class="sc-title">TO &mdash; print it at</span>
-              <span class="sc-unit">&Prime; per 1&prime;-0&Prime;</span>
+              <span class="sc-title">TO &mdash; Print It At</span>
+              <span class="sc-unit">&Prime; Per 1&prime;-0&Prime;</span>
             </div>
             <div class="chips" id="chips-to"></div>
-            <input id="i-cuT" class="inp cu" placeholder="Paper inches per 1&#8242;-0&#8243; &mdash; e.g. 3" hidden>
+            <input id="i-cuT" class="cu" placeholder="Paper Inches Per 1&#8242;-0&#8243; &mdash; e.g. 3" hidden>
           </div>
         </div>
 
@@ -203,20 +179,20 @@ input::placeholder{color:#C9A2B5}
           </div>
           <div class="s-pair" id="s-pair"></div>
           <div class="s-kv">
-            <span class="k">Printer &middot; relative increment</span>
+            <span class="k">Scale Increase % &middot; Relative Increment</span>
             <span class="vwrap">
               <span class="v" id="s-printer"></span>
               <button class="copy-sm" id="copy-pr">Copy</button>
             </span>
           </div>
           <div class="s-kv">
-            <span class="k">InDesign &middot; absolute scale</span>
+            <span class="k">InDesign &middot; Absolute Scale</span>
             <span class="vwrap">
               <span class="v" id="s-ind"></span>
               <button class="copy-sm" id="copy-ind">Copy</button>
             </span>
           </div>
-          <div class="s-note">Relative increment &mdash; some print drivers expect the absolute % (the InDesign value) in their Scale field. Check yours once.</div>
+          <div class="s-note">Relative Increment &mdash; Some Print Drivers Expect The Absolute % (The InDesign Value) In Their Scale Field. Check Yours Once.</div>
         </div>
       </div>
 
@@ -229,7 +205,7 @@ input::placeholder{color:#C9A2B5}
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
 
-  var S = { tab: 'length', op: 'div', fi: 4, ti: 6, res: null, kind: 'length', err: '', copied: '', _ct: null };
+  var S = { tab: 'length', expr: "3'-10\" ÷ 3", res: null, err: '', fi: 4, ti: 6, copied: '', _ct: null };
 
   // ---- exact rational math on safe integers ----
   function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a || 1; }
@@ -258,6 +234,26 @@ input::placeholder{color:#C9A2B5}
     return null;
   }
 
+  // 长度解析:feet 为整数(' 之前),其余为英寸(整数/小数/分数/带分数)
+  function parseLen(s) {
+    s = (s || '').replace(/[’′]/g, "'").replace(/[”″]/g, '"').trim();
+    if (!s || s.length > 24) return null;
+    var ft = 0, rest = s;
+    var qi = s.indexOf("'");
+    if (qi >= 0) {
+      var fs = s.slice(0, qi).trim();
+      if (fs) { if (!/^\d+$/.test(fs) || fs.length > 7) return null; ft = parseInt(fs, 10); }
+      rest = s.slice(qi + 1);
+    }
+    rest = rest.trim();
+    if (rest.indexOf('-') === 0) rest = rest.slice(1).trim();
+    if (rest.charAt(rest.length - 1) === '"') rest = rest.slice(0, -1).trim();
+    if (rest.indexOf('"') >= 0 || rest.indexOf("'") >= 0) return null;
+    var inches = fr(0);
+    if (rest) { var p = parseNum(rest); if (!p) return null; inches = p; }
+    return fAdd(fr(ft * 12), inches);
+  }
+
   function decStr(f, dp) {
     var v = f.n / f.d;
     var s = v.toFixed(dp === undefined ? 3 : dp);
@@ -280,44 +276,82 @@ input::placeholder{color:#C9A2B5}
     return { main: main, totalIn: totalIn, dec: sign + decStr(fr(n, d), 3) + '″' };
   }
 
-  // 面积格式化:f 为平方英寸的有理数。1 ft² = 144 in²
-  function fmtArea(f) {
+  // 带分数格式:W N/D
+  function fmtMixed(f) {
     var n = f.n, d = f.d;
-    var W = Math.floor(n / d), remN = n - W * d;
-    var ft2 = Math.floor(W / 144), w = W % 144;
-    var frac = remN > 0 ? fr(remN, d) : null;
-    var fracS = frac ? frac.n + '/' + frac.d : '';
-    var inS = w > 0 ? (w + (fracS ? ' ' + fracS : '')) : (fracS || '0');
-    var main;
-    if (ft2 > 0) main = ft2 + ' ft²' + ((w > 0 || frac) ? ' ' + inS + ' in²' : '');
-    else main = inS + ' in²';
-    var total = (d === 1 ? n : n + '/' + d) + ' in²';
-    var ftFrac = fr(n, d * 144);
-    var dec = (ftFrac ? decStr(ftFrac, 3) : (n / d / 144).toFixed(3)) + ' ft²';
-    return { main: main, total: total, dec: dec };
+    var neg = n < 0; if (neg) n = -n;
+    var W = Math.floor(n / d), rem = n - W * d;
+    var sign = neg ? '−' : '';
+    if (rem === 0) return sign + W;
+    var fx = fr(rem, d);
+    return sign + (W > 0 ? W + ' ' : '') + fx.n + '/' + fx.d;
   }
 
-  // 比例格式化:F 为无量纲有理数
-  function fmtRatio(F) {
+  // 表达式解析:长度 [op 右操作数]。减号须为 − 或前后带空格的 -(避免与 3'-10 的连字符冲突)
+  function parseExpr(raw) {
+    var s = (raw || '').replace(/[’′]/g, "'").replace(/[”″]/g, '"').replace(/⁄/g, '/').trim();
+    if (!s) return { err: 'Enter a length — e.g. 3\'-10 1/2" ÷ 3' };
+    var m = s.match(/(÷|×|\*|\+|−|\s-\s)/);
+    if (!m) {
+      var f = parseLen(s);
+      if (!f) return { err: 'Could not read “' + s + '” — try 3\'-10 1/2", 46" or 3.5"' };
+      return { res: { type: 'len', f: f } };
+    }
+    var t = m[1].trim();
+    var op = t === '÷' ? 'div' : (t === '×' || t === '*') ? 'mul' : t === '+' ? 'add' : 'sub';
+    var leftS = s.slice(0, m.index).trim(), rightS = s.slice(m.index + m[1].length).trim();
+    var A = parseLen(leftS);
+    if (!A) return { err: 'Could not read the length before the operator — “' + leftS + '”' };
+    if (!rightS) return { err: 'Finish the expression after the operator' };
+    if (op === 'add' || op === 'sub') {
+      var B = parseLen(rightS);
+      if (!B) return { err: 'Could not read the second length — “' + rightS + '”' };
+      var out = fAdd(A, op === 'sub' ? fr(-B.n, B.d) : B);
+      if (!out) return { err: 'Numbers got too large — try smaller values.' };
+      return { res: { type: 'len', f: out } };
+    }
+    if (/['"]/.test(rightS)) {
+      var B2 = parseLen(rightS);
+      if (!B2) return { err: 'Could not read the second length — “' + rightS + '”' };
+      if (op === 'div' && B2.n === 0) return { err: "Can't divide by a zero length." };
+      var out2 = op === 'div' ? fDiv(A, B2) : fMul(A, B2);
+      if (!out2) return { err: 'Numbers got too large — try smaller values.' };
+      return { res: { type: op === 'div' ? 'ratio' : 'area', f: out2 } };
+    }
+    var by = parseNum(rightS);
+    if (!by || by.n <= 0) return { err: (op === 'div' ? 'Divisor' : 'Multiplier') + ' must be a number greater than 0 — or add ′/″ to make it a length.' };
+    var out3 = op === 'div' ? fDiv(A, by) : fMul(A, by);
+    if (!out3) return { err: 'Numbers got too large — try smaller values.' };
+    return { res: { type: 'len', f: out3 } };
+  }
+
+  // 结果主值(实时预览用)
+  function mainOf(R) {
+    if (R.type === 'len') return fmtFtIn(R.f).main;
+    if (R.type === 'area') {
+      var sqin = R.f, sqft = fr(sqin.n, sqin.d * 144);
+      return Math.abs(sqin.n / sqin.d) < 144 ? fmtMixed(sqin) + ' in²' : fmtMixed(sqft) + ' ft²';
+    }
+    return R.f.d === 1 ? R.f.n + ' : 1' : R.f.n + ' : ' + R.f.d;
+  }
+
+  // 结果卡片视图:类型标签 + 主值 + 两行明细
+  function resultView(R) {
+    if (R.type === 'len') {
+      var m = fmtFtIn(R.f);
+      return { kind: 'RESULT · LENGTH', main: m.main, rows: [{ k: 'Total Inches', v: m.totalIn }, { k: 'Decimal', v: '≈ ' + m.dec }] };
+    }
+    if (R.type === 'area') {
+      var sqin = R.f, sqft = fr(sqin.n, sqin.d * 144);
+      if (Math.abs(sqin.n / sqin.d) < 144)
+        return { kind: 'RESULT · AREA', main: fmtMixed(sqin) + ' in²', rows: [{ k: 'Square Feet', v: fmtMixed(sqft) + ' ft²' }, { k: 'Decimal', v: '≈ ' + decStr(sqft, 4) + ' ft²' }] };
+      return { kind: 'RESULT · AREA', main: fmtMixed(sqft) + ' ft²', rows: [{ k: 'Square Inches', v: fmtMixed(sqin) + ' in²' }, { k: 'Decimal', v: '≈ ' + decStr(sqft, 3) + ' ft²' }] };
+    }
     return {
-      main: decStr(F, 3) + '×',
-      ratio: F.n + ':' + F.d,
-      percent: decStr(fMul(F, fr(100)), 2) + '%'
+      kind: 'RESULT · RATIO',
+      main: R.f.d === 1 ? R.f.n + ' : 1' : R.f.n + ' : ' + R.f.d,
+      rows: [{ k: 'Decimal', v: '≈ ' + decStr(R.f, 4) }, { k: 'Percent', v: decStr(fMul(R.f, fr(100)), 2) + '%' }]
     };
-  }
-
-  // 结果卡片统一格式:main + 两行明细(标签随 kind 变化)
-  function formatResult(kind, f) {
-    if (kind === 'area') {
-      var a = fmtArea(f);
-      return { main: a.main, l1: 'Square inches', v1: a.total, l2: 'Decimal', v2: '≈ ' + a.dec };
-    }
-    if (kind === 'ratio') {
-      var r = fmtRatio(f);
-      return { main: r.main, l1: 'As a ratio', v1: r.ratio, l2: 'Percent', v2: '≈ ' + r.percent };
-    }
-    var m = fmtFtIn(f);
-    return { main: m.main, l1: 'Total inches', v1: m.totalIn, l2: 'Decimal', v2: '≈ ' + m.dec };
   }
 
   var PRE = [
@@ -328,41 +362,6 @@ input::placeholder{color:#C9A2B5}
 
   function sideFr(idx, cu) { return idx === -1 ? parseNum(cu) : fr(PRE[idx][1], PRE[idx][2]); }
   function sideLabel(idx, f) { return idx === -1 ? (f ? decStr(f, 4) + '″' : '?') : PRE[idx][0].replace(' 1:1', ''); }
-
-  // 单框长度解析:3'-10 1/2" · 3′10″ · 5 1/2 · 2/3 · 46.5 · 3.5'(不带单位默认英寸)
-  function parseLength(s, which) {
-    s = (s || '').trim();
-    if (!s) return { f: fr(0) };
-    var GUIDE = which + ': use a format like 3′-10 1/2″, 5 1/2, 2/3 or 46.5 — plain numbers are inches, add ′ for feet.';
-    if (s.length > 24) return { err: GUIDE };
-    s = s.replace(/[′’]/g, "'").replace(/[″”]/g, '"').replace(/[−–—]/g, '-').replace(/\s+/g, ' ');
-    var m = s.match(/^(?:(\d+(?:\.\d+)?|\.\d+)\s*'\s*-?\s*)?(?:(\d+)\s+(\d+)\s*\/\s*(\d+)|(\d+)\s*\/\s*(\d+)|(\d+(?:\.\d+)?|\.\d+))?\s*"?\s*$/);
-    if (!m || (!m[1] && !m[2] && !m[5] && !m[7])) return { err: GUIDE };
-    var total = fr(0);
-    if (m[1]) {
-      var ftF = parseNum(m[1]);
-      if (!ftF) return { err: GUIDE };
-      total = fMul(ftF, fr(12));
-    }
-    var inches = null;
-    if (m[2]) {
-      var d1 = parseInt(m[4], 10);
-      if (!d1) return { err: which + ": fraction denominator can't be 0." };
-      inches = fAdd(fr(parseInt(m[2], 10)), fr(parseInt(m[3], 10), d1));
-    } else if (m[5]) {
-      var d2 = parseInt(m[6], 10);
-      if (!d2) return { err: which + ": fraction denominator can't be 0." };
-      inches = fr(parseInt(m[5], 10), d2);
-    } else if (m[7]) {
-      inches = parseNum(m[7]);
-      if (!inches) return { err: GUIDE };
-    }
-    if (m[1] && inches && inches.n / inches.d >= 12)
-      return { err: which + ': inches must be 0–11 when feet are given — e.g. 4′-2″ instead of 3′-14″.' };
-    if (total && inches) total = fAdd(total, inches);
-    if (!total) return { err: 'Numbers got too large — try smaller values.' };
-    return { f: total };
-  }
 
   // ---- clipboard ----
   function copyText(t, tag) {
@@ -386,69 +385,73 @@ input::placeholder{color:#C9A2B5}
     $('copy-ind').textContent = S.copied === 'ind' ? '✓' : 'Copy';
   }
 
-  // ---- length tab ----
-  function renderOps() {
-    var btns = $('ops').querySelectorAll('button');
-    for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('on', btns[i].dataset.op === S.op);
-    var isLenOp = S.op === 'add' || S.op === 'sub';
-    $('second-block').hidden = !isLenOp;
-    $('by-block').hidden = isLenOp;
-    $('by-label').textContent = S.op === 'div' ? 'Divide by' : 'Multiply by';
-    $('by-note').textContent = 'Number (3 · 1.5 · 2/3) — or another length (2′-6″) for the ' + (S.op === 'div' ? 'ratio' : 'area');
-  }
+  // ---- 键盘 ----
+  var KEYS = [
+    { k: '7', g: '7', cls: '' }, { k: '8', g: '8', cls: '' }, { k: '9', g: '9', cls: '' }, { k: 'div', g: '÷', cls: 'op' },
+    { k: '4', g: '4', cls: '' }, { k: '5', g: '5', cls: '' }, { k: '6', g: '6', cls: '' }, { k: 'mul', g: '×', cls: 'op' },
+    { k: '1', g: '1', cls: '' }, { k: '2', g: '2', cls: '' }, { k: '3', g: '3', cls: '' }, { k: 'sub', g: '−', cls: 'op' },
+    { k: '0', g: '0', cls: '' }, { k: '.', g: '.', cls: '' }, { k: 'sp', g: '␣', cls: 'dim' }, { k: 'add', g: '+', cls: 'op' },
+    { k: 'ft', g: '′', cls: 'unit' }, { k: 'in', g: '″', cls: 'unit' }, { k: 'fr', g: '/', cls: 'unit' }, { k: 'bs', g: '⌫', cls: 'dim' },
+    { k: 'clr', g: 'C', cls: 'clr' }, { k: 'eq', g: '=', cls: 'eq' }
+  ];
 
-  function renderLenResult() {
-    $('len-err').hidden = !S.err;
-    $('len-err').textContent = S.err;
-    var show = !!S.res && !S.err;
-    $('len-res').hidden = !show;
-    if (show) {
-      var m = formatResult(S.kind, S.res);
-      $('res-main').textContent = m.main;
-      $('res-l1').textContent = m.l1;
-      $('res-v1').textContent = m.v1;
-      $('res-l2').textContent = m.l2;
-      $('res-v2').textContent = m.v2;
+  function press(k) {
+    if (k === 'clr') {
+      S.expr = ''; S.res = null; S.err = ''; S.copied = '';
+      $('i-expr').value = '';
+      updateCopyLabels(); renderErr(); renderResult(); renderHint();
+      return;
     }
+    if (k === 'bs') {
+      S.expr = S.expr.slice(0, -1); S.err = '';
+      $('i-expr').value = S.expr;
+      renderErr(); renderHint();
+      return;
+    }
+    if (k === 'eq') { calc(); return; }
+    var map = { div: ' ÷ ', mul: ' × ', add: ' + ', sub: ' − ', ft: "'", in: '"', fr: '/', sp: ' ' };
+    S.expr = S.expr + (map[k] !== undefined ? map[k] : k);
+    S.err = '';
+    $('i-expr').value = S.expr;
+    renderErr(); renderHint();
   }
 
   function calc() {
-    var err = '', res = null, kind = 'length';
-    var A = parseLength($('i-len1').value, 'First length');
-    if (A.err) err = A.err;
-    else if (S.op === 'add' || S.op === 'sub') {
-      var B = parseLength($('i-len2').value, 'Second length');
-      if (B.err) err = B.err;
-      else {
-        var out = fAdd(A.f, S.op === 'sub' ? fr(-B.f.n, B.f.d) : B.f);
-        if (!out) err = 'Numbers got too large — try smaller values.';
-        else res = out;
-      }
-    } else {
-      var byS = ($('i-by').value || '').trim();
-      if (/[′'″"’”]/.test(byS)) {
-        // by 带长度单位:×→面积,÷→比例
-        var B2 = parseLength(byS, 'Second length');
-        if (B2.err) err = B2.err;
-        else if (S.op === 'div' && B2.f.n === 0) err = "Can't divide by a zero length — enter a length greater than 0.";
-        else {
-          var out3 = S.op === 'div' ? fDiv(A.f, B2.f) : fMul(A.f, B2.f);
-          if (!out3) err = 'Numbers got too large — try smaller values.';
-          else { res = out3; kind = S.op === 'div' ? 'ratio' : 'area'; }
-        }
-      } else {
-        var by = parseNum(byS);
-        if (!by || by.n <= 0) err = (S.op === 'div' ? 'Divisor' : 'Multiplier') + ' must be a number greater than 0.';
-        else {
-          var out2 = S.op === 'div' ? fDiv(A.f, by) : fMul(A.f, by);
-          if (!out2) err = 'Numbers got too large — try smaller values.';
-          else res = out2;
-        }
-      }
+    var p = parseExpr(S.expr);
+    S.err = p.err || ''; S.res = p.res || null; S.copied = '';
+    updateCopyLabels(); renderErr(); renderResult();
+  }
+
+  // ---- 渲染 ----
+  function renderErr() {
+    $('len-err').hidden = !S.err;
+    $('len-err').textContent = S.err;
+    if (S.err) $('len-res').hidden = true;
+    else renderResult();
+  }
+
+  function renderHint() {
+    var t = (S.expr || '').trim();
+    if (!t) { $('live-hint').textContent = ''; return; }
+    var p = parseExpr(t);
+    $('live-hint').textContent = p.res ? '= ' + mainOf(p.res) : '· · ·';
+  }
+
+  function renderResult() {
+    var show = !!S.res && !S.err;
+    $('len-res').hidden = !show;
+    if (!show) return;
+    var v = resultView(S.res);
+    $('res-kind').textContent = v.kind;
+    $('res-main').textContent = v.main;
+    var box = $('res-rows');
+    box.textContent = '';
+    for (var i = 0; i < v.rows.length; i++) {
+      var row = document.createElement('div'); row.className = 'row';
+      var k = document.createElement('span'); k.className = 'k'; k.textContent = v.rows[i].k;
+      var val = document.createElement('span'); val.className = 'v'; val.textContent = v.rows[i].v;
+      row.appendChild(k); row.appendChild(val); box.appendChild(row);
     }
-    S.err = err; S.res = res; S.kind = kind; S.copied = '';
-    updateCopyLabels();
-    renderLenResult();
   }
 
   // ---- scale tab ----
@@ -501,7 +504,7 @@ input::placeholder{color:#C9A2B5}
     var F = fDiv(fTo, fFrom);
     var v = F.n / F.d;
     $('s-mult').textContent = decStr(F, 2) + '×';
-    var word = v > 1 ? 'Enlarge' : (v < 1 ? 'Reduce' : 'No change');
+    var word = v > 1 ? 'Enlarge' : (v < 1 ? 'Reduce' : 'No Change');
     var badge = $('s-badge');
     badge.textContent = word;
     badge.className = 'badge ' + (v > 1 ? 'up' : (v < 1 ? 'down' : 'same'));
@@ -527,24 +530,28 @@ input::placeholder{color:#C9A2B5}
   $('tab-len').addEventListener('click', function () { S.tab = 'length'; renderTabs(); });
   $('tab-scale').addEventListener('click', function () { S.tab = 'scale'; renderTabs(); });
 
-  var opBtns = $('ops').querySelectorAll('button');
-  for (var i = 0; i < opBtns.length; i++) {
-    opBtns[i].addEventListener('click', function () {
-      S.op = this.dataset.op; S.err = '';
-      renderOps(); renderLenResult();
-    });
-  }
+  (function buildKeypad() {
+    var box = $('keypad');
+    for (var i = 0; i < KEYS.length; i++) {
+      var b = document.createElement('button');
+      b.className = 'key' + (KEYS[i].cls ? ' ' + KEYS[i].cls : '');
+      b.textContent = KEYS[i].g;
+      b.dataset.k = KEYS[i].k;
+      b.addEventListener('click', function () { press(this.dataset.k); });
+      box.appendChild(b);
+    }
+  })();
 
-  var lenFields = document.querySelectorAll('.len-field');
-  for (var j = 0; j < lenFields.length; j++) {
-    lenFields[j].addEventListener('input', function () {
-      if (S.err) { S.err = ''; renderLenResult(); }
-    });
-  }
+  $('i-expr').addEventListener('input', function () {
+    S.expr = this.value; S.err = '';
+    renderErr(); renderHint();
+  });
+  $('i-expr').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') calc();
+  });
 
-  $('btn-calc').addEventListener('click', calc);
   $('copy-res').addEventListener('click', function () {
-    if (S.res) copyText(formatResult(S.kind, S.res).main, 'res');
+    if (S.res) copyText(resultView(S.res).main, 'res');
   });
 
   buildChips('chips-from', 'f');
@@ -558,8 +565,7 @@ input::placeholder{color:#C9A2B5}
   });
 
   renderTabs();
-  renderOps();
-  renderLenResult();
+  renderHint();
   renderScale();
 
   // PWA:HTTPS 或 localhost 下注册离线缓存;直接以 file:// 打开单文件仍可正常使用
