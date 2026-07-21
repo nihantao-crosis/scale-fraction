@@ -1,6 +1,6 @@
 /* Network-first app shell with an offline cache owned only by this app. */
 var CACHE_PREFIX = 'sf-calc-';
-var CACHE = CACHE_PREFIX + 'v8';
+var CACHE = CACHE_PREFIX + 'v9';
 var ASSETS = [
   './index.html',
   './core.js',
@@ -57,9 +57,13 @@ self.addEventListener('fetch', function (event) {
   // fallback instead of accumulating route-specific HTML entries.
   var cacheUpdatePromise = networkPromise.then(function (response) {
     if (!isCacheable(response)) return;
+    // Clone before the asynchronous CacheStorage lookup. Once respondWith
+    // hands the original response to the browser, its body may be consumed
+    // before caches.open() settles, at which point response.clone() throws.
+    var cachedResponse = response.clone();
     return caches.open(CACHE).then(function (cache) {
       var target = event.request.mode === 'navigate' ? './index.html' : event.request;
-      return cache.put(target, response.clone()).catch(function () {});
+      return cache.put(target, cachedResponse).catch(function () {});
     }).catch(function () {});
   }, function () {});
 
