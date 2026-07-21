@@ -137,11 +137,18 @@ test('stair alternatives and single-flight warnings are constrained', () => {
 });
 
 test('ADA running-slope references use exact input comparisons', () => {
+  const exactPitch = Core.analyzeSlope('pitch', Core.fr(1000001, 1000000));
   assert.equal(Core.analyzeSlope('pitch', Core.fr(1)).atOrBelowOneInTwelve, true);
-  assert.equal(Core.analyzeSlope('pitch', Core.fr(1000001, 1000000)).atOrBelowOneInTwelve, false);
-  assert.equal(Core.analyzeSlope('percent', Core.fr(25, 3)).atOrBelowOneInTwelve, true);
+  assert.equal(exactPitch.atOrBelowOneInTwelve, false);
+  assert.deepEqual(exactPitch.pitchFraction, { n: 1000001, d: 1000000 });
+
+  const exactPercent = Core.analyzeSlope('percent', Core.fr(25, 3));
+  assert.equal(exactPercent.atOrBelowOneInTwelve, true);
+  assert.deepEqual(exactPercent.pitchFraction, { n: 1, d: 1 });
   assert.equal(Core.analyzeSlope('percent', Core.fr(4166667, 500000)).atOrBelowOneInTwelve, false);
-  assert.equal(Core.analyzeSlope('riseRun', Core.fr(1), Core.fr(12)).atOrBelowOneInTwelve, true);
+  const exactRiseRun = Core.analyzeSlope('riseRun', Core.fr(1), Core.fr(12));
+  assert.equal(exactRiseRun.atOrBelowOneInTwelve, true);
+  assert.deepEqual(exactRiseRun.pitchFraction, { n: 1, d: 1 });
   assert.equal(Core.analyzeSlope('riseRun', Core.fr(1000001, 1000000), Core.fr(12)).atOrBelowOneInTwelve, false);
 
   const largeRise = Core.parseLen("833333'-0 1/16\"");
@@ -149,7 +156,9 @@ test('ADA running-slope references use exact input comparisons', () => {
   assert.equal(Core.analyzeSlope('riseRun', largeRise, largeRun).atOrBelowOneInTwelve, false);
   assert.match(Core.analyzeSlope('riseRun', Core.fr(1), Core.fr(0)).err, /greater than 0/i);
   assert.match(Core.analyzeSlope('degrees', Core.fr(90)).err, /not including/i);
-  assert.equal(Core.analyzeSlope('degrees', Core.fr(4)).atOrBelowOneInTwelve, true);
+  const degrees = Core.analyzeSlope('degrees', Core.fr(4));
+  assert.equal(degrees.atOrBelowOneInTwelve, true);
+  assert.equal(degrees.pitchFraction, null);
   assert.match(Core.analyzeSlope('unknown', Core.fr(1)).err, /unknown/i);
 });
 
