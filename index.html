@@ -100,6 +100,8 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
 .tcard .td{font-size:9.5px;color:#5F6470;line-height:1.35}
 .back-btn{align-self:flex-start;padding:5px 12px;border-radius:999px;border:1.5px solid #B47A91;background:#fff;color:#4A4D57;cursor:pointer;font-size:11px;font-weight:600;font-family:inherit}
 .tool{display:flex;flex-direction:column;gap:12px}
+.tool-title{margin:0 2px;font-size:17px;line-height:1.25;color:#22242B}
+.tool-title:focus{outline:3px solid #2563A8;outline-offset:4px;border-radius:4px}
 .tin{width:100%;padding:9px 12px;font-size:14px;font-family:inherit;color:#22242B;background:#FAF4F7;border:1.5px solid #B47A91;border-radius:10px;outline:none}
 .tin:focus{border-color:#D6336C;background:#fff}
 .lbl.mt{margin-top:10px}
@@ -248,7 +250,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
           <button class="back-btn" id="tool-back">&larr; All Tools</button>
 
           <div class="tool" id="tv-mc" role="region" aria-labelledby="tool-title-mc" hidden>
-            <h2 class="sr-only" id="tool-title-mc" data-tool-title tabindex="-1">Metric to Imperial</h2>
+            <h2 class="tool-title" id="tool-title-mc" data-tool-title tabindex="-1">Metric to Imperial</h2>
             <div class="box">
               <label class="lbl" for="mc-in">Value <span class="hint">2440mm &middot; 2.44m &middot; 3'-6"</span></label>
               <input id="mc-in" class="tin" placeholder="2440 mm">
@@ -258,7 +260,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
           </div>
 
           <div class="tool" id="tv-sp" role="region" aria-labelledby="tool-title-sp" hidden>
-            <h2 class="sr-only" id="tool-title-sp" data-tool-title tabindex="-1">Spacing and Layout</h2>
+            <h2 class="tool-title" id="tool-title-sp" data-tool-title tabindex="-1">Spacing and Layout</h2>
             <div class="box">
               <div class="chips" id="sp-mode" role="group" aria-label="Spacing calculation mode"></div>
               <label class="lbl mt" for="sp-len">Total Length</label>
@@ -279,7 +281,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
           </div>
 
           <div class="tool" id="tv-st" role="region" aria-labelledby="tool-title-st" hidden>
-            <h2 class="sr-only" id="tool-title-st" data-tool-title tabindex="-1">Stair Calculator</h2>
+            <h2 class="tool-title" id="tool-title-st" data-tool-title tabindex="-1">Stair Calculator</h2>
             <div class="box">
               <label class="lbl" for="st-rise">Total Rise <span class="hint">floor to floor</span></label>
               <input id="st-rise" class="tin" placeholder="9'-1 1/2&quot;">
@@ -292,7 +294,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
           </div>
 
           <div class="tool" id="tv-sm" role="region" aria-labelledby="tool-title-sm" hidden>
-            <h2 class="sr-only" id="tool-title-sm" data-tool-title tabindex="-1">Scale Measure</h2>
+            <h2 class="tool-title" id="tool-title-sm" data-tool-title tabindex="-1">Scale Measure</h2>
             <div class="box">
               <div class="chips" id="sm-mode" role="group" aria-label="Scale measurement mode"></div>
               <span class="lbl mt" id="sm-scale-label">Scale</span>
@@ -305,7 +307,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
           </div>
 
           <div class="tool" id="tv-sc2" role="region" aria-labelledby="tool-title-sc2" hidden>
-            <h2 class="sr-only" id="tool-title-sc2" data-tool-title tabindex="-1">Sheet Coverage</h2>
+            <h2 class="tool-title" id="tool-title-sc2" data-tool-title tabindex="-1">Sheet Coverage</h2>
             <div class="box">
               <span class="lbl" id="sc2-sheet-label">Sheet</span>
               <div class="chips" id="sc2-sheet" role="group" aria-labelledby="sc2-sheet-label"></div>
@@ -317,7 +319,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
           </div>
 
           <div class="tool" id="tv-sl" role="region" aria-labelledby="tool-title-sl" hidden>
-            <h2 class="sr-only" id="tool-title-sl" data-tool-title tabindex="-1">Slope and Pitch</h2>
+            <h2 class="tool-title" id="tool-title-sl" data-tool-title tabindex="-1">Slope and Pitch</h2>
             <div class="box">
               <div class="chips" id="sl-mode" role="group" aria-label="Slope input mode"></div>
               <label class="lbl mt" id="sl-lbl-a" for="sl-a">x <span class="hint">in x:12</span></label>
@@ -333,7 +335,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
           </div>
 
           <div class="tool" id="tv-br" role="region" aria-labelledby="tool-title-br" hidden>
-            <h2 class="sr-only" id="tool-title-br" data-tool-title tabindex="-1">Brick Coursing</h2>
+            <h2 class="tool-title" id="tool-title-br" data-tool-title tabindex="-1">Brick Coursing</h2>
             <div class="box">
               <div class="chips" id="br-mode" role="group" aria-label="Coursing module"></div>
               <label class="lbl mt" for="br-in">Dimension</label>
@@ -344,7 +346,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
           </div>
 
           <div class="tool" id="tv-at" role="region" aria-labelledby="tool-title-at" hidden>
-            <h2 class="sr-only" id="tool-title-at" data-tool-title tabindex="-1">Area Tally</h2>
+            <h2 class="tool-title" id="tool-title-at" data-tool-title tabindex="-1">Area Tally</h2>
             <div class="box">
               <label class="lbl" for="at-in">Room <span class="hint">e.g. 12'6" &times; 14'</span></label>
               <input id="at-in" class="tin" placeholder="12'6&quot; &times; 14'">
@@ -360,7 +362,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
           </div>
 
           <div class="tool" id="tv-cv" role="region" aria-labelledby="tool-title-cv" hidden>
-            <h2 class="sr-only" id="tool-title-cv" data-tool-title tabindex="-1">Concrete Volume</h2>
+            <h2 class="tool-title" id="tool-title-cv" data-tool-title tabindex="-1">Concrete Volume</h2>
             <div class="box">
               <label class="lbl" for="cv-l">Length</label>
               <input id="cv-l" class="tin" placeholder="20'">
@@ -374,7 +376,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
           </div>
 
           <div class="tool" id="tv-sg" role="region" aria-labelledby="tool-title-sg" hidden>
-            <h2 class="sr-only" id="tool-title-sg" data-tool-title tabindex="-1">Sheet Goods</h2>
+            <h2 class="tool-title" id="tool-title-sg" data-tool-title tabindex="-1">Sheet Goods</h2>
             <div class="box">
               <label class="lbl" for="sg-l">Length</label>
               <input id="sg-l" class="tin" placeholder="40'">
@@ -386,7 +388,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
           </div>
 
           <div class="tool" id="tv-dr" role="region" aria-labelledby="tool-title-dr" hidden>
-            <h2 class="sr-only" id="tool-title-dr" data-tool-title tabindex="-1">Door Size</h2>
+            <h2 class="tool-title" id="tool-title-dr" data-tool-title tabindex="-1">Door Size</h2>
             <div class="box">
               <label class="lbl" for="dr-in">Door Shorthand <span class="hint">4 digits</span></label>
               <input id="dr-in" class="tin" inputmode="numeric" placeholder="3068">
@@ -396,7 +398,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
           </div>
 
           <div class="tool" id="tv-ps" role="region" aria-labelledby="tool-title-ps" hidden>
-            <h2 class="sr-only" id="tool-title-ps" data-tool-title tabindex="-1">Print Scaling</h2>
+            <h2 class="tool-title" id="tool-title-ps" data-tool-title tabindex="-1">Print Scaling</h2>
             <div class="box">
               <span class="lbl" id="ps-from-label">From Sheet</span>
               <div class="chips" id="ps-from" role="group" aria-labelledby="ps-from-label"></div>
@@ -408,7 +410,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
           </div>
 
           <div class="tool" id="tv-ms" role="region" aria-labelledby="tool-title-ms" hidden>
-            <h2 class="sr-only" id="tool-title-ms" data-tool-title tabindex="-1">Metric Scales</h2>
+            <h2 class="tool-title" id="tool-title-ms" data-tool-title tabindex="-1">Metric Scales</h2>
             <div class="result" id="ms-table">
               <div class="res-tag">Imperial &harr; Metric Scales</div>
               <div class="rows" id="ms-rows"></div>
@@ -416,7 +418,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
           </div>
 
           <div class="tool" id="tv-sb" role="region" aria-labelledby="tool-title-sb" hidden>
-            <h2 class="sr-only" id="tool-title-sb" data-tool-title tabindex="-1">Scale Bar</h2>
+            <h2 class="tool-title" id="tool-title-sb" data-tool-title tabindex="-1">Scale Bar</h2>
             <div class="box">
               <span class="lbl" id="sb-scale-label">Scale</span>
               <div class="chips" id="sb-scale" role="group" aria-labelledby="sb-scale-label"></div>
@@ -698,10 +700,6 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
       $('s-res').hidden = true;
       $('s-err').hidden = false;
       $('s-err').textContent = 'Scale ratio is outside the supported numeric range — use smaller values.';
-      ['i-cuF', 'i-cuT'].forEach(function (id) {
-        $(id).setAttribute('aria-invalid', 'true');
-        $(id).setAttribute('aria-describedby', 's-err');
-      });
       if (!$('panel-scale').hidden) clearResultAnnouncement();
       return;
     }
@@ -710,10 +708,6 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
       $('s-res').hidden = true;
       $('s-err').hidden = false;
       $('s-err').textContent = 'Scale difference is outside the supported numeric range — use smaller values.';
-      ['i-cuF', 'i-cuT'].forEach(function (id) {
-        $(id).setAttribute('aria-invalid', 'true');
-        $(id).setAttribute('aria-describedby', 's-err');
-      });
       if (!$('panel-scale').hidden) clearResultAnnouncement();
       return;
     }
@@ -750,10 +744,17 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
     $('panel-tools').hidden = S.tab !== 'tools';
   }
 
+  function selectTab(tab) {
+    clearResultAnnouncement();
+    S.tab = tab;
+    renderTabs();
+    if (tab === 'scale') renderScale();
+  }
+
   // ---- wiring ----
-  $('tab-len').addEventListener('click', function () { S.tab = 'length'; renderTabs(); });
-  $('tab-scale').addEventListener('click', function () { S.tab = 'scale'; renderTabs(); renderScale(); });
-  $('tab-tools').addEventListener('click', function () { S.tab = 'tools'; renderTabs(); });
+  $('tab-len').addEventListener('click', function () { selectTab('length'); });
+  $('tab-scale').addEventListener('click', function () { selectTab('scale'); });
+  $('tab-tools').addEventListener('click', function () { selectTab('tools'); });
   $('tabs').addEventListener('keydown', function (e) {
     var tabs = [$('tab-len'), $('tab-scale'), $('tab-tools')];
     var current = tabs.indexOf(document.activeElement);
@@ -839,13 +840,25 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
     sg: ['sg-l', 'sg-w'], dr: ['dr-in'], sb: ['sb-ft']
   };
 
-  function setFieldError(prefix, hasError) {
+  function visibleErrorFields(prefix) {
     var ids = ERROR_FIELDS[prefix] || [];
+    var visible = [];
+    for (var i = 0; i < ids.length; i++) {
+      var field = $(ids[i]);
+      if (field && !field.closest('[hidden]')) visible.push(ids[i]);
+    }
+    return visible;
+  }
+
+  function setFieldError(prefix, invalidFields) {
+    var ids = ERROR_FIELDS[prefix] || [];
+    invalidFields = invalidFields || [];
     for (var i = 0; i < ids.length; i++) {
       var field = $(ids[i]);
       if (!field) continue;
-      field.setAttribute('aria-invalid', String(hasError));
-      if (hasError) field.setAttribute('aria-describedby', prefix + '-err');
+      var invalid = invalidFields.indexOf(ids[i]) >= 0 && !field.closest('[hidden]');
+      field.setAttribute('aria-invalid', String(invalid));
+      if (invalid) field.setAttribute('aria-describedby', prefix + '-err');
       else field.removeAttribute('aria-describedby');
     }
   }
@@ -854,20 +867,25 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
     var eb = $(prefix + '-err'), rb = $(prefix + '-res');
     var tool = rb ? rb.closest('.tool') : null;
     if (!out) {
-      setFieldError(prefix, false);
+      setFieldError(prefix, []);
       if (eb) eb.hidden = true;
       if (rb) rb.hidden = true;
       if (tool && !tool.hidden) clearResultAnnouncement();
       return;
     }
     if (out.err) {
-      setFieldError(prefix, true);
+      var invalidFields = out.invalidFields;
+      if (!invalidFields) {
+        var visibleFields = visibleErrorFields(prefix);
+        invalidFields = visibleFields.length === 1 ? visibleFields : [];
+      }
+      setFieldError(prefix, invalidFields);
       if (eb) { eb.hidden = false; eb.textContent = out.err; }
       if (rb) rb.hidden = true;
       if (tool && !tool.hidden) clearResultAnnouncement();
       return;
     }
-    setFieldError(prefix, false);
+    setFieldError(prefix, []);
     if (eb) eb.hidden = true;
     if (!rb) return;
     rb.hidden = false;
@@ -943,7 +961,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
       return tShow('mc', {
         kind: 'METRIC → IMPERIAL', main: fmtFtIn(r).main, rows: [
           { k: 'Rounding Error', v: (dMm >= 0 ? '+' : '−') + Math.abs(dMm).toFixed(2) + ' mm' },
-          { k: 'Exact', v: '≈ ' + decStr(inches, 3) + '″' },
+          { k: 'Converted Inches · Decimal', v: '≈ ' + decStr(inches, 3) + '″' },
           { k: 'Input', v: decStr(fDiv(mmv, fr(1000)), 4) + ' m' }
         ]
       });
@@ -967,14 +985,14 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
     var lenS = ($('sp-len').value || '').trim();
     if (!lenS) return tShow('sp', null);
     var L = parseLen(lenS);
-    if (!L) return tShow('sp', { err: 'Could not read the total length — try 12\'-6"' });
-    if (L.n <= 0) return tShow('sp', { err: 'Total length must be greater than 0.' });
+    if (!L) return tShow('sp', { err: 'Could not read the total length — try 12\'-6"', invalidFields: ['sp-len'] });
+    if (L.n <= 0) return tShow('sp', { err: 'Total length must be greater than 0.', invalidFields: ['sp-len'] });
     if (T.spMode === 0) {
       var nS = ($('sp-n').value || '').trim();
       if (!nS) return tShow('sp', null);
-      if (!/^\d+$/.test(nS)) return tShow('sp', { err: 'Parts must be a whole number.' });
+      if (!/^\d+$/.test(nS)) return tShow('sp', { err: 'Parts must be a whole number.', invalidFields: ['sp-n'] });
       var n = parseInt(nS, 10);
-      if (n < 2 || n > 500) return tShow('sp', { err: 'Parts must be between 2 and 500.' });
+      if (n < 2 || n > 500) return tShow('sp', { err: 'Parts must be between 2 and 500.', invalidFields: ['sp-n'] });
       var seg = fDiv(L, fr(n));
       var rows = [{ k: 'Decimal', v: '≈ ' + decStr(seg, 3) + '″' }];
       var sr = snapRow16(seg); if (sr) rows.push(sr);
@@ -992,15 +1010,15 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
       var cuS = ($('sp-cu').value || '').trim();
       if (!cuS) return tShow('sp', null);
       sFr = parseLen(cuS);
-      if (!sFr) return tShow('sp', { err: 'Could not read the custom spacing — try 32"' });
+      if (!sFr) return tShow('sp', { err: 'Could not read the custom spacing — try 32"', invalidFields: ['sp-cu'] });
     } else sFr = OC[T.spOc];
-    if (sFr.n <= 0) return tShow('sp', { err: 'Spacing must be greater than 0.' });
+    if (sFr.n <= 0) return tShow('sp', { err: 'Spacing must be greater than 0.', invalidFields: T.spOc === 4 ? ['sp-cu'] : [] });
     var bays = Core.floorDivFraction(L, sFr);
-    if (bays === null || bays > 1000000) return tShow('sp', { err: 'Layout count is outside the supported range — use a larger spacing.' });
+    if (bays === null || bays > 1000000) return tShow('sp', { err: 'Layout count is outside the supported range — use a larger spacing.', invalidFields: [] });
     var used = fMul(sFr, fr(bays));
-    if (!used) return tShow('sp', { err: 'Numbers got too large — try smaller values.' });
+    if (!used) return tShow('sp', { err: 'Numbers got too large — try smaller values.', invalidFields: [] });
     var rem = fAdd(L, fr(-used.n, used.d));
-    if (!rem) return tShow('sp', { err: 'Numbers got too large — try smaller values.' });
+    if (!rem) return tShow('sp', { err: 'Numbers got too large — try smaller values.', invalidFields: [] });
     var rows2 = [
       { k: 'Full Bays @ ' + fmtMixed(sFr) + '″', v: String(bays) },
       { k: 'End Remainder', v: rem.n === 0 ? 'ON MODULE' : fmtFtIn(rem).main }
@@ -1091,6 +1109,12 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
 
   // ---- Slope / Pitch ----
   var SLMODES = ['x : 12', 'Percent', 'Degrees', 'Rise / Run'];
+  function approximatePitchLabel(pitch, atOrBelow) {
+    var nearReference = Math.abs(pitch - 1) < 0.01;
+    var shown = Core.formatApproxNumber(pitch, nearReference ? 12 : 4);
+    if (shown === '1' && !atOrBelow) return '≈ 1 : 12 · SLIGHTLY STEEPER';
+    return '≈ ' + shown + ' : 12';
+  }
   function slCalc() {
     var aS = ($('sl-a').value || '').trim();
     var analysis;
@@ -1098,22 +1122,34 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
       var bS = ($('sl-b').value || '').trim();
       if (!aS || !bS) return tShow('sl', null);
       var rise = parseLen(aS), run = parseLen(bS);
-      if (!rise || !run) return tShow('sl', { err: 'Enter rise and run as lengths — e.g. 4" and 12\'-0"' });
+      if (!rise || !run) {
+        var invalidSlopeFields = [];
+        if (!rise) invalidSlopeFields.push('sl-a');
+        if (!run) invalidSlopeFields.push('sl-b');
+        return tShow('sl', { err: 'Enter rise and run as lengths — e.g. 4" and 12\'-0"', invalidFields: invalidSlopeFields });
+      }
       analysis = Core.analyzeSlope('riseRun', rise, run);
     } else {
       if (!aS) return tShow('sl', null);
       var num = parseNum(aS);
-      if (!num) return tShow('sl', { err: 'Enter a number.' });
+      if (!num) return tShow('sl', { err: 'Enter a number.', invalidFields: ['sl-a'] });
       analysis = Core.analyzeSlope(['pitch', 'percent', 'degrees'][T.slMode], num);
     }
-    if (analysis.err) return tShow('sl', { err: analysis.err });
+    if (analysis.err) {
+      var analysisFields = T.slMode !== 3 ? ['sl-a'] :
+        (run && run.n <= 0 ? ['sl-b'] : (rise && rise.n < 0 ? ['sl-a'] : []));
+      return tShow('sl', { err: analysis.err, invalidFields: analysisFields });
+    }
     var slope = analysis.slope;
+    var pitchMain = analysis.pitchFraction ?
+      fmtMixed(analysis.pitchFraction) + ' : 12' :
+      approximatePitchLabel(slope * 12, analysis.atOrBelowOneInTwelve);
     return tShow('sl', {
-      kind: 'SLOPE', main: tnum(slope * 12, 2) + ' : 12', rows: [
-        { k: 'Percent', v: tnum(slope * 100, 2) + '%' },
-        { k: 'Degrees', v: tnum(Math.atan(slope) * 180 / Math.PI, 2) + '°' },
-        { k: 'Ratio', v: slope > 0 ? '1 : ' + tnum(1 / slope, 1) : 'FLAT' },
-        { k: 'Slope Factor', v: tnum(Math.sqrt(1 + slope * slope), 4) },
+      kind: 'SLOPE', main: pitchMain, rows: [
+        { k: 'Percent', v: '≈ ' + tnum(slope * 100, 2) + '%' },
+        { k: 'Degrees', v: '≈ ' + tnum(Math.atan(slope) * 180 / Math.PI, 2) + '°' },
+        { k: 'Ratio', v: slope > 0 ? '≈ 1 : ' + tnum(1 / slope, 1) : 'FLAT' },
+        { k: 'Slope Factor', v: '≈ ' + tnum(Math.sqrt(1 + slope * slope), 4) },
         { k: '2010 ADA §405.2 Running-Slope Reference', v: analysis.atOrBelowOneInTwelve ? 'AT / BELOW 1:12' : 'STEEPER THAN 1:12' },
         { k: 'Accessibility', v: 'RUNNING-SLOPE SCREEN ONLY · NOT A COMPLIANCE DETERMINATION' }
       ]
@@ -1160,7 +1196,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
       var nt = fAdd(totalIn2, T.at[i].f);
       if (!nt) {
         list.hidden = true;
-        return tShow('at', { err: 'Area total is outside the supported numeric range — remove the largest entries.' });
+        return tShow('at', { err: 'Area total is outside the supported numeric range — remove the largest entries.', invalidFields: [] });
       }
       totalIn2 = nt;
       var ft2 = T.at[i].f.n / T.at[i].f.d / 144;
@@ -1181,7 +1217,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
   }
 
   function atEntryError(message) {
-    setFieldError('at', true);
+    setFieldError('at', ['at-in']);
     $('at-err').hidden = false;
     $('at-err').textContent = message;
     if (!T.at.length) $('at-res').hidden = true;
@@ -1189,7 +1225,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
   }
 
   function clearAtEntryError() {
-    setFieldError('at', false);
+    setFieldError('at', []);
     $('at-err').hidden = true;
   }
 
@@ -1215,9 +1251,16 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
     var filled = ['cv-l', 'cv-w', 'cv-t'].every(function (id) { return ($(id).value || '').trim(); });
     if (!filled) return tShow('cv', null);
     var L = parseLen($('cv-l').value), W = parseLen($('cv-w').value), Th = parseLen($('cv-t').value);
-    if (!L || !W || !Th || L.n <= 0 || W.n <= 0 || Th.n <= 0) return tShow('cv', { err: 'Enter three lengths — e.g. 20′, 12′ and 4″' });
+    var invalidConcreteFields = [];
+    if (!L || L.n <= 0) invalidConcreteFields.push('cv-l');
+    if (!W || W.n <= 0) invalidConcreteFields.push('cv-w');
+    if (!Th || Th.n <= 0) invalidConcreteFields.push('cv-t');
+    if (invalidConcreteFields.length) return tShow('cv', {
+      err: 'Enter three positive lengths — e.g. 20′, 12′ and 4″',
+      invalidFields: invalidConcreteFields
+    });
     var calc = Core.calculateConcrete(L, W, Th);
-    if (calc.err) return tShow('cv', { err: calc.err });
+    if (calc.err) return tShow('cv', { err: calc.err, invalidFields: [] });
     var ft3 = calc.ft3;
     var yd3 = calc.yd3;
     return tShow('cv', {
@@ -1234,14 +1277,20 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
     var filled = ['sg-l', 'sg-w'].every(function (id) { return ($(id).value || '').trim(); });
     if (!filled) return tShow('sg', null);
     var L = parseLen($('sg-l').value), W = parseLen($('sg-w').value);
-    if (!L || !W || L.n <= 0 || W.n <= 0) return tShow('sg', { err: 'Enter two lengths — e.g. 40′ and 9′' });
+    var invalidSheetFields = [];
+    if (!L || L.n <= 0) invalidSheetFields.push('sg-l');
+    if (!W || W.n <= 0) invalidSheetFields.push('sg-w');
+    if (invalidSheetFields.length) return tShow('sg', {
+      err: 'Enter two positive lengths — e.g. 40′ and 9′',
+      invalidFields: invalidSheetFields
+    });
     var in2 = fMul(L, W);
-    if (!in2) return tShow('sg', { err: 'Numbers got too large.' });
+    if (!in2) return tShow('sg', { err: 'Numbers got too large.', invalidFields: [] });
     var ft2 = in2.n / in2.d / 144;
     var baseSheets = Core.ceilDivFraction(in2, fr(4608));
     var wasteArea = fMul(in2, fr(11, 10));
     var wasteSheets = Core.ceilDivFraction(wasteArea, fr(4608));
-    if (baseSheets === null || wasteSheets === null) return tShow('sg', { err: 'Sheet count is outside the supported range.' });
+    if (baseSheets === null || wasteSheets === null) return tShow('sg', { err: 'Sheet count is outside the supported range.', invalidFields: [] });
     return tShow('sg', {
       kind: '4×8 SHEET GOODS', main: baseSheets + ' SHEETS', rows: [
         { k: 'Area', v: '≈ ' + tnum(ft2, 1) + ' ft²' },
@@ -1270,15 +1319,18 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
   // ---- Print Scaling ----
   function psCalc() {
     var A = SHEETS[T.psFrom], B = SHEETS[T.psTo];
-    var f = Math.min(
-      Math.max(B[1], B[2]) / Math.max(A[1], A[2]),
-      Math.min(B[1], B[2]) / Math.min(A[1], A[2])
-    );
+    var aLong = fr(Math.round(Math.max(A[1], A[2]) * 2), 2);
+    var aShort = fr(Math.round(Math.min(A[1], A[2]) * 2), 2);
+    var bLong = fr(Math.round(Math.max(B[1], B[2]) * 2), 2);
+    var bShort = fr(Math.round(Math.min(B[1], B[2]) * 2), 2);
+    var longFactor = fDiv(bLong, aLong);
+    var shortFactor = fDiv(bShort, aShort);
+    var factor = Core.compareFractions(longFactor, shortFactor) <= 0 ? longFactor : shortFactor;
     tShow('ps', {
-      kind: A[0] + ' → ' + B[0], main: tnum(f * 100, 1) + '%', rows: [
-        { k: 'Exact Factor', v: '× ' + tnum(f, 4) },
-        { k: '1″ Becomes', v: tnum(f, 3) + '″' },
-        { k: 'Drawing Scales', v: 'Multiply by ' + tnum(f, 3) }
+      kind: A[0] + ' → ' + B[0], main: '≈ ' + Core.scaledDecStr(factor, 100, 1) + '%', rows: [
+        { k: 'Exact Factor', v: '× ' + fmtMixed(factor) },
+        { k: 'Decimal Factor', v: '≈ ' + decStr(factor, 4) + '×' },
+        { k: '1″ Becomes · Exact', v: fmtMixed(factor) + '″' }
       ]
     });
   }
@@ -1350,7 +1402,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
     }
     $('tool-back').addEventListener('click', closeTool);
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && T.open) closeTool();
+      if (e.key === 'Escape' && S.tab === 'tools' && T.open) closeTool();
     });
 
     $('mc-in').addEventListener('input', mcCalc);
