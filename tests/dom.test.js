@@ -59,6 +59,12 @@ function closeTool(document) {
   document.getElementById('tool-back').click();
 }
 
+function assertFieldError(document, id, invalid, errorId) {
+  const field = document.getElementById(id);
+  assert.equal(field.getAttribute('aria-invalid'), String(invalid), id);
+  assert.equal(field.getAttribute('aria-describedby'), invalid ? errorId : null, id);
+}
+
 function finish(app) {
   assert.deepEqual(app.errors.map(String), []);
   app.dom.window.close();
@@ -97,10 +103,14 @@ test('tabs, labels, groups, keypad names and tool focus are accessible', async (
     card.click();
     await new Promise((resolve) => app.dom.window.setTimeout(resolve, 0));
     const tool = document.getElementById('tv-' + card.dataset.tool);
+    const title = tool.querySelector('[data-tool-title]');
     assert.equal(tool.hidden, false, card.dataset.tool);
     assert.equal(tool.getAttribute('role'), 'region');
-    assert.equal(document.activeElement, tool.querySelector('[data-tool-title]'));
+    assert.equal(document.activeElement, title);
     assert.ok(document.activeElement.textContent.trim());
+    assert.equal(title.classList.contains('sr-only'), false);
+    assert.equal(app.dom.window.getComputedStyle(title).display, 'block');
+    assert.match(app.dom.window.getComputedStyle(title).outline, /3px solid/);
     closeTool(document);
     assert.equal(document.activeElement, card);
   }
@@ -170,6 +180,63 @@ test('drawing-scale percentages, copy state and invalid fields stay exact', asyn
   setInput(app.dom, 'i-cuT', '9999999');
   assert.equal(document.getElementById('s-res').hidden, false);
   assert.equal(document.getElementById('s-ind').textContent, '9999998000000100%');
+
+  setInput(app.dom, 'i-cuF', '1/9999999999');
+  assert.equal(document.getElementById('s-res').hidden, true);
+  assert.match(document.getElementById('s-err').textContent, /outside the supported numeric range/i);
+  assertFieldError(document, 'i-cuF', false, 's-err');
+  assertFieldError(document, 'i-cuT', false, 's-err');
+  finish(app);
+});
+
+test('tool errors only identify the visible fields that are actually invalid', () => {
+  const app = createApp();
+  const { document } = app.dom.window;
+  document.getElementById('tab-tools').click();
+
+  openTool(document, 'cv');
+  setInput(app.dom, 'cv-l', 'bad');
+  setInput(app.dom, 'cv-w', "12'");
+  setInput(app.dom, 'cv-t', '4"');
+  assertFieldError(document, 'cv-l', true, 'cv-err');
+  assertFieldError(document, 'cv-w', false, 'cv-err');
+  assertFieldError(document, 'cv-t', false, 'cv-err');
+  setInput(app.dom, 'cv-l', "20'");
+  assert.equal(document.getElementById('cv-res').hidden, false);
+  for (const id of ['cv-l', 'cv-w', 'cv-t']) assertFieldError(document, id, false, 'cv-err');
+  closeTool(document);
+
+  openTool(document, 'sl');
+  document.querySelectorAll('#sl-mode .chip')[3].click();
+  setInput(app.dom, 'sl-a', 'bad');
+  setInput(app.dom, 'sl-b', "12'");
+  assertFieldError(document, 'sl-a', true, 'sl-err');
+  assertFieldError(document, 'sl-b', false, 'sl-err');
+  setInput(app.dom, 'sl-a', '4"');
+  assert.equal(document.getElementById('sl-res').hidden, false);
+  assertFieldError(document, 'sl-a', false, 'sl-err');
+  assertFieldError(document, 'sl-b', false, 'sl-err');
+  closeTool(document);
+
+  openTool(document, 'sp');
+  setInput(app.dom, 'sp-len', 'bad');
+  setInput(app.dom, 'sp-n', '5');
+  assertFieldError(document, 'sp-len', true, 'sp-err');
+  assertFieldError(document, 'sp-n', false, 'sp-err');
+  assertFieldError(document, 'sp-cu', false, 'sp-err');
+  setInput(app.dom, 'sp-len', "12'");
+  setInput(app.dom, 'sp-n', 'bad');
+  assertFieldError(document, 'sp-len', false, 'sp-err');
+  assertFieldError(document, 'sp-n', true, 'sp-err');
+  document.querySelectorAll('#sp-mode .chip')[1].click();
+  assert.equal(document.getElementById('sp-n').closest('[hidden]').id, 'sp-eq-row');
+  assertFieldError(document, 'sp-n', false, 'sp-err');
+  document.querySelectorAll('#sp-oc .chip')[4].click();
+  setInput(app.dom, 'sp-cu', 'bad');
+  assertFieldError(document, 'sp-len', false, 'sp-err');
+  assertFieldError(document, 'sp-n', false, 'sp-err');
+  assertFieldError(document, 'sp-cu', true, 'sp-err');
+
   finish(app);
 });
 
@@ -209,6 +276,43 @@ test('successful results use one concise live announcement and copy failures are
   await Promise.resolve();
   assert.equal(document.getElementById('copy-res').textContent, 'Copy Failed');
   assert.equal(document.getElementById('copy-status').textContent, 'Copy failed.');
+  finish(app);
+});
+
+test('tab changes cancel stale announcements and hidden tools ignore Escape', async () => {
+  const app = createApp();
+  const { document } = app.dom.window;
+  const expression = setInput(app.dom, 'i-expr', "1' + 1'");
+  pressKey(app.dom, expression, 'Enter');
+
+  const toolsTab = document.getElementById('tab-tools');
+  toolsTab.focus();
+  toolsTab.click();
+  await new Promise((resolve) => app.dom.window.setTimeout(resolve, 275));
+  assert.equal(document.getElementById('result-status').textContent, '');
+
+  const card = document.querySelector('[data-tool="mc"]');
+  card.focus();
+  card.click();
+  await new Promise((resolve) => app.dom.window.setTimeout(resolve, 0));
+  setInput(app.dom, 'mc-in', '2440mm');
+
+  const lengthTab = document.getElementById('tab-len');
+  lengthTab.focus();
+  lengthTab.click();
+  pressKey(app.dom, document, 'Escape');
+  assert.equal(document.activeElement, lengthTab);
+  assert.equal(document.getElementById('tool-view').hidden, false, 'hidden tool state must not handle Escape');
+  assert.equal(document.getElementById('tools-home').hidden, true);
+  await new Promise((resolve) => app.dom.window.setTimeout(resolve, 275));
+  assert.equal(document.getElementById('result-status').textContent, '');
+
+  toolsTab.focus();
+  toolsTab.click();
+  pressKey(app.dom, document, 'Escape');
+  assert.equal(document.getElementById('tool-view').hidden, true);
+  assert.equal(document.getElementById('tools-home').hidden, false);
+  assert.equal(document.activeElement, card);
   finish(app);
 });
 
@@ -290,5 +394,44 @@ test('all 14 tools execute their primary browser path without page errors', () =
 
   openTool(document, 'sb');
   assert.match(document.getElementById('sb-prev').innerHTML, /<svg/);
+  finish(app);
+});
+
+test('rounded tool displays identify approximations and preserve exact slope boundaries', () => {
+  const app = createApp();
+  const { document } = app.dom.window;
+  document.getElementById('tab-tools').click();
+
+  openTool(document, 'sl');
+  setInput(app.dom, 'sl-a', '1.000001');
+  assert.equal(document.querySelector('#sl-res .res-main').textContent, '1 1/1000000 : 12');
+  assert.match(document.getElementById('sl-res').textContent, /STEEPER THAN 1:12/);
+
+  document.querySelectorAll('#sl-mode .chip')[1].click();
+  setInput(app.dom, 'sl-a', '8.333334');
+  assert.equal(document.querySelector('#sl-res .res-main').textContent, '1 1/12500000 : 12');
+  assert.match(document.getElementById('sl-res').textContent, /STEEPER THAN 1:12/);
+
+  document.querySelectorAll('#sl-mode .chip')[3].click();
+  setInput(app.dom, 'sl-a', '1.000001"');
+  setInput(app.dom, 'sl-b', '12"');
+  assert.equal(document.querySelector('#sl-res .res-main').textContent, '1 1/1000000 : 12');
+  assert.match(document.getElementById('sl-res').textContent, /STEEPER THAN 1:12/);
+
+  document.querySelectorAll('#sl-mode .chip')[2].click();
+  setInput(app.dom, 'sl-a', '4.763642');
+  assert.match(document.querySelector('#sl-res .res-main').textContent, /^≈ 1\.000000/);
+  assert.match(document.getElementById('sl-res').textContent, /STEEPER THAN 1:12/);
+  closeTool(document);
+
+  openTool(document, 'mc');
+  setInput(app.dom, 'mc-in', '2440mm');
+  assert.match(document.getElementById('mc-res').textContent, /Converted Inches · Decimal≈/);
+  assert.doesNotMatch(document.getElementById('mc-res').textContent, /Exact≈/);
+  closeTool(document);
+
+  openTool(document, 'ps');
+  assert.match(document.getElementById('ps-res').textContent, /Exact Factor× 11\/24/);
+  assert.match(document.getElementById('ps-res').textContent, /Decimal Factor≈ 0\.4583×/);
   finish(app);
 });
