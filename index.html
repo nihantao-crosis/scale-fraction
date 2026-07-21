@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,16 +15,17 @@
 *{box-sizing:border-box}
 body{margin:0;text-transform:uppercase;background:#F7E9EF;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;color:#22242B}
 a{color:#D6336C}a:hover{color:#E64980}
-input::placeholder{color:#9AA0AB}
+input::placeholder{color:#6B6F7A}
 button,input{text-transform:uppercase}
+button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offset:2px}
 
 .wrap{min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:28px 16px 60px}
 .card{width:390px;background:#FBF2F6;border:1px solid rgba(0,0,0,.08);border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.07);overflow:hidden}
 
 .hdr{background:#A61E4D;padding:16px 18px 14px;display:flex;align-items:center;gap:10px}
 .logo{width:30px;height:30px;border-radius:9px;background:#D6336C;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px}
-.hdr-title{color:#fff;font-size:15px;font-weight:700;line-height:1.2}
-.hdr-sub{color:rgba(255,255,255,.55);font-size:11px}
+.hdr-title{color:#fff;font-size:15px;font-weight:700;line-height:1.2;margin:0}
+.hdr-sub{color:rgba(255,255,255,.82);font-size:11px}
 
 .content{padding:14px 14px 22px;display:flex;flex-direction:column;gap:12px}
 .panel{display:flex;flex-direction:column;gap:12px}
@@ -60,7 +61,7 @@ button,input{text-transform:uppercase}
 .rows{margin-top:10px}
 .row{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-top:1px solid #F5E2EB}
 .row .k{font-size:12px;color:#767A86}
-.row .v{font-size:13px;font-weight:600;color:#22242B;font-family:ui-monospace,Menlo,monospace}
+.row .v{font-size:13px;font-weight:600;color:#22242B;font-family:ui-monospace,Menlo,monospace;overflow-wrap:anywhere;text-align:right}
 
 .sc-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
 .sc-title{font-size:12px;font-weight:700;letter-spacing:.6px;color:#4A4D57}
@@ -122,35 +123,35 @@ button,input{text-transform:uppercase}
 </style>
 </head>
 <body>
-<div class="wrap">
+<main class="wrap">
   <div class="card">
 
     <div class="hdr">
-      <div class="logo">&Prime;</div>
+      <div class="logo" aria-hidden="true">&Prime;</div>
       <div>
-        <div class="hdr-title">Scale &amp; Fraction</div>
+        <h1 class="hdr-title">Scale &amp; Fraction</h1>
         <div class="hdr-sub">Architect&rsquo;s Imperial Calculator</div>
       </div>
     </div>
 
     <div class="content">
 
-      <div class="seg" id="tabs">
-        <button id="tab-len" class="on">Calculator</button>
-        <button id="tab-scale">Drawing Scale</button>
-        <button id="tab-tools">Tools</button>
+      <div class="seg" id="tabs" role="tablist" aria-label="Calculator sections">
+        <button type="button" id="tab-len" class="on" role="tab" aria-controls="panel-len" aria-selected="true">Calculator</button>
+        <button type="button" id="tab-scale" role="tab" aria-controls="panel-scale" aria-selected="false">Drawing Scale</button>
+        <button type="button" id="tab-tools" role="tab" aria-controls="panel-tools" aria-selected="false">Tools</button>
       </div>
 
       <!-- ============ Length & fractions:表达式计算器 ============ -->
-      <div class="panel" id="panel-len">
+      <div class="panel" id="panel-len" role="tabpanel" aria-labelledby="tab-len">
 
         <div class="box">
           <div>
-            <input id="i-expr" class="expr" value="3'-10&quot; &divide; 3" placeholder="3'-10 1/2&quot; &divide; 3">
-            <div class="live" id="live-hint"></div>
+            <input id="i-expr" class="expr" aria-label="Length expression" value="3'-10&quot; &divide; 3" placeholder="3'-10 1/2&quot; &divide; 3">
+            <div class="live" id="live-hint" aria-live="polite"></div>
           </div>
           <div class="keys" id="keypad"></div>
-          <div class="keys-note">Length &times;/&divide; Number = Length &nbsp;&middot;&nbsp; Length &times; Length = Area &nbsp;&middot;&nbsp; Length &divide; Length = Ratio</div>
+          <div class="keys-note">One Operation At A Time &nbsp;&middot;&nbsp; Length &times;/&divide; Number = Length &nbsp;&middot;&nbsp; Length &times; Length = Area &nbsp;&middot;&nbsp; Length &divide; Length = Ratio</div>
         </div>
 
         <div class="err" id="len-err" hidden></div>
@@ -166,7 +167,7 @@ button,input{text-transform:uppercase}
       </div>
 
       <!-- ============ Drawing scale ============ -->
-      <div class="panel" id="panel-scale" hidden>
+      <div class="panel" id="panel-scale" role="tabpanel" aria-labelledby="tab-scale" hidden>
 
         <div class="box">
           <div>
@@ -221,7 +222,7 @@ button,input{text-transform:uppercase}
       </div>
 
       <!-- ============ Tools ============ -->
-      <div class="panel" id="panel-tools" hidden>
+      <div class="panel" id="panel-tools" role="tabpanel" aria-labelledby="tab-tools" hidden>
 
         <div class="tgrid" id="tools-home">
           <button class="tcard" data-tool="mc"><span class="tn">Metric &#8646; Imperial</span><span class="td">mm &middot; cm &middot; m &harr; ft-in 1/16&Prime;</span></button>
@@ -281,6 +282,7 @@ button,input{text-transform:uppercase}
             </div>
             <div class="err" id="st-err" hidden></div>
             <div class="result" id="st-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
+            <div class="s-note">Preliminary dimensional check only. Verify the locally adopted code, stair width, headroom, landings, handrails, nosings and all project conditions.</div>
           </div>
 
           <div class="tool" id="tv-sm" hidden>
@@ -318,6 +320,7 @@ button,input{text-transform:uppercase}
             </div>
             <div class="err" id="sl-err" hidden></div>
             <div class="result" id="sl-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
+            <div class="s-note">Accessibility result checks running slope only. Verify cross slope, clear width, rise, landings, handrails and edge protection under the applicable standard.</div>
           </div>
 
           <div class="tool" id="tv-br" hidden>
@@ -413,14 +416,38 @@ button,input{text-transform:uppercase}
 
     </div>
   </div>
-</div>
+</main>
 
+<script src="core.js"></script>
 <script>
 (function () {
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
 
   var S = { tab: 'length', expr: "3'-10\" ÷ 3", res: null, err: '', fi: 4, ti: 6, copied: '', _ct: null };
+
+  Array.prototype.forEach.call(document.querySelectorAll('.err'), function (el) {
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.result'), function (el) {
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    el.setAttribute('aria-atomic', 'true');
+  });
+  var INPUT_LABELS = {
+    'i-cuF': 'From drawing scale', 'i-cuT': 'To drawing scale',
+    'mc-in': 'Metric or imperial value', 'sp-len': 'Total layout length',
+    'sp-n': 'Number of equal parts', 'sp-cu': 'Custom on-center spacing',
+    'st-rise': 'Total stair rise', 'sm-in': 'Scale measurement',
+    'sl-a': 'Slope value or rise', 'sl-b': 'Slope run', 'br-in': 'Coursing dimension',
+    'at-in': 'Room dimensions', 'cv-l': 'Concrete length', 'cv-w': 'Concrete width',
+    'cv-t': 'Concrete thickness', 'sg-l': 'Sheet goods length', 'sg-w': 'Sheet goods height or width',
+    'dr-in': 'Door shorthand', 'sb-ft': 'Scale bar length in feet'
+  };
+  Object.keys(INPUT_LABELS).forEach(function (id) {
+    if ($(id)) $(id).setAttribute('aria-label', INPUT_LABELS[id]);
+  });
 
   // ---- exact rational math on safe integers ----
   function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a || 1; }
@@ -572,6 +599,25 @@ button,input{text-transform:uppercase}
     };
   }
 
+  // Use the shared, dependency-free core module in both the browser and tests.
+  // The legacy declarations above remain as a compatibility fallback for old
+  // cached HTML, while the current service worker always precaches core.js.
+  var Core = window.ScaleFractionCore;
+  if (!Core) throw new Error('ScaleFractionCore failed to load.');
+  gcd = Core.gcd;
+  fr = Core.fr;
+  fAdd = Core.fAdd;
+  fMul = Core.fMul;
+  fDiv = Core.fDiv;
+  parseNum = Core.parseNum;
+  parseLen = Core.parseLen;
+  decStr = Core.decStr;
+  fmtFtIn = Core.fmtFtIn;
+  fmtMixed = Core.fmtMixed;
+  parseExpr = Core.parseExpr;
+  mainOf = Core.mainOf;
+  resultView = Core.resultView;
+
   var PRE = [
     ['1/16″', 1, 16], ['3/32″', 3, 32], ['1/8″', 1, 8], ['3/16″', 3, 16],
     ['1/4″', 1, 4], ['3/8″', 3, 8], ['1/2″', 1, 2], ['3/4″', 3, 4],
@@ -582,25 +628,40 @@ button,input{text-transform:uppercase}
   function sideLabel(idx, f) { return idx === -1 ? (f ? decStr(f, 4) + '″' : '?') : PRE[idx][0].replace(' 1:1', ''); }
 
   // ---- clipboard ----
-  function copyText(t, tag) {
+  function legacyCopy(t) {
     try {
       var ta = document.createElement('textarea');
       ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
       document.body.appendChild(ta); ta.select();
-      document.execCommand('copy');
+      var ok = document.execCommand('copy');
       document.body.removeChild(ta);
-    } catch (e) {}
-    try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t); } catch (e) {}
-    S.copied = tag;
+      return !!ok;
+    } catch (e) { return false; }
+  }
+
+  function finishCopy(ok, tag) {
+    S.copied = ok ? tag : 'fail:' + tag;
     updateCopyLabels();
     clearTimeout(S._ct);
     S._ct = setTimeout(function () { S.copied = ''; updateCopyLabels(); }, 1400);
   }
 
+  function copyText(t, tag) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).then(function () {
+        finishCopy(true, tag);
+      }).catch(function () {
+        finishCopy(legacyCopy(t), tag);
+      });
+      return;
+    }
+    finishCopy(legacyCopy(t), tag);
+  }
+
   function updateCopyLabels() {
-    $('copy-res').textContent = S.copied === 'res' ? 'Copied ✓' : 'Copy';
-    $('copy-pr').textContent = S.copied === 'pr' ? '✓' : 'Copy';
-    $('copy-ind').textContent = S.copied === 'ind' ? '✓' : 'Copy';
+    $('copy-res').textContent = S.copied === 'res' ? 'Copied ✓' : S.copied === 'fail:res' ? 'Copy Failed' : 'Copy';
+    $('copy-pr').textContent = S.copied === 'pr' ? '✓' : S.copied === 'fail:pr' ? 'Failed' : 'Copy';
+    $('copy-ind').textContent = S.copied === 'ind' ? '✓' : S.copied === 'fail:ind' ? 'Failed' : 'Copy';
   }
 
   // ---- 键盘 ----
@@ -680,6 +741,8 @@ button,input{text-transform:uppercase}
       var idx = i === PRE.length ? -1 : i;
       var b = document.createElement('button');
       b.className = 'chip';
+      b.type = 'button';
+      b.setAttribute('aria-pressed', 'false');
       b.textContent = idx === -1 ? 'Custom…' : PRE[idx][0];
       b.dataset.idx = String(idx);
       b.addEventListener('click', (function (ix) {
@@ -697,7 +760,11 @@ button,input{text-transform:uppercase}
 
   function markChips(containerId, cur) {
     var btns = $(containerId).querySelectorAll('.chip');
-    for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('on', parseInt(btns[i].dataset.idx, 10) === cur);
+    for (var i = 0; i < btns.length; i++) {
+      var selected = parseInt(btns[i].dataset.idx, 10) === cur;
+      btns[i].classList.toggle('on', selected);
+      btns[i].setAttribute('aria-pressed', String(selected));
+    }
   }
 
   function renderScale() {
@@ -720,6 +787,12 @@ button,input{text-transform:uppercase}
     if (!sOk) return;
 
     var F = fDiv(fTo, fFrom);
+    if (!F) {
+      $('s-res').hidden = true;
+      $('s-err').hidden = false;
+      $('s-err').textContent = 'Scale ratio is outside the supported numeric range — use smaller values.';
+      return;
+    }
     var v = F.n / F.d;
     $('s-mult').textContent = decStr(F, 2) + '×';
     var word = v > 1 ? 'Enlarge' : (v < 1 ? 'Reduce' : 'No Change');
@@ -741,6 +814,12 @@ button,input{text-transform:uppercase}
     $('tab-len').classList.toggle('on', S.tab === 'length');
     $('tab-scale').classList.toggle('on', S.tab === 'scale');
     $('tab-tools').classList.toggle('on', S.tab === 'tools');
+    $('tab-len').setAttribute('aria-selected', String(S.tab === 'length'));
+    $('tab-scale').setAttribute('aria-selected', String(S.tab === 'scale'));
+    $('tab-tools').setAttribute('aria-selected', String(S.tab === 'tools'));
+    $('tab-len').tabIndex = S.tab === 'length' ? 0 : -1;
+    $('tab-scale').tabIndex = S.tab === 'scale' ? 0 : -1;
+    $('tab-tools').tabIndex = S.tab === 'tools' ? 0 : -1;
     $('panel-len').hidden = S.tab !== 'length';
     $('panel-scale').hidden = S.tab !== 'scale';
     $('panel-tools').hidden = S.tab !== 'tools';
@@ -750,6 +829,20 @@ button,input{text-transform:uppercase}
   $('tab-len').addEventListener('click', function () { S.tab = 'length'; renderTabs(); });
   $('tab-scale').addEventListener('click', function () { S.tab = 'scale'; renderTabs(); });
   $('tab-tools').addEventListener('click', function () { S.tab = 'tools'; renderTabs(); });
+  $('tabs').addEventListener('keydown', function (e) {
+    var tabs = [$('tab-len'), $('tab-scale'), $('tab-tools')];
+    var current = tabs.indexOf(document.activeElement);
+    if (current < 0) return;
+    var next = current;
+    if (e.key === 'ArrowRight') next = (current + 1) % tabs.length;
+    else if (e.key === 'ArrowLeft') next = (current + tabs.length - 1) % tabs.length;
+    else if (e.key === 'Home') next = 0;
+    else if (e.key === 'End') next = tabs.length - 1;
+    else return;
+    e.preventDefault();
+    tabs[next].click();
+    tabs[next].focus();
+  });
 
   (function buildKeypad() {
     var box = $('keypad');
@@ -787,7 +880,7 @@ button,input{text-transform:uppercase}
 
   // ================= TOOLS =================
   var T = {
-    open: null,
+    open: null, returnFocus: null,
     spMode: 0, spOc: 1,
     stCode: 0,
     smMode: 0, smScale: 4,
@@ -807,6 +900,7 @@ button,input{text-transform:uppercase}
 
   // 浮点显示:toFixed 后去尾零(与 decStr 同规则)
   function tnum(x, dp) {
+    if (!isFinite(x)) return 'OUT OF RANGE';
     var s = x.toFixed(dp);
     if (s.indexOf('.') >= 0) s = s.replace(/0+$/, '').replace(/\.$/, '');
     return s;
@@ -850,11 +944,16 @@ button,input{text-transform:uppercase}
       var b = document.createElement('button');
       b.type = 'button';
       b.className = 'chip' + (i === cur ? ' on' : '');
+      b.setAttribute('aria-pressed', String(i === cur));
       b.textContent = lb;
       b.addEventListener('click', function () {
         var bs = box.querySelectorAll('.chip');
-        for (var j = 0; j < bs.length; j++) bs[j].classList.remove('on');
+        for (var j = 0; j < bs.length; j++) {
+          bs[j].classList.remove('on');
+          bs[j].setAttribute('aria-pressed', 'false');
+        }
         b.classList.add('on');
+        b.setAttribute('aria-pressed', 'true');
         cb(i);
       });
       box.appendChild(b);
@@ -863,15 +962,20 @@ button,input{text-transform:uppercase}
 
   function openTool(id) {
     T.open = id;
+    T.returnFocus = document.activeElement;
     $('tools-home').hidden = true;
     $('tool-view').hidden = false;
     var tools = document.querySelectorAll('#tool-view .tool');
     for (var i = 0; i < tools.length; i++) tools[i].hidden = tools[i].id !== 'tv-' + id;
+    var first = $('tv-' + id).querySelector('input, button, [tabindex]');
+    if (first) setTimeout(function () { first.focus(); }, 0);
   }
   function closeTool() {
     T.open = null;
     $('tools-home').hidden = false;
     $('tool-view').hidden = true;
+    if (T.returnFocus && T.returnFocus.focus) T.returnFocus.focus();
+    T.returnFocus = null;
   }
 
   // ---- Metric ⇄ Imperial ----
@@ -942,9 +1046,12 @@ button,input{text-transform:uppercase}
       if (!sFr) return tShow('sp', { err: 'Could not read the custom spacing — try 32"' });
     } else sFr = OC[T.spOc];
     if (sFr.n <= 0) return tShow('sp', { err: 'Spacing must be greater than 0.' });
-    var bays = Math.floor((L.n / L.d) / (sFr.n / sFr.d) + 1e-9);
+    var bays = Core.floorDivFraction(L, sFr);
+    if (bays === null || bays > 1000000) return tShow('sp', { err: 'Layout count is outside the supported range — use a larger spacing.' });
     var used = fMul(sFr, fr(bays));
+    if (!used) return tShow('sp', { err: 'Numbers got too large — try smaller values.' });
     var rem = fAdd(L, fr(-used.n, used.d));
+    if (!rem) return tShow('sp', { err: 'Numbers got too large — try smaller values.' });
     var rows2 = [
       { k: 'Full Bays @ ' + fmtMixed(sFr) + '″', v: String(bays) },
       { k: 'End Remainder', v: rem.n === 0 ? 'ON MODULE' : fmtFtIn(rem).main }
@@ -959,8 +1066,8 @@ button,input{text-transform:uppercase}
 
   // ---- Stairs ----
   var STCODES = [
-    { label: 'IRC · Max 7 3/4″', max: 7.75, minT: 10 },
-    { label: 'IBC · Max 7″', max: 7, minT: 11 }
+    Core.STAIR_CODES.IRC_2024,
+    Core.STAIR_CODES.IBC_2024
   ];
   function stCalc() {
     var s = ($('st-rise').value || '').trim();
@@ -969,21 +1076,21 @@ button,input{text-transform:uppercase}
     if (!rise) return tShow('st', { err: 'Could not read the rise — try 9\'-1 1/2"' });
     if (rise.n <= 0) return tShow('st', { err: 'Rise must be greater than 0.' });
     var code = STCODES[T.stCode];
-    var riseDec = rise.n / rise.d;
-    var n = Math.ceil(riseDec / code.max - 1e-9);
-    if (n < 2) n = 2;
-    var riser = fDiv(rise, fr(n));
-    var rDec = riser.n / riser.d;
-    var tread = Math.max(code.minT, Math.round((25 - 2 * rDec) * 4) / 4);
-    var run = (n - 1) * tread;
+    var calc = Core.calculateStairs(rise, code.id);
+    if (calc.err) return tShow('st', { err: calc.err });
+    var n = calc.count, riser = calc.riser, rDec = calc.riserDec;
+    var tread = calc.tread, run = calc.run;
     var rows = [{ k: 'Riser Exact', v: '≈ ' + decStr(riser, 3) + '″' }];
     var sr = snapRow16(riser); if (sr) rows.push(sr);
-    rows.push({ k: 'Code Check', v: rDec <= code.max + 1e-9 ? 'OK · ≤ ' + code.max + '″' : 'OVER MAX' });
-    rows.push({ k: 'Treads', v: String(n - 1) });
-    rows.push({ k: 'Tread Suggestion', v: tnum(tread, 2) + '″ (min ' + code.minT + '″)' });
-    rows.push({ k: 'Total Run', v: fmtFtIn(fr(Math.round(run * 16), 16)).main });
-    rows.push({ k: '2R + T Comfort', v: '≈ ' + tnum(2 * rDec + tread, 1) + '″ (24–26 ideal)' });
-    rows.push({ k: 'Alt · ' + (n + 1) + ' Risers', v: '≈ ' + decStr(fDiv(rise, fr(n + 1)), 2) + '″ each' });
+    rows.push({ k: 'Riser / Tread Reference', v: calc.passesDimensionalCheck ? 'WITHIN SELECTED RANGE' : 'OUTSIDE RANGE' });
+    rows.push({ k: 'Model Code Source', v: code.source });
+    rows.push({ k: 'Treads', v: String(calc.treads) });
+    rows.push({ k: 'Tread Suggestion', v: tnum(tread, 2) + '″ (min ' + code.minTread + '″)' });
+    rows.push({ k: 'Aggregate Tread Run', v: fmtFtIn(fr(Math.round(run * 16), 16)).main + ' · LANDINGS EXCLUDED' });
+    rows.push({ k: 'Comfort Heuristic · Not Code', v: '2R + T ≈ ' + tnum(calc.comfort, 1) + '″' });
+    if (calc.alternativeCount) rows.push({ k: 'Alt · ' + calc.alternativeCount + ' Risers', v: '≈ ' + decStr(calc.alternativeRiser, 2) + '″ each' });
+    if (calc.flightWarning) rows.push({ k: 'Flight Warning', v: calc.flightWarning });
+    rows.push({ k: 'Scope', v: code.scope });
     return tShow('st', { kind: 'STAIR · ' + code.label, main: n + ' RISERS @ ' + decStr(riser, 2) + '″', rows: rows });
   }
 
@@ -1047,6 +1154,7 @@ button,input{text-transform:uppercase}
       var num = parseNum(aS);
       if (!num) return tShow('sl', { err: 'Enter a number.' });
       var v = num.n / num.d;
+      if (T.slMode === 2 && v >= 90) return tShow('sl', { err: 'Degrees must be from 0 up to, but not including, 90°.' });
       slope = T.slMode === 0 ? v / 12 : T.slMode === 1 ? v / 100 : Math.tan(v * Math.PI / 180);
     }
     if (!(slope >= 0) || !isFinite(slope)) return tShow('sl', { err: 'Slope must be 0 or more.' });
@@ -1056,7 +1164,8 @@ button,input{text-transform:uppercase}
         { k: 'Degrees', v: tnum(Math.atan(slope) * 180 / Math.PI, 2) + '°' },
         { k: 'Ratio', v: slope > 0 ? '1 : ' + tnum(1 / slope, 1) : 'FLAT' },
         { k: 'Slope Factor', v: tnum(Math.sqrt(1 + slope * slope), 4) },
-        { k: 'ADA Ramp ≤ 1:12', v: slope <= 1 / 12 + 1e-9 ? 'OK' : 'OVER' }
+        { k: '2010 ADA §405.2 Reference', v: slope <= 1 / 12 + 1e-9 ? 'AT / BELOW 1:12' : 'STEEPER THAN 1:12' },
+        { k: 'Accessibility', v: 'RUNNING-SLOPE SCREEN ONLY · NOT A COMPLIANCE DETERMINATION' }
       ]
     });
   }
@@ -1077,8 +1186,10 @@ button,input{text-transform:uppercase}
     if (!d) return tShow('br', { err: 'Could not read the dimension.' });
     if (d.n <= 0) return tShow('br', { err: 'Dimension must be greater than 0.' });
     var q = fDiv(d, mFr);
+    if (!q) return tShow('br', { err: 'Numbers got too large — try a smaller dimension.' });
     var qDec = q.n / q.d;
-    var lo = Math.floor(qDec + 1e-9), hi = Math.ceil(qDec - 1e-9);
+    var lo = Core.floorDivFraction(d, mFr), hi = Core.ceilDivFraction(d, mFr);
+    if (lo === null || hi === null) return tShow('br', { err: 'Module count is outside the supported range.' });
     var rows = [{ k: 'On Module', v: q.d === 1 ? 'YES' : 'NO' }];
     if (lo === hi) rows.push({ k: lo + ' × Module', v: fmtFtIn(fMul(mFr, fr(lo))).main });
     else {
@@ -1097,7 +1208,11 @@ button,input{text-transform:uppercase}
     var lines = [];
     for (var i = 0; i < T.at.length; i++) {
       var nt = fAdd(totalIn2, T.at[i].f);
-      if (nt) totalIn2 = nt;
+      if (!nt) {
+        list.hidden = true;
+        return tShow('at', { err: 'Area total is outside the supported numeric range — remove the largest entries.' });
+      }
+      totalIn2 = nt;
       var ft2 = T.at[i].f.n / T.at[i].f.d / 144;
       lines.push((i + 1) + '. ' + T.at[i].label + '  =  ' + tnum(ft2, 2) + ' ft²');
     }
@@ -1120,6 +1235,12 @@ button,input{text-transform:uppercase}
     var p = parseExpr(s);
     if (p.err) return tShow('at', { err: p.err });
     if (p.res.type !== 'area') return tShow('at', { err: 'Enter Length × Length — e.g. 12\'6" × 14\'' });
+    var pendingTotal = fr(0);
+    for (var i = 0; i < T.at.length; i++) {
+      pendingTotal = fAdd(pendingTotal, T.at[i].f);
+      if (!pendingTotal) return tShow('at', { err: 'Area total is outside the supported numeric range.' });
+    }
+    if (!fAdd(pendingTotal, p.res.f)) return tShow('at', { err: 'This room would make the area total exceed the supported range.' });
     T.at.push({ label: s, f: p.res.f });
     $('at-in').value = '';
     atRender();
@@ -1131,10 +1252,10 @@ button,input{text-transform:uppercase}
     if (!filled) return tShow('cv', null);
     var L = parseLen($('cv-l').value), W = parseLen($('cv-w').value), Th = parseLen($('cv-t').value);
     if (!L || !W || !Th || L.n <= 0 || W.n <= 0 || Th.n <= 0) return tShow('cv', { err: 'Enter three lengths — e.g. 20′, 12′ and 4″' });
-    var in3 = fMul(fMul(L, W) || fr(0), Th);
-    if (!in3) return tShow('cv', { err: 'Numbers got too large.' });
-    var ft3 = in3.n / in3.d / 1728;
-    var yd3 = ft3 / 27;
+    var calc = Core.calculateConcrete(L, W, Th);
+    if (calc.err) return tShow('cv', { err: calc.err });
+    var ft3 = calc.ft3;
+    var yd3 = calc.yd3;
     return tShow('cv', {
       kind: 'CONCRETE VOLUME', main: tnum(yd3, 2) + ' yd³', rows: [
         { k: 'Cubic Feet', v: '≈ ' + tnum(ft3, 2) + ' ft³' },
@@ -1153,10 +1274,14 @@ button,input{text-transform:uppercase}
     var in2 = fMul(L, W);
     if (!in2) return tShow('sg', { err: 'Numbers got too large.' });
     var ft2 = in2.n / in2.d / 144;
+    var baseSheets = Core.ceilDivFraction(in2, fr(4608));
+    var wasteArea = fMul(in2, fr(11, 10));
+    var wasteSheets = Core.ceilDivFraction(wasteArea, fr(4608));
+    if (baseSheets === null || wasteSheets === null) return tShow('sg', { err: 'Sheet count is outside the supported range.' });
     return tShow('sg', {
-      kind: '4×8 SHEET GOODS', main: Math.ceil(ft2 / 32 - 1e-9) + ' SHEETS', rows: [
+      kind: '4×8 SHEET GOODS', main: baseSheets + ' SHEETS', rows: [
         { k: 'Area', v: '≈ ' + tnum(ft2, 1) + ' ft²' },
-        { k: '+10% Waste', v: Math.ceil(ft2 * 1.1 / 32 - 1e-9) + ' SHEETS' },
+        { k: '+10% Waste', v: wasteSheets + ' SHEETS' },
         { k: 'Per Sheet', v: '32 ft²' }
       ]
     });
@@ -1259,6 +1384,9 @@ button,input{text-transform:uppercase}
       cards[i].addEventListener('click', function () { openTool(this.dataset.tool); });
     }
     $('tool-back').addEventListener('click', closeTool);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && T.open) closeTool();
+    });
 
     $('mc-in').addEventListener('input', mcCalc);
 
