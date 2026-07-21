@@ -416,16 +416,23 @@
     if (!value || value.n < 0) return { err: 'Slope must be 0 or more.' };
     var slope;
     var atOrBelow;
+    var pitchFraction = null;
     if (mode === 'riseRun') {
       if (!run || run.n <= 0) return { err: 'Run must be greater than 0.' };
       slope = (value.n / value.d) / (run.n / run.d);
       atOrBelow = slopeAtOrBelowOneInTwelve(value, run);
+      pitchFraction = packBig(
+        12n * BigInt(value.n) * BigInt(run.d),
+        BigInt(value.d) * BigInt(run.n)
+      );
     } else if (mode === 'pitch') {
       slope = (value.n / value.d) / 12;
       atOrBelow = compareFractions(value, fr(1)) <= 0;
+      pitchFraction = value;
     } else if (mode === 'percent') {
       slope = (value.n / value.d) / 100;
       atOrBelow = compareFractions(value, fr(25, 3)) <= 0;
+      pitchFraction = packBig(3n * BigInt(value.n), 25n * BigInt(value.d));
     } else if (mode === 'degrees') {
       var degrees = value.n / value.d;
       if (degrees >= 90) return { err: 'Degrees must be from 0 up to, but not including, 90°.' };
@@ -435,7 +442,11 @@
       return { err: 'Unknown slope input mode.' };
     }
     if (!Number.isFinite(slope) || slope < 0) return { err: 'Slope must be 0 or more.' };
-    return { slope: slope, atOrBelowOneInTwelve: atOrBelow };
+    return {
+      slope: slope,
+      pitchFraction: pitchFraction,
+      atOrBelowOneInTwelve: atOrBelow
+    };
   }
 
   function calculateConcrete(length, width, thickness) {
