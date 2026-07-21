@@ -14,9 +14,15 @@ class FakeResponse {
     this.ok = options.ok !== false;
     this.status = options.status || (this.ok ? 200 : 500);
     this.type = options.type || 'basic';
+    this.bodyUsed = false;
   }
   clone() {
+    if (this.bodyUsed) throw new TypeError('Response body is already used');
     return new FakeResponse(this.body, { ok: this.ok, status: this.status, type: this.type });
+  }
+  consume() {
+    this.bodyUsed = true;
+    return this.body;
   }
 }
 
@@ -28,6 +34,7 @@ function createWorker() {
   let failPut = false;
   let hangPut = false;
   let failOpen = false;
+  let openDelay = 0;
 
   function requestKey(input) {
     if (typeof input === 'string') return new URL(input, scope).href;
@@ -57,6 +64,7 @@ function createWorker() {
   const caches = {
     async open(name) {
       if (failOpen) throw new Error('cache unavailable');
+      if (openDelay) await new Promise((resolve) => setTimeout(resolve, openDelay));
       return new FakeCache(name);
     },
     async keys() { return Array.from(stores.keys()); },
@@ -116,6 +124,7 @@ function createWorker() {
     setFailPut(value) { failPut = value; },
     setHangPut(value) { hangPut = value; },
     setFailOpen(value) { failOpen = value; },
+    setOpenDelay(value) { openDelay = value; },
     request(url, options = {}) {
       return { url, method: options.method || 'GET', mode: options.mode || 'same-origin' };
     }
@@ -191,6 +200,24 @@ test('cache failures and slow writes never block a healthy network response', as
     new Promise((resolve) => setTimeout(() => resolve('blocked-on-cache-put'), 30))
   ]);
   assert.equal(outcome, 'network-without-cache');
+});
+
+test('cache refresh clones before a delayed cache open can lose the response body', async () => {
+  const worker = createWorker();
+  await worker.lifecycle('install');
+  const request = worker.request('https://example.test/app/core.js');
+  const cache = await worker.caches.open(worker.context.CACHE);
+  await cache.put(request, new FakeResponse('old-core'));
+  worker.setNetwork(async () => new FakeResponse('fresh-core'));
+  worker.setOpenDelay(30);
+
+  const dispatched = worker.dispatchFetch(request);
+  const response = await dispatched.response;
+  assert.equal(response.consume(), 'fresh-core');
+  assert.equal(response.bodyUsed, true);
+  await dispatched.complete;
+
+  assert.equal((await cache.match(request)).body, 'fresh-core');
 });
 
 test('fetch handling ignores unsafe scope and never caches bad responses', async () => {
