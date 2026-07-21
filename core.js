@@ -57,6 +57,13 @@
     );
   }
 
+  function compareFractions(x, y) {
+    if (!x || !y) return null;
+    var left = BigInt(x.n) * BigInt(y.d);
+    var right = BigInt(y.n) * BigInt(x.d);
+    return left < right ? -1 : left > right ? 1 : 0;
+  }
+
   function floorDivFraction(x, y) {
     if (!x || !y || x.n < 0 || y.n <= 0) return null;
     var n = BigInt(x.n) * BigInt(y.d);
@@ -123,12 +130,37 @@
     return fAdd(fr(ft * 12), inches);
   }
 
+  function decimalFromBig(n, d, dp) {
+    dp = dp === undefined ? 3 : dp;
+    if (!Number.isInteger(dp) || dp < 0 || dp > 20 || d === 0n) return 'OUT OF RANGE';
+    var negative = n < 0n;
+    if (negative) n = -n;
+    if (d < 0n) { d = -d; negative = !negative; }
+    var scale = 10n ** BigInt(dp);
+    var scaled = n * scale;
+    var rounded = scaled / d;
+    if ((scaled % d) * 2n >= d) rounded += 1n;
+
+    var digits = rounded.toString();
+    while (digits.length <= dp) digits = '0' + digits;
+    var whole = dp ? digits.slice(0, -dp) : digits;
+    var fraction = dp ? digits.slice(-dp).replace(/0+$/, '') : '';
+    var out = whole + (fraction ? '.' + fraction : '');
+    return negative && rounded !== 0n ? '-' + out : out;
+  }
+
+  // Decimal formatting stays in integer space so values such as 1.005 round
+  // predictably. Ties are rounded away from zero and trailing zeros are removed.
   function decStr(f, dp) {
     if (!f) return 'OUT OF RANGE';
-    var v = f.n / f.d;
-    var s = v.toFixed(dp === undefined ? 3 : dp);
-    if (s.indexOf('.') >= 0) s = s.replace(/0+$/, '').replace(/\.$/, '');
-    return s;
+    return decimalFromBig(BigInt(f.n), BigInt(f.d), dp);
+  }
+
+  // Format a scaled fraction without first packing the scaled numerator back
+  // into the public safe-integer fraction representation.
+  function scaledDecStr(f, multiplier, dp) {
+    if (!f || !Number.isSafeInteger(multiplier)) return 'OUT OF RANGE';
+    return decimalFromBig(BigInt(f.n) * BigInt(multiplier), BigInt(f.d), dp);
   }
 
   function fmtFtIn(f) {
@@ -211,23 +243,39 @@
     return { res: { type: 'len', f: out3 } };
   }
 
+  function roundToDenominator(f, denominator) {
+    if (!f || !Number.isSafeInteger(denominator) || denominator <= 0) return null;
+    var scaled = BigInt(f.n) * BigInt(denominator);
+    var negative = scaled < 0n;
+    if (negative) scaled = -scaled;
+    var d = BigInt(f.d);
+    var rounded = scaled / d;
+    if ((scaled % d) * 2n >= d) rounded += 1n;
+    if (negative) rounded = -rounded;
+    return packBig(rounded, BigInt(denominator));
+  }
+
   function snapRow16(f) {
-    if (!f || 16 % f.d === 0) return null;
-    var rounded = Math.round(f.n / f.d * 16);
-    if (!Number.isSafeInteger(rounded)) return null;
-    var r = fr(rounded, 16);
-    if (!r) return null;
-    var delta = r.n / r.d - f.n / f.d;
-    if (Math.abs(delta) < 1e-12) return null;
-    return { k: 'Nearest 1/16″', v: fmtFtIn(r).main + ' (' + (delta >= 0 ? '+' : '−') + trimNumber(Math.abs(delta), 3) + '″)' };
+    if (!f) return null;
+    var rounded = roundToDenominator(f, 16);
+    if (!rounded) return null;
+    var delta = fAdd(rounded, fr(-f.n, f.d));
+    if (!delta || delta.n === 0) return null;
+    var absDelta = fr(Math.abs(delta.n), delta.d);
+    var error = decStr(absDelta, 3);
+    if (error === '0') error = '<0.001';
+    return {
+      k: 'Nearest 1/16″',
+      v: fmtFtIn(rounded).main + ' (' + (delta.n > 0 ? '+' : '−') + error + '″)'
+    };
   }
 
   function mainOf(result) {
     if (result.type === 'len') return fmtFtIn(result.f).main;
     if (result.type === 'area') {
       var sqin = result.f, sqft = fDiv(sqin, fr(144));
-      if (!sqft) return trimNumber(sqin.n / sqin.d / 144, 4) + ' ft²';
-      return Math.abs(sqin.n / sqin.d) < 144 ? fmtMixed(sqin) + ' in²' : fmtMixed(sqft) + ' ft²';
+      if (!sqft) return fmtMixed(sqin) + ' in²';
+      return compareFractions(sqin, fr(144)) < 0 ? fmtMixed(sqin) + ' in²' : fmtMixed(sqft) + ' ft²';
     }
     return result.f.d === 1 ? result.f.n + ' : 1' : result.f.n + ' : ' + result.f.d;
   }
@@ -242,10 +290,14 @@
     }
     if (result.type === 'area') {
       var sqin = result.f, sqft = fDiv(sqin, fr(144));
-      if (!sqft) return { kind: 'RESULT · AREA', main: trimNumber(sqin.n / sqin.d / 144, 4) + ' ft²', rows: [
-        { k: 'Exact Fraction', v: 'OUT OF RANGE' }
-      ] };
-      if (Math.abs(sqin.n / sqin.d) < 144) {
+      if (!sqft) {
+        var approximateSqFt = sqin.n / sqin.d / 144;
+        return { kind: 'RESULT · AREA', main: fmtMixed(sqin) + ' in²', rows: [
+          { k: 'Square Feet', v: '≈ ' + formatApproxNumber(approximateSqFt, 4) + ' ft²' },
+          { k: 'Exact Square Inches', v: fmtMixed(sqin) + ' in²' }
+        ] };
+      }
+      if (compareFractions(sqin, fr(144)) < 0) {
         return { kind: 'RESULT · AREA', main: fmtMixed(sqin) + ' in²', rows: [
           { k: 'Square Feet', v: fmtMixed(sqft) + ' ft²' },
           { k: 'Decimal', v: '≈ ' + decStr(sqft, 4) + ' ft²' }
@@ -256,13 +308,12 @@
         { k: 'Decimal', v: '≈ ' + decStr(sqft, 3) + ' ft²' }
       ] };
     }
-    var percent = result.f.n / result.f.d * 100;
     return {
       kind: 'RESULT · RATIO',
       main: result.f.d === 1 ? result.f.n + ' : 1' : result.f.n + ' : ' + result.f.d,
       rows: [
         { k: 'Decimal', v: '≈ ' + decStr(result.f, 4) },
-        { k: 'Percent', v: trimNumber(percent, 2) + '%' }
+        { k: 'Percent', v: scaledDecStr(result.f, 100, 2) + '%' }
       ]
     };
   }
@@ -274,19 +325,31 @@
     return s;
   }
 
+  function formatApproxNumber(x, dp) {
+    if (!Number.isFinite(x)) return 'OUT OF RANGE';
+    if (x !== 0 && Math.abs(x) < Math.pow(10, -dp)) {
+      return x.toExponential(Math.min(dp, 6)).replace(/\.0+(?=e)/, '');
+    }
+    return trimNumber(x, dp);
+  }
+
   var STAIR_CODES = {
     IRC_2024: {
       id: 'IRC_2024', label: '2024 IRC Model · Straight Stair',
       minRiser: null, maxRiser: 7.75, minTread: 10,
       maxFlightRise: 151,
-      source: '2024 IRC R318.7.5',
+      minRiserFraction: null, maxRiserFraction: fr(31, 4),
+      maxFlightRiseFraction: fr(151),
+      source: '2024 IRC R318.7.3 & R318.7.5',
       scope: 'Model-code dimensional reference; local amendments may differ.'
     },
     IBC_2024: {
       id: 'IBC_2024', label: '2024 IBC General · Straight Stair',
       minRiser: 4, maxRiser: 7, minTread: 11,
       maxFlightRise: 144,
-      source: '2024 IBC 1011.5.2',
+      minRiserFraction: fr(4), maxRiserFraction: fr(7),
+      maxFlightRiseFraction: fr(144),
+      source: '2024 IBC 1011.5.2 & 1011.8',
       scope: 'General model-code profile; occupancy exceptions and local amendments are not evaluated.'
     }
   };
@@ -295,35 +358,84 @@
     var code = STAIR_CODES[codeId];
     if (!rise || rise.n <= 0 || !code) return { err: 'Rise and code selection are required.' };
     var riseDec = rise.n / rise.d;
-    var count = Math.max(2, Math.ceil(riseDec / code.maxRiser - 1e-9));
+    var exactCount = ceilDivFraction(rise, code.maxRiserFraction);
+    if (exactCount === null) return { err: 'Riser count is outside the supported range.' };
+    var count = Math.max(2, exactCount);
     var riser = fDiv(rise, fr(count));
     if (!riser) return { err: 'Numbers got too large — try a smaller rise.' };
     var riserDec = riser.n / riser.d;
-    if (code.minRiser !== null && riserDec < code.minRiser - 1e-9) {
-      return { err: 'No compliant layout with at least 2 equal risers: ' + code.source + ' requires risers of at least ' + code.minRiser + '″.' };
+    if (code.minRiserFraction && compareFractions(riser, code.minRiserFraction) < 0) {
+      return { err: 'No layout within the selected dimensional reference for at least 2 equal risers: ' +
+        code.source + ' uses a minimum riser of ' + code.minRiser + '″. Single-riser and special elevation changes are not evaluated.' };
     }
-    var tread = Math.max(code.minTread, Math.round((25 - 2 * riserDec) * 4) / 4);
-    var run = (count - 1) * tread;
+    var comfortTarget = fAdd(fr(25), fMul(riser, fr(-2)));
+    var suggestedTread = roundToDenominator(comfortTarget, 4);
+    var minimumTread = fr(code.minTread);
+    if (!suggestedTread) return { err: 'Tread suggestion is outside the supported range.' };
+    var treadFraction = compareFractions(suggestedTread, minimumTread) < 0 ? minimumTread : suggestedTread;
+    var tread = treadFraction.n / treadFraction.d;
+    var runFraction = fMul(treadFraction, fr(count - 1));
+    if (!runFraction) return { err: 'Aggregate tread run is outside the supported range.' };
+    var run = runFraction.n / runFraction.d;
     var altRiser = fDiv(rise, fr(count + 1));
-    var altDec = altRiser ? altRiser.n / altRiser.d : null;
-    var altWithinRange = altDec !== null && altDec <= code.maxRiser + 1e-9 &&
-      (code.minRiser === null || altDec >= code.minRiser - 1e-9);
+    var altWithinRange = !!altRiser && compareFractions(altRiser, code.maxRiserFraction) <= 0 &&
+      (!code.minRiserFraction || compareFractions(altRiser, code.minRiserFraction) >= 0);
+    var comfortFraction = fAdd(fMul(riser, fr(2)), treadFraction);
+    if (!comfortFraction) return { err: 'Comfort heuristic is outside the supported range.' };
+    var withinDimensionalReference = compareFractions(riser, code.maxRiserFraction) <= 0 &&
+      (!code.minRiserFraction || compareFractions(riser, code.minRiserFraction) >= 0) &&
+      compareFractions(treadFraction, minimumTread) >= 0;
     return {
       code: code,
       count: count,
       riser: riser,
       riserDec: riserDec,
       tread: tread,
+      treadFraction: treadFraction,
       treads: count - 1,
       run: run,
-      comfort: 2 * riserDec + tread,
+      runFraction: runFraction,
+      comfort: comfortFraction.n / comfortFraction.d,
+      comfortFraction: comfortFraction,
       alternativeCount: altWithinRange ? count + 1 : null,
       alternativeRiser: altWithinRange ? altRiser : null,
-      flightWarning: riseDec > code.maxFlightRise ?
+      flightWarning: compareFractions(rise, code.maxFlightRiseFraction) > 0 ?
         'Total rise exceeds the ' + code.maxFlightRise + '″ single-flight reference; evaluate multiple flights and landings.' : null,
-      passesDimensionalCheck: riserDec <= code.maxRiser + 1e-9 &&
-        (code.minRiser === null || riserDec >= code.minRiser - 1e-9) && tread >= code.minTread
+      withinDimensionalReference: withinDimensionalReference
     };
+  }
+
+  function slopeAtOrBelowOneInTwelve(rise, run) {
+    if (!rise || !run || rise.n < 0 || run.n <= 0) return null;
+    var left = 12n * BigInt(rise.n) * BigInt(run.d);
+    var right = BigInt(rise.d) * BigInt(run.n);
+    return left <= right;
+  }
+
+  function analyzeSlope(mode, value, run) {
+    if (!value || value.n < 0) return { err: 'Slope must be 0 or more.' };
+    var slope;
+    var atOrBelow;
+    if (mode === 'riseRun') {
+      if (!run || run.n <= 0) return { err: 'Run must be greater than 0.' };
+      slope = (value.n / value.d) / (run.n / run.d);
+      atOrBelow = slopeAtOrBelowOneInTwelve(value, run);
+    } else if (mode === 'pitch') {
+      slope = (value.n / value.d) / 12;
+      atOrBelow = compareFractions(value, fr(1)) <= 0;
+    } else if (mode === 'percent') {
+      slope = (value.n / value.d) / 100;
+      atOrBelow = compareFractions(value, fr(25, 3)) <= 0;
+    } else if (mode === 'degrees') {
+      var degrees = value.n / value.d;
+      if (degrees >= 90) return { err: 'Degrees must be from 0 up to, but not including, 90°.' };
+      slope = Math.tan(degrees * Math.PI / 180);
+      atOrBelow = degrees <= Math.atan(1 / 12) * 180 / Math.PI;
+    } else {
+      return { err: 'Unknown slope input mode.' };
+    }
+    if (!Number.isFinite(slope) || slope < 0) return { err: 'Slope must be 0 or more.' };
+    return { slope: slope, atOrBelowOneInTwelve: atOrBelow };
   }
 
   function calculateConcrete(length, width, thickness) {
@@ -345,20 +457,26 @@
     fAdd: fAdd,
     fMul: fMul,
     fDiv: fDiv,
+    compareFractions: compareFractions,
     floorDivFraction: floorDivFraction,
     ceilDivFraction: ceilDivFraction,
     parseNum: parseNum,
     parseLen: parseLen,
     parseExpr: parseExpr,
     decStr: decStr,
+    scaledDecStr: scaledDecStr,
     fmtFtIn: fmtFtIn,
     fmtMixed: fmtMixed,
     snapRow16: snapRow16,
     mainOf: mainOf,
     resultView: resultView,
     trimNumber: trimNumber,
+    formatApproxNumber: formatApproxNumber,
+    roundToDenominator: roundToDenominator,
     STAIR_CODES: STAIR_CODES,
     calculateStairs: calculateStairs,
+    slopeAtOrBelowOneInTwelve: slopeAtOrBelowOneInTwelve,
+    analyzeSlope: analyzeSlope,
     calculateConcrete: calculateConcrete
   };
 });

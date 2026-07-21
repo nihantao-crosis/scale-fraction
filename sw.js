@@ -1,8 +1,7 @@
-/* Offline app-shell cache. Only caches owned by this app are ever removed. */
+/* Network-first app shell with an offline cache owned only by this app. */
 var CACHE_PREFIX = 'sf-calc-';
-var CACHE = CACHE_PREFIX + 'v6';
+var CACHE = CACHE_PREFIX + 'v8';
 var ASSETS = [
-  './',
   './index.html',
   './core.js',
   './manifest.webmanifest',
@@ -11,44 +10,67 @@ var ASSETS = [
   './icons/icon-180.png'
 ];
 
-self.addEventListener('install', function (e) {
-  e.waitUntil(
-    caches.open(CACHE).then(function (c) { return c.addAll(ASSETS); }).then(function () { return self.skipWaiting(); })
+self.addEventListener('install', function (event) {
+  event.waitUntil(
+    caches.open(CACHE)
+      .then(function (cache) { return cache.addAll(ASSETS); })
+      .then(function () { return self.skipWaiting(); })
   );
 });
 
-self.addEventListener('activate', function (e) {
-  e.waitUntil(
+self.addEventListener('activate', function (event) {
+  event.waitUntil(
     caches.keys().then(function (keys) {
-      return Promise.all(keys.filter(function (k) {
-        return k.indexOf(CACHE_PREFIX) === 0 && k !== CACHE;
-      }).map(function (k) { return caches.delete(k); }));
+      return Promise.all(keys.filter(function (key) {
+        return key.indexOf(CACHE_PREFIX) === 0 && key !== CACHE;
+      }).map(function (key) { return caches.delete(key); }));
     }).then(function () { return self.clients.claim(); })
   );
 });
 
-self.addEventListener('fetch', function (e) {
-  if (e.request.method !== 'GET') return;
-  var requestUrl = new URL(e.request.url);
-  if (requestUrl.origin !== self.location.origin || requestUrl.pathname.indexOf(self.registration.scope.replace(self.location.origin, '')) !== 0) return;
-  e.respondWith(
-    caches.open(CACHE).then(function (cache) {
-      return cache.match(e.request).then(function (hit) {
-        if (hit) return hit;
-        return fetch(e.request).then(function (resp) {
-          if (!resp || !resp.ok || resp.type !== 'basic') return resp;
-          var copy = resp.clone();
-          return cache.put(e.request, copy).catch(function () {}).then(function () { return resp; });
-        }).catch(function (err) {
-          if (e.request.mode === 'navigate') {
-            return cache.match('./index.html').then(function (fallback) {
-              if (fallback) return fallback;
-              throw err;
-            });
-          }
-          throw err;
-        });
-      });
-    })
-  );
+function isCacheable(response) {
+  return !!response && response.ok && response.type === 'basic';
+}
+
+function cachedFallback(cache, request, error) {
+  var fallbackRequest = request.mode === 'navigate' ? './index.html' : request;
+  return cache.match(fallbackRequest).then(function (hit) {
+    if (hit) return hit;
+    throw error;
+  });
+}
+
+self.addEventListener('fetch', function (event) {
+  if (event.request.method !== 'GET') return;
+  var requestUrl = new URL(event.request.url);
+  var scopePath = new URL(self.registration.scope).pathname;
+  if (requestUrl.origin !== self.location.origin || requestUrl.pathname.indexOf(scopePath) !== 0) return;
+
+  // Fetch starts independently of CacheStorage so a cache outage can never
+  // block an otherwise healthy online response.
+  var networkPromise = Promise.resolve().then(function () {
+    return fetch(event.request);
+  });
+
+  // Cache writes stay in the service worker lifetime but not in the response
+  // path. Navigations refresh one canonical app-shell key for reliable offline
+  // fallback instead of accumulating route-specific HTML entries.
+  var cacheUpdatePromise = networkPromise.then(function (response) {
+    if (!isCacheable(response)) return;
+    return caches.open(CACHE).then(function (cache) {
+      var target = event.request.mode === 'navigate' ? './index.html' : event.request;
+      return cache.put(target, response.clone()).catch(function () {});
+    }).catch(function () {});
+  }, function () {});
+
+  var responsePromise = networkPromise.catch(function (networkError) {
+    return caches.open(CACHE).then(function (cache) {
+      return cachedFallback(cache, event.request, networkError);
+    }).catch(function () {
+      throw networkError;
+    });
+  });
+
+  event.respondWith(responsePromise);
+  event.waitUntil(cacheUpdatePromise);
 });

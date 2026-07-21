@@ -5,9 +5,13 @@
   "description": "Dependency-free architectural scale and imperial fraction calculator",
   "scripts": {
     "test": "node --test",
-    "check": "node --check core.js && node --check sw.js && node --test"
+    "check": "node --check core.js && node --check sw.js && node --test",
+    "test:coverage": "node --experimental-test-coverage --test-coverage-include=core.js --test-coverage-lines=85 --test-coverage-branches=70 --test-coverage-functions=85 --test"
   },
   "engines": {
-    "node": ">=22"
+    "node": "^22.12.0 || >=24.0.0"
+  },
+  "devDependencies": {
+    "jsdom": "28.1.0"
   }
 }

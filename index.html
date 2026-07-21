@@ -14,10 +14,11 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;text-transform:uppercase;background:#F7E9EF;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;color:#22242B}
-a{color:#D6336C}a:hover{color:#E64980}
+a{color:#A61E4D}a:hover{color:#7F173B}
 input::placeholder{color:#6B6F7A}
 button,input{text-transform:uppercase}
 button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offset:2px}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 .wrap{min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:28px 16px 60px}
 .card{width:390px;background:#FBF2F6;border:1px solid rgba(0,0,0,.08);border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.07);overflow:hidden}
@@ -31,82 +32,82 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
 .panel{display:flex;flex-direction:column;gap:12px}
 
 .seg{display:flex;background:#F5E2EB;border-radius:10px;padding:3px;gap:2px}
-.seg button{flex:1;padding:8px 0;border:none;border-radius:8px;background:transparent;color:#767A86;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.seg button{flex:1;padding:8px 0;border:none;border-radius:8px;background:transparent;color:#5F6470;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
 .seg button.on{background:#fff;color:#A61E4D;box-shadow:0 1px 4px rgba(18,18,22,.10)}
 
 .box{background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(18,18,22,.06);padding:16px;display:flex;flex-direction:column;gap:12px}
 
-.expr{width:100%;padding:12px 14px;font-size:20px;text-align:right;font-family:ui-monospace,Menlo,monospace;color:#22242B;background:#FAF4F7;border:1.5px solid #EFD5E1;border-radius:10px;outline:none}
+.expr{width:100%;padding:12px 14px;font-size:20px;text-align:right;font-family:ui-monospace,Menlo,monospace;color:#22242B;background:#FAF4F7;border:1.5px solid #B47A91;border-radius:10px;outline:none}
 .expr:focus{border-color:#D6336C;background:#fff}
-.live{font-size:11px;color:#9AA0AB;margin-top:6px;text-align:right;min-height:15px}
+.live{font-size:11px;color:#5F6470;margin-top:6px;text-align:right;min-height:15px}
 
 .keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .key{height:46px;border-radius:10px;border:1px solid #F5E2EB;font-size:18px;font-weight:600;font-family:ui-monospace,Menlo,monospace;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#fff;color:#22242B}
 .key:active{transform:scale(.94)}
-.key.op{background:#F9D8E5;color:#D6336C;border-color:#F9D8E5}
-.key.unit{color:#D6336C}
-.key.dim{color:#9AA0AB;font-size:15px}
-.key.clr{color:#D6336C;grid-column:span 2}
-.key.eq{grid-column:span 2;background:#D6336C;color:#fff;border-color:#D6336C}
-.keys-note{font-size:10.5px;color:#9AA0AB;line-height:1.5;text-align:center}
+.key.op{background:#F9D8E5;color:#A61E4D;border-color:#F9D8E5}
+.key.unit{color:#A61E4D}
+.key.dim{color:#5F6470;font-size:15px}
+.key.clr{color:#A61E4D;grid-column:span 2}
+.key.eq{grid-column:span 2;background:#A61E4D;color:#fff;border-color:#A61E4D}
+.keys-note{font-size:10.5px;color:#5F6470;line-height:1.5;text-align:center}
 
 .err{background:#FBE2E3;color:#B01218;border-radius:8px;padding:9px 12px;font-size:12.5px;font-weight:600}
 
 .result{background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(18,18,22,.06);padding:16px;border-left:5px solid #D6336C}
-.res-tag{font-size:11px;font-weight:700;letter-spacing:.8px;color:#767A86;margin-bottom:6px}
+.res-tag{font-size:11px;font-weight:700;letter-spacing:.8px;color:#5F6470;margin-bottom:6px}
 .res-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .res-main{font-size:29px;font-weight:800;color:#A61E4D;font-family:ui-monospace,Menlo,monospace}
-.copy{padding:7px 12px;border:none;border-radius:8px;background:#F9D8E5;color:#D6336C;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.copy{padding:7px 12px;border:none;border-radius:8px;background:#F9D8E5;color:#A61E4D;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
 .copy:active{transform:scale(.96)}
 .rows{margin-top:10px}
 .row{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-top:1px solid #F5E2EB}
-.row .k{font-size:12px;color:#767A86}
+.row .k{font-size:12px;color:#5F6470}
 .row .v{font-size:13px;font-weight:600;color:#22242B;font-family:ui-monospace,Menlo,monospace;overflow-wrap:anywhere;text-align:right}
 
 .sc-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
 .sc-title{font-size:12px;font-weight:700;letter-spacing:.6px;color:#4A4D57}
-.sc-unit{font-size:10.5px;color:#9AA0AB}
+.sc-unit{font-size:10.5px;color:#5F6470}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{padding:6px 10px;border-radius:8px;border:1.5px solid transparent;background:#FAF4F7;color:#4A4D57;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:700}
-.chip.on{border-color:#D6336C;background:#FBE7F0;color:#D6336C}
-.cu{margin-top:8px;font-size:14px;padding:9px 12px;font-family:inherit;text-align:left;width:100%;color:#22242B;background:#FAF4F7;border:1.5px solid #EFD5E1;border-radius:10px;outline:none}
+.chip.on{border-color:#D6336C;background:#FBE7F0;color:#A61E4D}
+.cu{margin-top:8px;font-size:14px;padding:9px 12px;font-family:inherit;text-align:left;width:100%;color:#22242B;background:#FAF4F7;border:1.5px solid #B47A91;border-radius:10px;outline:none}
 .cu:focus{border-color:#D6336C;background:#fff}
 .swap-row{display:flex;align-items:center;gap:10px}
 .swap-line{flex:1;height:1px;background:#F5E2EB}
-.swap-btn{padding:5px 14px;border-radius:999px;border:1.5px solid #EFD5E1;background:#fff;color:#4A4D57;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit}
+.swap-btn{padding:5px 14px;border-radius:999px;border:1.5px solid #B47A91;background:#fff;color:#4A4D57;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit}
 .swap-btn:active{transform:scale(.96)}
 
 .s-main{display:flex;align-items:center;gap:10px;margin-bottom:4px}
 .s-mult{font-size:29px;font-weight:800;color:#A61E4D;font-family:ui-monospace,Menlo,monospace}
 .badge{border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:700}
-.badge.up{background:#F9D8E5;color:#D6336C}
+.badge.up{background:#F9D8E5;color:#A61E4D}
 .badge.down{background:#E8F1FD;color:#2563A8}
-.badge.same{background:#F5E2EB;color:#6B6F7A}
-.s-pair{font-size:11.5px;color:#767A86;margin-bottom:8px}
+.badge.same{background:#F5E2EB;color:#5F6470}
+.s-pair{font-size:11.5px;color:#5F6470;margin-bottom:8px}
 .s-kv{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-top:1px solid #F5E2EB;gap:8px}
-.s-kv .k{font-size:12px;color:#767A86}
+.s-kv .k{font-size:12px;color:#5F6470}
 .s-kv .vwrap{display:inline-flex;align-items:center;gap:8px}
 .s-kv .v{font-size:16px;font-weight:700;color:#A61E4D;font-family:ui-monospace,Menlo,monospace}
-.copy-sm{border:none;background:#F9D8E5;color:#D6336C;border-radius:7px;padding:5px 9px;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit}
+.copy-sm{border:none;background:#F9D8E5;color:#A61E4D;border-radius:7px;padding:5px 9px;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit}
 .copy-sm:active{transform:scale(.96)}
-.s-note{font-size:10.5px;line-height:1.5;color:#9A6614;background:#FDF3DD;border-radius:8px;padding:7px 10px;margin-top:6px}
+.s-note{font-size:10.5px;line-height:1.5;color:#7A4D08;background:#FDF3DD;border-radius:8px;padding:7px 10px;margin-top:6px}
 
 /* ---- Tools tab ---- */
 .tgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .tcard{display:flex;flex-direction:column;gap:3px;align-items:flex-start;text-align:left;padding:11px 12px;border:1px solid rgba(0,0,0,.05);border-radius:12px;background:#fff;cursor:pointer;font-family:inherit;box-shadow:0 2px 10px rgba(18,18,22,.04)}
 .tcard:active{transform:scale(.97)}
 .tcard .tn{font-size:12px;font-weight:700;color:#A61E4D}
-.tcard .td{font-size:9.5px;color:#9AA0AB;line-height:1.35}
-.back-btn{align-self:flex-start;padding:5px 12px;border-radius:999px;border:1.5px solid #EFD5E1;background:#fff;color:#4A4D57;cursor:pointer;font-size:11px;font-weight:600;font-family:inherit}
+.tcard .td{font-size:9.5px;color:#5F6470;line-height:1.35}
+.back-btn{align-self:flex-start;padding:5px 12px;border-radius:999px;border:1.5px solid #B47A91;background:#fff;color:#4A4D57;cursor:pointer;font-size:11px;font-weight:600;font-family:inherit}
 .tool{display:flex;flex-direction:column;gap:12px}
-.tin{width:100%;padding:9px 12px;font-size:14px;font-family:inherit;color:#22242B;background:#FAF4F7;border:1.5px solid #EFD5E1;border-radius:10px;outline:none}
+.tin{width:100%;padding:9px 12px;font-size:14px;font-family:inherit;color:#22242B;background:#FAF4F7;border:1.5px solid #B47A91;border-radius:10px;outline:none}
 .tin:focus{border-color:#D6336C;background:#fff}
 .lbl.mt{margin-top:10px}
 .res-main.sm{font-size:22px}
 .pos{max-height:130px;overflow:auto;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:#4A4D57;background:#fff;border-radius:12px;padding:10px 12px;line-height:1.7;box-shadow:0 2px 10px rgba(18,18,22,.06)}
 .mini-btn{padding:8px 12px;border:none;border-radius:8px;background:#FAF4F7;color:#4A4D57;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
 .mini-btn:active{transform:scale(.95)}
-.mini-btn.add{background:#D6336C;color:#fff}
+.mini-btn.add{background:#A61E4D;color:#fff}
 .at-btns{display:flex;gap:8px}
 .sb-prev{background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 10px rgba(18,18,22,.06);overflow-x:auto}
 .sb-prev svg{display:block;max-width:100%;height:auto}
@@ -141,6 +142,8 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
         <button type="button" id="tab-scale" role="tab" aria-controls="panel-scale" aria-selected="false">Drawing Scale</button>
         <button type="button" id="tab-tools" role="tab" aria-controls="panel-tools" aria-selected="false">Tools</button>
       </div>
+      <div class="sr-only" id="copy-status" role="status" aria-live="polite"></div>
+      <div class="sr-only" id="result-status" role="status" aria-live="polite"></div>
 
       <!-- ============ Length & fractions:表达式计算器 ============ -->
       <div class="panel" id="panel-len" role="tabpanel" aria-labelledby="tab-len">
@@ -172,11 +175,11 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
         <div class="box">
           <div>
             <div class="sc-head">
-              <span class="sc-title">FROM &mdash; Drawing Is At</span>
+              <span class="sc-title" id="scale-from-label">FROM &mdash; Drawing Is At</span>
               <span class="sc-unit">&Prime; Per 1&prime;-0&Prime;</span>
             </div>
-            <div class="chips" id="chips-from"></div>
-            <input id="i-cuF" class="cu" placeholder="Paper Inches Per 1&#8242;-0&#8243; &mdash; e.g. 1/64 Or 1.5" hidden>
+            <div class="chips" id="chips-from" role="group" aria-labelledby="scale-from-label"></div>
+            <input id="i-cuF" class="cu" aria-label="Custom from drawing scale" placeholder="Paper Inches Per 1&#8242;-0&#8243; &mdash; e.g. 1/64 Or 1.5" hidden>
           </div>
 
           <div class="swap-row">
@@ -187,11 +190,11 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
 
           <div>
             <div class="sc-head">
-              <span class="sc-title">TO &mdash; Print It At</span>
+              <span class="sc-title" id="scale-to-label">TO &mdash; Print It At</span>
               <span class="sc-unit">&Prime; Per 1&prime;-0&Prime;</span>
             </div>
-            <div class="chips" id="chips-to"></div>
-            <input id="i-cuT" class="cu" placeholder="Paper Inches Per 1&#8242;-0&#8243; &mdash; e.g. 3" hidden>
+            <div class="chips" id="chips-to" role="group" aria-labelledby="scale-to-label"></div>
+            <input id="i-cuT" class="cu" aria-label="Custom to drawing scale" placeholder="Paper Inches Per 1&#8242;-0&#8243; &mdash; e.g. 3" hidden>
           </div>
         </div>
 
@@ -244,28 +247,30 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
         <div id="tool-view" hidden>
           <button class="back-btn" id="tool-back">&larr; All Tools</button>
 
-          <div class="tool" id="tv-mc" hidden>
+          <div class="tool" id="tv-mc" role="region" aria-labelledby="tool-title-mc" hidden>
+            <h2 class="sr-only" id="tool-title-mc" data-tool-title tabindex="-1">Metric to Imperial</h2>
             <div class="box">
-              <label class="lbl">Value <span class="hint">2440mm &middot; 2.44m &middot; 3'-6"</span></label>
+              <label class="lbl" for="mc-in">Value <span class="hint">2440mm &middot; 2.44m &middot; 3'-6"</span></label>
               <input id="mc-in" class="tin" placeholder="2440 mm">
             </div>
             <div class="err" id="mc-err" hidden></div>
             <div class="result" id="mc-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
           </div>
 
-          <div class="tool" id="tv-sp" hidden>
+          <div class="tool" id="tv-sp" role="region" aria-labelledby="tool-title-sp" hidden>
+            <h2 class="sr-only" id="tool-title-sp" data-tool-title tabindex="-1">Spacing and Layout</h2>
             <div class="box">
-              <div class="chips" id="sp-mode"></div>
-              <label class="lbl mt">Total Length</label>
+              <div class="chips" id="sp-mode" role="group" aria-label="Spacing calculation mode"></div>
+              <label class="lbl mt" for="sp-len">Total Length</label>
               <input id="sp-len" class="tin" placeholder="12'-6&quot;">
               <div id="sp-eq-row">
-                <label class="lbl mt">Parts</label>
+                <label class="lbl mt" for="sp-n">Parts</label>
                 <input id="sp-n" class="tin" inputmode="numeric" placeholder="5">
               </div>
               <div id="sp-oc-row" hidden>
-                <label class="lbl mt">Spacing</label>
-                <div class="chips" id="sp-oc"></div>
-                <input id="sp-cu" class="tin" style="margin-top:8px" placeholder='Custom &mdash; e.g. 32"' hidden>
+                <span class="lbl mt" id="sp-oc-label">Spacing</span>
+                <div class="chips" id="sp-oc" role="group" aria-labelledby="sp-oc-label"></div>
+                <input id="sp-cu" class="tin" style="margin-top:8px" aria-label="Custom on-center spacing" placeholder='Custom &mdash; e.g. 32"' hidden>
               </div>
             </div>
             <div class="err" id="sp-err" hidden></div>
@@ -273,69 +278,75 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
             <div class="pos" id="sp-pos" hidden></div>
           </div>
 
-          <div class="tool" id="tv-st" hidden>
+          <div class="tool" id="tv-st" role="region" aria-labelledby="tool-title-st" hidden>
+            <h2 class="sr-only" id="tool-title-st" data-tool-title tabindex="-1">Stair Calculator</h2>
             <div class="box">
-              <label class="lbl">Total Rise <span class="hint">floor to floor</span></label>
+              <label class="lbl" for="st-rise">Total Rise <span class="hint">floor to floor</span></label>
               <input id="st-rise" class="tin" placeholder="9'-1 1/2&quot;">
-              <label class="lbl mt">Code</label>
-              <div class="chips" id="st-code"></div>
+              <span class="lbl mt" id="st-code-label">Code Reference</span>
+              <div class="chips" id="st-code" role="group" aria-labelledby="st-code-label"></div>
             </div>
             <div class="err" id="st-err" hidden></div>
             <div class="result" id="st-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
-            <div class="s-note">Preliminary dimensional check only. Verify the locally adopted code, stair width, headroom, landings, handrails, nosings and all project conditions.</div>
+            <div class="s-note">Preliminary dimensional reference only. Do not repeat a rounded riser value: preserve the exact total rise and verify riser uniformity. Also verify the locally adopted code, stair width, headroom, landings, handrails, nosings and all project conditions.</div>
           </div>
 
-          <div class="tool" id="tv-sm" hidden>
+          <div class="tool" id="tv-sm" role="region" aria-labelledby="tool-title-sm" hidden>
+            <h2 class="sr-only" id="tool-title-sm" data-tool-title tabindex="-1">Scale Measure</h2>
             <div class="box">
-              <div class="chips" id="sm-mode"></div>
-              <label class="lbl mt">Scale</label>
-              <div class="chips" id="sm-scale"></div>
-              <label class="lbl mt" id="sm-lbl">Paper Measurement</label>
+              <div class="chips" id="sm-mode" role="group" aria-label="Scale measurement mode"></div>
+              <span class="lbl mt" id="sm-scale-label">Scale</span>
+              <div class="chips" id="sm-scale" role="group" aria-labelledby="sm-scale-label"></div>
+              <label class="lbl mt" id="sm-lbl" for="sm-in">Paper Measurement</label>
               <input id="sm-in" class="tin" placeholder='2 3/8"'>
             </div>
             <div class="err" id="sm-err" hidden></div>
             <div class="result" id="sm-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
           </div>
 
-          <div class="tool" id="tv-sc2" hidden>
+          <div class="tool" id="tv-sc2" role="region" aria-labelledby="tool-title-sc2" hidden>
+            <h2 class="sr-only" id="tool-title-sc2" data-tool-title tabindex="-1">Sheet Coverage</h2>
             <div class="box">
-              <label class="lbl">Sheet</label>
-              <div class="chips" id="sc2-sheet"></div>
-              <label class="lbl mt">Scale</label>
-              <div class="chips" id="sc2-scale"></div>
+              <span class="lbl" id="sc2-sheet-label">Sheet</span>
+              <div class="chips" id="sc2-sheet" role="group" aria-labelledby="sc2-sheet-label"></div>
+              <span class="lbl mt" id="sc2-scale-label">Scale</span>
+              <div class="chips" id="sc2-scale" role="group" aria-labelledby="sc2-scale-label"></div>
             </div>
             <div class="result" id="sc2-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
             <div class="err" id="sc2-err" hidden></div>
           </div>
 
-          <div class="tool" id="tv-sl" hidden>
+          <div class="tool" id="tv-sl" role="region" aria-labelledby="tool-title-sl" hidden>
+            <h2 class="sr-only" id="tool-title-sl" data-tool-title tabindex="-1">Slope and Pitch</h2>
             <div class="box">
-              <div class="chips" id="sl-mode"></div>
-              <label class="lbl mt" id="sl-lbl-a">x <span class="hint">in x:12</span></label>
+              <div class="chips" id="sl-mode" role="group" aria-label="Slope input mode"></div>
+              <label class="lbl mt" id="sl-lbl-a" for="sl-a">x <span class="hint">in x:12</span></label>
               <input id="sl-a" class="tin" placeholder="4">
               <div id="sl-b-row" hidden>
-                <label class="lbl mt">Run</label>
+                <label class="lbl mt" for="sl-b">Run</label>
                 <input id="sl-b" class="tin" placeholder="12'-0&quot;">
               </div>
             </div>
             <div class="err" id="sl-err" hidden></div>
             <div class="result" id="sl-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
-            <div class="s-note">Accessibility result checks running slope only. Verify cross slope, clear width, rise, landings, handrails and edge protection under the applicable standard.</div>
+            <div class="s-note">Accessibility result checks running slope only. Verify cross slope, 36″ clear width where applicable, maximum rise per run, landings, handrails, edge protection, surfaces, exceptions and local requirements.</div>
           </div>
 
-          <div class="tool" id="tv-br" hidden>
+          <div class="tool" id="tv-br" role="region" aria-labelledby="tool-title-br" hidden>
+            <h2 class="sr-only" id="tool-title-br" data-tool-title tabindex="-1">Brick Coursing</h2>
             <div class="box">
-              <div class="chips" id="br-mode"></div>
-              <label class="lbl mt">Dimension</label>
+              <div class="chips" id="br-mode" role="group" aria-label="Coursing module"></div>
+              <label class="lbl mt" for="br-in">Dimension</label>
               <input id="br-in" class="tin" placeholder="8'-8&quot;">
             </div>
             <div class="err" id="br-err" hidden></div>
             <div class="result" id="br-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
           </div>
 
-          <div class="tool" id="tv-at" hidden>
+          <div class="tool" id="tv-at" role="region" aria-labelledby="tool-title-at" hidden>
+            <h2 class="sr-only" id="tool-title-at" data-tool-title tabindex="-1">Area Tally</h2>
             <div class="box">
-              <label class="lbl">Room <span class="hint">e.g. 12'6" &times; 14'</span></label>
+              <label class="lbl" for="at-in">Room <span class="hint">e.g. 12'6" &times; 14'</span></label>
               <input id="at-in" class="tin" placeholder="12'6&quot; &times; 14'">
               <div class="at-btns" style="margin-top:10px">
                 <button class="mini-btn add" id="at-add">+ Add</button>
@@ -348,62 +359,68 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
             <div class="pos" id="at-list" hidden></div>
           </div>
 
-          <div class="tool" id="tv-cv" hidden>
+          <div class="tool" id="tv-cv" role="region" aria-labelledby="tool-title-cv" hidden>
+            <h2 class="sr-only" id="tool-title-cv" data-tool-title tabindex="-1">Concrete Volume</h2>
             <div class="box">
-              <label class="lbl">Length</label>
+              <label class="lbl" for="cv-l">Length</label>
               <input id="cv-l" class="tin" placeholder="20'">
-              <label class="lbl mt">Width</label>
+              <label class="lbl mt" for="cv-w">Width</label>
               <input id="cv-w" class="tin" placeholder="12'">
-              <label class="lbl mt">Thickness</label>
+              <label class="lbl mt" for="cv-t">Thickness</label>
               <input id="cv-t" class="tin" placeholder='4"'>
             </div>
             <div class="err" id="cv-err" hidden></div>
             <div class="result" id="cv-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
           </div>
 
-          <div class="tool" id="tv-sg" hidden>
+          <div class="tool" id="tv-sg" role="region" aria-labelledby="tool-title-sg" hidden>
+            <h2 class="sr-only" id="tool-title-sg" data-tool-title tabindex="-1">Sheet Goods</h2>
             <div class="box">
-              <label class="lbl">Length</label>
+              <label class="lbl" for="sg-l">Length</label>
               <input id="sg-l" class="tin" placeholder="40'">
-              <label class="lbl mt">Height / Width</label>
+              <label class="lbl mt" for="sg-w">Height / Width</label>
               <input id="sg-w" class="tin" placeholder="9'">
             </div>
             <div class="err" id="sg-err" hidden></div>
             <div class="result" id="sg-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
           </div>
 
-          <div class="tool" id="tv-dr" hidden>
+          <div class="tool" id="tv-dr" role="region" aria-labelledby="tool-title-dr" hidden>
+            <h2 class="sr-only" id="tool-title-dr" data-tool-title tabindex="-1">Door Size</h2>
             <div class="box">
-              <label class="lbl">Door Shorthand <span class="hint">4 digits</span></label>
+              <label class="lbl" for="dr-in">Door Shorthand <span class="hint">4 digits</span></label>
               <input id="dr-in" class="tin" inputmode="numeric" placeholder="3068">
             </div>
             <div class="err" id="dr-err" hidden></div>
             <div class="result" id="dr-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
           </div>
 
-          <div class="tool" id="tv-ps" hidden>
+          <div class="tool" id="tv-ps" role="region" aria-labelledby="tool-title-ps" hidden>
+            <h2 class="sr-only" id="tool-title-ps" data-tool-title tabindex="-1">Print Scaling</h2>
             <div class="box">
-              <label class="lbl">From Sheet</label>
-              <div class="chips" id="ps-from"></div>
-              <label class="lbl mt">To Sheet</label>
-              <div class="chips" id="ps-to"></div>
+              <span class="lbl" id="ps-from-label">From Sheet</span>
+              <div class="chips" id="ps-from" role="group" aria-labelledby="ps-from-label"></div>
+              <span class="lbl mt" id="ps-to-label">To Sheet</span>
+              <div class="chips" id="ps-to" role="group" aria-labelledby="ps-to-label"></div>
             </div>
             <div class="result" id="ps-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
             <div class="err" id="ps-err" hidden></div>
           </div>
 
-          <div class="tool" id="tv-ms" hidden>
+          <div class="tool" id="tv-ms" role="region" aria-labelledby="tool-title-ms" hidden>
+            <h2 class="sr-only" id="tool-title-ms" data-tool-title tabindex="-1">Metric Scales</h2>
             <div class="result" id="ms-table">
               <div class="res-tag">Imperial &harr; Metric Scales</div>
               <div class="rows" id="ms-rows"></div>
             </div>
           </div>
 
-          <div class="tool" id="tv-sb" hidden>
+          <div class="tool" id="tv-sb" role="region" aria-labelledby="tool-title-sb" hidden>
+            <h2 class="sr-only" id="tool-title-sb" data-tool-title tabindex="-1">Scale Bar</h2>
             <div class="box">
-              <label class="lbl">Scale</label>
-              <div class="chips" id="sb-scale"></div>
-              <label class="lbl mt">Bar Length <span class="hint">feet, 4 segments</span></label>
+              <span class="lbl" id="sb-scale-label">Scale</span>
+              <div class="chips" id="sb-scale" role="group" aria-labelledby="sb-scale-label"></div>
+              <label class="lbl mt" for="sb-ft">Bar Length <span class="hint">feet, 4 segments</span></label>
               <input id="sb-ft" class="tin" inputmode="numeric" value="40" placeholder="40">
             </div>
             <div class="err" id="sb-err" hidden></div>
@@ -424,199 +441,32 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
 
-  var S = { tab: 'length', expr: "3'-10\" ÷ 3", res: null, err: '', fi: 4, ti: 6, copied: '', _ct: null };
+  var S = {
+    tab: 'length', expr: "3'-10\" ÷ 3", res: null, err: '', fi: 4, ti: 6,
+    copied: '', _ct: null, _copyEpoch: 0, _announceTimer: null
+  };
 
   Array.prototype.forEach.call(document.querySelectorAll('.err'), function (el) {
     el.setAttribute('role', 'status');
     el.setAttribute('aria-live', 'polite');
   });
-  Array.prototype.forEach.call(document.querySelectorAll('.result'), function (el) {
-    el.setAttribute('role', 'status');
-    el.setAttribute('aria-live', 'polite');
-    el.setAttribute('aria-atomic', 'true');
-  });
-  var INPUT_LABELS = {
-    'i-cuF': 'From drawing scale', 'i-cuT': 'To drawing scale',
-    'mc-in': 'Metric or imperial value', 'sp-len': 'Total layout length',
-    'sp-n': 'Number of equal parts', 'sp-cu': 'Custom on-center spacing',
-    'st-rise': 'Total stair rise', 'sm-in': 'Scale measurement',
-    'sl-a': 'Slope value or rise', 'sl-b': 'Slope run', 'br-in': 'Coursing dimension',
-    'at-in': 'Room dimensions', 'cv-l': 'Concrete length', 'cv-w': 'Concrete width',
-    'cv-t': 'Concrete thickness', 'sg-l': 'Sheet goods length', 'sg-w': 'Sheet goods height or width',
-    'dr-in': 'Door shorthand', 'sb-ft': 'Scale bar length in feet'
-  };
-  Object.keys(INPUT_LABELS).forEach(function (id) {
-    if ($(id)) $(id).setAttribute('aria-label', INPUT_LABELS[id]);
-  });
 
-  // ---- exact rational math on safe integers ----
-  function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = a % b; a = b; b = t; } return a || 1; }
-  function fr(n, d) {
-    d = d === undefined ? 1 : d;
-    if (!isFinite(n) || !isFinite(d) || d === 0) return null;
-    if (d < 0) { n = -n; d = -d; }
-    if (Math.abs(n) > 4e15 || d > 4e15) return null;
-    var g = gcd(n, d);
-    return { n: n / g, d: d / g };
-  }
-  function fAdd(x, y) { return fr(x.n * y.d + y.n * x.d, x.d * y.d); }
-  function fMul(x, y) { return fr(x.n * y.n, x.d * y.d); }
-  function fDiv(x, y) { if (!y || y.n === 0) return null; return fr(x.n * y.d, x.d * y.n); }
-
-  function parseNum(s) {
-    s = (s || '').trim();
-    if (!s || s.length > 12) return null;
-    var m = s.match(/^(\d+)\s+(\d+)\s*\/\s*(\d+)$/);
-    if (m) { var d1 = parseInt(m[3], 10); if (!d1) return null; return fr(parseInt(m[1], 10) * d1 + parseInt(m[2], 10), d1); }
-    m = s.match(/^(\d+)\s*\/\s*(\d+)$/);
-    if (m) { var d2 = parseInt(m[2], 10); if (!d2) return null; return fr(parseInt(m[1], 10), d2); }
-    m = s.match(/^(\d*)\.(\d+)$/);
-    if (m && m[2].length <= 6) { var k = Math.pow(10, m[2].length); return fr(parseInt(m[1] || '0', 10) * k + parseInt(m[2], 10), k); }
-    if (/^\d+$/.test(s)) return fr(parseInt(s, 10));
-    return null;
-  }
-
-  // 长度解析:feet 为整数(' 之前),其余为英寸(整数/小数/分数/带分数)
-  function parseLen(s) {
-    s = (s || '').replace(/[’′]/g, "'").replace(/[”″]/g, '"').trim();
-    if (!s || s.length > 24) return null;
-    var ft = 0, rest = s;
-    var qi = s.indexOf("'");
-    if (qi >= 0) {
-      var fs = s.slice(0, qi).trim();
-      if (fs) { if (!/^\d+$/.test(fs) || fs.length > 7) return null; ft = parseInt(fs, 10); }
-      rest = s.slice(qi + 1);
-    }
-    rest = rest.trim();
-    if (rest.indexOf('-') === 0) rest = rest.slice(1).trim();
-    if (rest.charAt(rest.length - 1) === '"') rest = rest.slice(0, -1).trim();
-    if (rest.indexOf('"') >= 0 || rest.indexOf("'") >= 0) return null;
-    var inches = fr(0);
-    if (rest) { var p = parseNum(rest); if (!p) return null; inches = p; }
-    return fAdd(fr(ft * 12), inches);
-  }
-
-  function decStr(f, dp) {
-    var v = f.n / f.d;
-    var s = v.toFixed(dp === undefined ? 3 : dp);
-    if (s.indexOf('.') >= 0) s = s.replace(/0+$/, '').replace(/\.$/, '');
-    return s;
-  }
-
-  function fmtFtIn(f) {
-    var n = f.n, d = f.d;
-    var neg = n < 0; if (neg) n = -n;
-    var W = Math.floor(n / d), rem = n - W * d;
-    var ft = Math.floor(W / 12), w = W % 12;
-    var fx = rem > 0 ? fr(rem, d) : null;
-    var sign = neg ? '−' : '';
-    var main;
-    if (ft > 0) main = sign + ft + '′-' + w + (fx ? ' ' + fx.n + '/' + fx.d : '') + '″';
-    else if (fx) main = sign + (w > 0 ? w + ' ' : '') + fx.n + '/' + fx.d + '″';
-    else main = sign + w + '″';
-    var totalIn = sign + (d === 1 ? n + '″' : n + '/' + d + '″');
-    return { main: main, totalIn: totalIn, dec: sign + decStr(fr(n, d), 3) + '″' };
-  }
-
-  // 带分数格式:W N/D
-  function fmtMixed(f) {
-    var n = f.n, d = f.d;
-    var neg = n < 0; if (neg) n = -n;
-    var W = Math.floor(n / d), rem = n - W * d;
-    var sign = neg ? '−' : '';
-    if (rem === 0) return sign + W;
-    var fx = fr(rem, d);
-    return sign + (W > 0 ? W + ' ' : '') + fx.n + '/' + fx.d;
-  }
-
-  // 表达式解析:长度 [op 右操作数]。减号须为 − 或前后带空格的 -(避免与 3'-10 的连字符冲突)
-  function parseExpr(raw) {
-    var s = (raw || '').replace(/[’′]/g, "'").replace(/[”″]/g, '"').replace(/⁄/g, '/').trim();
-    if (!s) return { err: 'Enter a length — e.g. 3\'-10 1/2" ÷ 3' };
-    var m = s.match(/(÷|×|\*|\+|−|\s-\s)/);
-    if (!m) {
-      var f = parseLen(s);
-      if (!f) return { err: 'Could not read “' + s + '” — try 3\'-10 1/2", 46" or 3.5"' };
-      return { res: { type: 'len', f: f } };
-    }
-    var t = m[1].trim();
-    var op = t === '÷' ? 'div' : (t === '×' || t === '*') ? 'mul' : t === '+' ? 'add' : 'sub';
-    var leftS = s.slice(0, m.index).trim(), rightS = s.slice(m.index + m[1].length).trim();
-    var A = parseLen(leftS);
-    if (!A) return { err: 'Could not read the length before the operator — “' + leftS + '”' };
-    if (!rightS) return { err: 'Finish the expression after the operator' };
-    if (op === 'add' || op === 'sub') {
-      var B = parseLen(rightS);
-      if (!B) return { err: 'Could not read the second length — “' + rightS + '”' };
-      var out = fAdd(A, op === 'sub' ? fr(-B.n, B.d) : B);
-      if (!out) return { err: 'Numbers got too large — try smaller values.' };
-      return { res: { type: 'len', f: out } };
-    }
-    if (/['"]/.test(rightS)) {
-      var B2 = parseLen(rightS);
-      if (!B2) return { err: 'Could not read the second length — “' + rightS + '”' };
-      if (op === 'div' && B2.n === 0) return { err: "Can't divide by a zero length." };
-      var out2 = op === 'div' ? fDiv(A, B2) : fMul(A, B2);
-      if (!out2) return { err: 'Numbers got too large — try smaller values.' };
-      return { res: { type: op === 'div' ? 'ratio' : 'area', f: out2 } };
-    }
-    var by = parseNum(rightS);
-    if (!by || by.n <= 0) return { err: (op === 'div' ? 'Divisor' : 'Multiplier') + ' must be a number greater than 0 — or add ′/″ to make it a length.' };
-    var out3 = op === 'div' ? fDiv(A, by) : fMul(A, by);
-    if (!out3) return { err: 'Numbers got too large — try smaller values.' };
-    return { res: { type: 'len', f: out3 } };
-  }
-
-  // 结果主值(实时预览用)
-  function mainOf(R) {
-    if (R.type === 'len') return fmtFtIn(R.f).main;
-    if (R.type === 'area') {
-      var sqin = R.f, sqft = fr(sqin.n, sqin.d * 144);
-      return Math.abs(sqin.n / sqin.d) < 144 ? fmtMixed(sqin) + ' in²' : fmtMixed(sqft) + ' ft²';
-    }
-    return R.f.d === 1 ? R.f.n + ' : 1' : R.f.n + ' : ' + R.f.d;
-  }
-
-  // 结果卡片视图:类型标签 + 主值 + 两行明细
-  function resultView(R) {
-    if (R.type === 'len') {
-      var m = fmtFtIn(R.f);
-      var rows = [{ k: 'Total Inches', v: m.totalIn }, { k: 'Decimal', v: '≈ ' + m.dec }];
-      var sr = snapRow16(R.f);
-      if (sr) rows.push(sr);
-      return { kind: 'RESULT · LENGTH', main: m.main, rows: rows };
-    }
-    if (R.type === 'area') {
-      var sqin = R.f, sqft = fr(sqin.n, sqin.d * 144);
-      if (Math.abs(sqin.n / sqin.d) < 144)
-        return { kind: 'RESULT · AREA', main: fmtMixed(sqin) + ' in²', rows: [{ k: 'Square Feet', v: fmtMixed(sqft) + ' ft²' }, { k: 'Decimal', v: '≈ ' + decStr(sqft, 4) + ' ft²' }] };
-      return { kind: 'RESULT · AREA', main: fmtMixed(sqft) + ' ft²', rows: [{ k: 'Square Inches', v: fmtMixed(sqin) + ' in²' }, { k: 'Decimal', v: '≈ ' + decStr(sqft, 3) + ' ft²' }] };
-    }
-    return {
-      kind: 'RESULT · RATIO',
-      main: R.f.d === 1 ? R.f.n + ' : 1' : R.f.n + ' : ' + R.f.d,
-      rows: [{ k: 'Decimal', v: '≈ ' + decStr(R.f, 4) }, { k: 'Percent', v: decStr(fMul(R.f, fr(100)), 2) + '%' }]
-    };
-  }
-
-  // Use the shared, dependency-free core module in both the browser and tests.
-  // The legacy declarations above remain as a compatibility fallback for old
-  // cached HTML, while the current service worker always precaches core.js.
+  // Use one shared, dependency-free core module in the browser and tests.
   var Core = window.ScaleFractionCore;
   if (!Core) throw new Error('ScaleFractionCore failed to load.');
-  gcd = Core.gcd;
-  fr = Core.fr;
-  fAdd = Core.fAdd;
-  fMul = Core.fMul;
-  fDiv = Core.fDiv;
-  parseNum = Core.parseNum;
-  parseLen = Core.parseLen;
-  decStr = Core.decStr;
-  fmtFtIn = Core.fmtFtIn;
-  fmtMixed = Core.fmtMixed;
-  parseExpr = Core.parseExpr;
-  mainOf = Core.mainOf;
-  resultView = Core.resultView;
+  var fr = Core.fr;
+  var fAdd = Core.fAdd;
+  var fMul = Core.fMul;
+  var fDiv = Core.fDiv;
+  var parseNum = Core.parseNum;
+  var parseLen = Core.parseLen;
+  var decStr = Core.decStr;
+  var fmtFtIn = Core.fmtFtIn;
+  var fmtMixed = Core.fmtMixed;
+  var parseExpr = Core.parseExpr;
+  var mainOf = Core.mainOf;
+  var resultView = Core.resultView;
+  var snapRow16 = Core.snapRow16;
 
   var PRE = [
     ['1/16″', 1, 16], ['3/32″', 3, 32], ['1/8″', 1, 8], ['3/16″', 3, 16],
@@ -639,72 +489,115 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
     } catch (e) { return false; }
   }
 
-  function finishCopy(ok, tag) {
+  function resetCopyState() {
+    S._copyEpoch += 1;
+    S.copied = '';
+    clearTimeout(S._ct);
+    S._ct = null;
+    updateCopyLabels();
+    $('copy-status').textContent = '';
+  }
+
+  function finishCopy(ok, tag, epoch) {
+    if (epoch !== S._copyEpoch) return;
     S.copied = ok ? tag : 'fail:' + tag;
     updateCopyLabels();
+    $('copy-status').textContent = ok ? 'Result copied.' : 'Copy failed.';
     clearTimeout(S._ct);
-    S._ct = setTimeout(function () { S.copied = ''; updateCopyLabels(); }, 1400);
+    S._ct = setTimeout(function () {
+      S.copied = '';
+      updateCopyLabels();
+      $('copy-status').textContent = '';
+    }, 1400);
   }
 
   function copyText(t, tag) {
+    var epoch = S._copyEpoch;
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(t).then(function () {
-        finishCopy(true, tag);
+        finishCopy(true, tag, epoch);
       }).catch(function () {
-        finishCopy(legacyCopy(t), tag);
+        finishCopy(legacyCopy(t), tag, epoch);
       });
       return;
     }
-    finishCopy(legacyCopy(t), tag);
+    finishCopy(legacyCopy(t), tag, epoch);
   }
 
   function updateCopyLabels() {
     $('copy-res').textContent = S.copied === 'res' ? 'Copied ✓' : S.copied === 'fail:res' ? 'Copy Failed' : 'Copy';
-    $('copy-pr').textContent = S.copied === 'pr' ? '✓' : S.copied === 'fail:pr' ? 'Failed' : 'Copy';
-    $('copy-ind').textContent = S.copied === 'ind' ? '✓' : S.copied === 'fail:ind' ? 'Failed' : 'Copy';
+    $('copy-pr').textContent = S.copied === 'pr' ? 'Copied ✓' : S.copied === 'fail:pr' ? 'Failed' : 'Copy';
+    $('copy-ind').textContent = S.copied === 'ind' ? 'Copied ✓' : S.copied === 'fail:ind' ? 'Failed' : 'Copy';
+    $('copy-res').setAttribute('aria-label', S.copied === 'fail:res' ? 'Copy calculator result failed' : S.copied === 'res' ? 'Calculator result copied' : 'Copy calculator result');
+    $('copy-pr').setAttribute('aria-label', S.copied === 'fail:pr' ? 'Copy relative scale increment failed' : S.copied === 'pr' ? 'Relative scale increment copied' : 'Copy relative scale increment');
+    $('copy-ind').setAttribute('aria-label', S.copied === 'fail:ind' ? 'Copy absolute scale failed' : S.copied === 'ind' ? 'Absolute scale copied' : 'Copy absolute scale');
+  }
+
+  function clearResultAnnouncement() {
+    clearTimeout(S._announceTimer);
+    S._announceTimer = null;
+    $('result-status').textContent = '';
+  }
+
+  function announceResult(kind, main) {
+    clearResultAnnouncement();
+    S._announceTimer = setTimeout(function () {
+      $('result-status').textContent = (kind || 'Result') + ': ' + main;
+    }, 250);
   }
 
   // ---- 键盘 ----
   var KEYS = [
-    { k: '7', g: '7', cls: '' }, { k: '8', g: '8', cls: '' }, { k: '9', g: '9', cls: '' }, { k: 'div', g: '÷', cls: 'op' },
-    { k: '4', g: '4', cls: '' }, { k: '5', g: '5', cls: '' }, { k: '6', g: '6', cls: '' }, { k: 'mul', g: '×', cls: 'op' },
-    { k: '1', g: '1', cls: '' }, { k: '2', g: '2', cls: '' }, { k: '3', g: '3', cls: '' }, { k: 'sub', g: '−', cls: 'op' },
-    { k: '0', g: '0', cls: '' }, { k: '.', g: '.', cls: '' }, { k: 'sp', g: '␣', cls: 'dim' }, { k: 'add', g: '+', cls: 'op' },
-    { k: 'ft', g: '′', cls: 'unit' }, { k: 'in', g: '″', cls: 'unit' }, { k: 'fr', g: '/', cls: 'unit' }, { k: 'bs', g: '⌫', cls: 'dim' },
-    { k: 'clr', g: 'C', cls: 'clr' }, { k: 'eq', g: '=', cls: 'eq' }
+    { k: '7', g: '7', cls: '', a: '7' }, { k: '8', g: '8', cls: '', a: '8' }, { k: '9', g: '9', cls: '', a: '9' }, { k: 'div', g: '÷', cls: 'op', a: 'Divide' },
+    { k: '4', g: '4', cls: '', a: '4' }, { k: '5', g: '5', cls: '', a: '5' }, { k: '6', g: '6', cls: '', a: '6' }, { k: 'mul', g: '×', cls: 'op', a: 'Multiply' },
+    { k: '1', g: '1', cls: '', a: '1' }, { k: '2', g: '2', cls: '', a: '2' }, { k: '3', g: '3', cls: '', a: '3' }, { k: 'sub', g: '−', cls: 'op', a: 'Subtract' },
+    { k: '0', g: '0', cls: '', a: '0' }, { k: '.', g: '.', cls: '', a: 'Decimal point' }, { k: 'sp', g: '␣', cls: 'dim', a: 'Space' }, { k: 'add', g: '+', cls: 'op', a: 'Add' },
+    { k: 'ft', g: '′', cls: 'unit', a: 'Feet mark' }, { k: 'in', g: '″', cls: 'unit', a: 'Inches mark' }, { k: 'fr', g: '/', cls: 'unit', a: 'Fraction slash' }, { k: 'bs', g: '⌫', cls: 'dim', a: 'Backspace' },
+    { k: 'clr', g: 'C', cls: 'clr', a: 'Clear expression' }, { k: 'eq', g: '=', cls: 'eq', a: 'Calculate result' }
   ];
+
+  function invalidateResult() {
+    S.res = null;
+    S.err = '';
+    resetCopyState();
+    clearResultAnnouncement();
+    renderErr();
+    renderResult();
+  }
 
   function press(k) {
     if (k === 'clr') {
-      S.expr = ''; S.res = null; S.err = ''; S.copied = '';
+      S.expr = ''; S.res = null; S.err = '';
       $('i-expr').value = '';
-      updateCopyLabels(); renderErr(); renderResult(); renderHint();
+      resetCopyState(); clearResultAnnouncement(); renderErr(); renderResult(); renderHint();
       return;
     }
     if (k === 'bs') {
-      S.expr = S.expr.slice(0, -1); S.err = '';
+      S.expr = S.expr.slice(0, -1);
       $('i-expr').value = S.expr;
-      renderErr(); renderHint();
+      invalidateResult(); renderHint();
       return;
     }
     if (k === 'eq') { calc(); return; }
     var map = { div: ' ÷ ', mul: ' × ', add: ' + ', sub: ' − ', ft: "'", in: '"', fr: '/', sp: ' ' };
     S.expr = S.expr + (map[k] !== undefined ? map[k] : k);
-    S.err = '';
     $('i-expr').value = S.expr;
-    renderErr(); renderHint();
+    invalidateResult(); renderHint();
   }
 
   function calc() {
     var p = parseExpr(S.expr);
-    S.err = p.err || ''; S.res = p.res || null; S.copied = '';
-    updateCopyLabels(); renderErr(); renderResult();
+    S.err = p.err || ''; S.res = p.res || null;
+    resetCopyState(); renderErr(); renderResult();
   }
 
   // ---- 渲染 ----
   function renderErr() {
     $('len-err').hidden = !S.err;
     $('len-err').textContent = S.err;
+    $('i-expr').setAttribute('aria-invalid', String(!!S.err));
+    if (S.err) $('i-expr').setAttribute('aria-describedby', 'len-err');
+    else $('i-expr').removeAttribute('aria-describedby');
     if (S.err) $('len-res').hidden = true;
     else renderResult();
   }
@@ -731,6 +624,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
       var val = document.createElement('span'); val.className = 'v'; val.textContent = v.rows[i].v;
       row.appendChild(k); row.appendChild(val); box.appendChild(row);
     }
+    announceResult(v.kind, v.main);
   }
 
   // ---- scale tab ----
@@ -748,8 +642,6 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
       b.addEventListener('click', (function (ix) {
         return function () {
           if (side === 'f') S.fi = ix; else S.ti = ix;
-          S.copied = '';
-          updateCopyLabels();
           renderScale();
         };
       })(idx));
@@ -768,45 +660,78 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
   }
 
   function renderScale() {
+    resetCopyState();
     markChips('chips-from', S.fi);
     markChips('chips-to', S.ti);
     $('i-cuF').hidden = S.fi !== -1;
     $('i-cuT').hidden = S.ti !== -1;
 
     var cuF = $('i-cuF').value, cuT = $('i-cuT').value;
-    var sErr = '';
+    var sErr = '', sErrField = null;
     var fFrom = sideFr(S.fi, cuF);
     var fTo = sideFr(S.ti, cuT);
-    if (S.fi === -1 && (cuF || '').trim() && (!fFrom || fFrom.n <= 0)) sErr = 'FROM custom scale: enter paper inches per 1′-0″, greater than 0 — e.g. 1/64 or 1.5';
-    else if (S.ti === -1 && (cuT || '').trim() && (!fTo || fTo.n <= 0)) sErr = 'TO custom scale: enter paper inches per 1′-0″, greater than 0 — e.g. 3';
+    if (S.fi === -1 && (cuF || '').trim() && (!fFrom || fFrom.n <= 0)) {
+      sErr = 'FROM custom scale: enter paper inches per 1′-0″, greater than 0 — e.g. 1/64 or 1.5';
+      sErrField = 'i-cuF';
+    } else if (S.ti === -1 && (cuT || '').trim() && (!fTo || fTo.n <= 0)) {
+      sErr = 'TO custom scale: enter paper inches per 1′-0″, greater than 0 — e.g. 3';
+      sErrField = 'i-cuT';
+    }
     var sOk = !sErr && fFrom && fFrom.n > 0 && fTo && fTo.n > 0;
 
     $('s-err').hidden = !sErr;
     $('s-err').textContent = sErr;
+    ['i-cuF', 'i-cuT'].forEach(function (id) {
+      var invalid = id === sErrField;
+      $(id).setAttribute('aria-invalid', String(invalid));
+      if (invalid) $(id).setAttribute('aria-describedby', 's-err');
+      else $(id).removeAttribute('aria-describedby');
+    });
     $('s-res').hidden = !sOk;
-    if (!sOk) return;
+    if (!sOk) {
+      if (!$('panel-scale').hidden) clearResultAnnouncement();
+      return;
+    }
 
     var F = fDiv(fTo, fFrom);
     if (!F) {
       $('s-res').hidden = true;
       $('s-err').hidden = false;
       $('s-err').textContent = 'Scale ratio is outside the supported numeric range — use smaller values.';
+      ['i-cuF', 'i-cuT'].forEach(function (id) {
+        $(id).setAttribute('aria-invalid', 'true');
+        $(id).setAttribute('aria-describedby', 's-err');
+      });
+      if (!$('panel-scale').hidden) clearResultAnnouncement();
       return;
     }
-    var v = F.n / F.d;
+    var relative = fAdd(F, fr(-1));
+    if (!relative) {
+      $('s-res').hidden = true;
+      $('s-err').hidden = false;
+      $('s-err').textContent = 'Scale difference is outside the supported numeric range — use smaller values.';
+      ['i-cuF', 'i-cuT'].forEach(function (id) {
+        $(id).setAttribute('aria-invalid', 'true');
+        $(id).setAttribute('aria-describedby', 's-err');
+      });
+      if (!$('panel-scale').hidden) clearResultAnnouncement();
+      return;
+    }
+    var direction = Core.compareFractions(F, fr(1));
     $('s-mult').textContent = decStr(F, 2) + '×';
-    var word = v > 1 ? 'Enlarge' : (v < 1 ? 'Reduce' : 'No Change');
+    var word = direction > 0 ? 'Enlarge' : (direction < 0 ? 'Reduce' : 'No Change');
     var badge = $('s-badge');
     badge.textContent = word;
-    badge.className = 'badge ' + (v > 1 ? 'up' : (v < 1 ? 'down' : 'same'));
-    var rel = (v - 1) * 100;
-    var sPrinter = (rel > 0 ? '+' : rel < 0 ? '−' : '') + Math.abs(rel).toFixed(2).replace(/0+$/, '').replace(/\.$/, '') + '%';
-    var sInd = (v * 100).toFixed(2).replace(/0+$/, '').replace(/\.$/, '') + '%';
+    badge.className = 'badge ' + (direction > 0 ? 'up' : (direction < 0 ? 'down' : 'same'));
+    var relativeAbs = fr(Math.abs(relative.n), relative.d);
+    var sPrinter = (relative.n > 0 ? '+' : relative.n < 0 ? '−' : '') + Core.scaledDecStr(relativeAbs, 100, 2) + '%';
+    var sInd = Core.scaledDecStr(F, 100, 2) + '%';
     $('s-printer').textContent = sPrinter;
     $('s-ind').textContent = sInd;
     $('s-pair').textContent = sideLabel(S.fi, fFrom) + ' = 1′-0″  →  ' + sideLabel(S.ti, fTo) + ' = 1′-0″';
     $('copy-pr').onclick = function () { copyText(sPrinter, 'pr'); };
     $('copy-ind').onclick = function () { copyText(sInd, 'ind'); };
+    if (!$('panel-scale').hidden) announceResult('Drawing scale', decStr(F, 2) + ' times; ' + sPrinter);
   }
 
   // ---- tabs ----
@@ -827,7 +752,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
 
   // ---- wiring ----
   $('tab-len').addEventListener('click', function () { S.tab = 'length'; renderTabs(); });
-  $('tab-scale').addEventListener('click', function () { S.tab = 'scale'; renderTabs(); });
+  $('tab-scale').addEventListener('click', function () { S.tab = 'scale'; renderTabs(); renderScale(); });
   $('tab-tools').addEventListener('click', function () { S.tab = 'tools'; renderTabs(); });
   $('tabs').addEventListener('keydown', function (e) {
     var tabs = [$('tab-len'), $('tab-scale'), $('tab-tools')];
@@ -849,16 +774,18 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
     for (var i = 0; i < KEYS.length; i++) {
       var b = document.createElement('button');
       b.className = 'key' + (KEYS[i].cls ? ' ' + KEYS[i].cls : '');
+      b.type = 'button';
       b.textContent = KEYS[i].g;
       b.dataset.k = KEYS[i].k;
+      b.setAttribute('aria-label', KEYS[i].a);
       b.addEventListener('click', function () { press(this.dataset.k); });
       box.appendChild(b);
     }
   })();
 
   $('i-expr').addEventListener('input', function () {
-    S.expr = this.value; S.err = '';
-    renderErr(); renderHint();
+    S.expr = this.value;
+    invalidateResult(); renderHint();
   });
   $('i-expr').addEventListener('keydown', function (e) {
     if (e.key === 'Enter') calc();
@@ -906,23 +833,41 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
     return s;
   }
 
-  // 结果不在 1/16 网格上时,给出最近 1/16″ 及误差
-  function snapRow16(f) {
-    if (16 % f.d === 0) return null;
-    var r = fr(Math.round(f.n / f.d * 16), 16);
-    var delta = r.n / r.d - f.n / f.d;
-    if (Math.abs(delta) < 1e-12) return null;
-    return { k: 'Nearest 1/16″', v: fmtFtIn(r).main + ' (' + (delta >= 0 ? '+' : '−') + tnum(Math.abs(delta), 3) + '″)' };
+  var ERROR_FIELDS = {
+    mc: ['mc-in'], sp: ['sp-len', 'sp-n', 'sp-cu'], st: ['st-rise'], sm: ['sm-in'],
+    sl: ['sl-a', 'sl-b'], br: ['br-in'], at: ['at-in'], cv: ['cv-l', 'cv-w', 'cv-t'],
+    sg: ['sg-l', 'sg-w'], dr: ['dr-in'], sb: ['sb-ft']
+  };
+
+  function setFieldError(prefix, hasError) {
+    var ids = ERROR_FIELDS[prefix] || [];
+    for (var i = 0; i < ids.length; i++) {
+      var field = $(ids[i]);
+      if (!field) continue;
+      field.setAttribute('aria-invalid', String(hasError));
+      if (hasError) field.setAttribute('aria-describedby', prefix + '-err');
+      else field.removeAttribute('aria-describedby');
+    }
   }
 
   function tShow(prefix, out) {
     var eb = $(prefix + '-err'), rb = $(prefix + '-res');
-    if (!out) { if (eb) eb.hidden = true; if (rb) rb.hidden = true; return; }
-    if (out.err) {
-      if (eb) { eb.hidden = false; eb.textContent = out.err; }
+    var tool = rb ? rb.closest('.tool') : null;
+    if (!out) {
+      setFieldError(prefix, false);
+      if (eb) eb.hidden = true;
       if (rb) rb.hidden = true;
+      if (tool && !tool.hidden) clearResultAnnouncement();
       return;
     }
+    if (out.err) {
+      setFieldError(prefix, true);
+      if (eb) { eb.hidden = false; eb.textContent = out.err; }
+      if (rb) rb.hidden = true;
+      if (tool && !tool.hidden) clearResultAnnouncement();
+      return;
+    }
+    setFieldError(prefix, false);
     if (eb) eb.hidden = true;
     if (!rb) return;
     rb.hidden = false;
@@ -936,6 +881,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
       var v = document.createElement('span'); v.className = 'v'; v.textContent = out.rows[i].v;
       d.appendChild(k); d.appendChild(v); rows.appendChild(d);
     }
+    if (!tool || !tool.hidden) announceResult(out.kind || 'Result', out.main);
   }
 
   function mkChips(id, labels, cur, cb) {
@@ -961,16 +907,18 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
   }
 
   function openTool(id) {
+    clearResultAnnouncement();
     T.open = id;
     T.returnFocus = document.activeElement;
     $('tools-home').hidden = true;
     $('tool-view').hidden = false;
     var tools = document.querySelectorAll('#tool-view .tool');
     for (var i = 0; i < tools.length; i++) tools[i].hidden = tools[i].id !== 'tv-' + id;
-    var first = $('tv-' + id).querySelector('input, button, [tabindex]');
-    if (first) setTimeout(function () { first.focus(); }, 0);
+    var first = $('tv-' + id).querySelector('[data-tool-title]') || $('tool-back');
+    setTimeout(function () { first.focus(); }, 0);
   }
   function closeTool() {
+    clearResultAnnouncement();
     T.open = null;
     $('tools-home').hidden = false;
     $('tool-view').hidden = true;
@@ -989,7 +937,8 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
       var mmv = fMul(num, fr({ mm: 1, cm: 10, m: 1000 }[m[2].toLowerCase()]));
       var inches = mmv ? fMul(mmv, fr(5, 127)) : null;
       if (!inches) return tShow('mc', { err: 'Numbers got too large — try smaller values.' });
-      var r = fr(Math.round(inches.n / inches.d * 16), 16);
+      var r = Core.roundToDenominator(inches, 16);
+      if (!r) return tShow('mc', { err: 'Rounded result is outside the supported range.' });
       var dMm = (r.n / r.d - inches.n / inches.d) * 25.4;
       return tShow('mc', {
         kind: 'METRIC → IMPERIAL', main: fmtFtIn(r).main, rows: [
@@ -1079,19 +1028,21 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
     var calc = Core.calculateStairs(rise, code.id);
     if (calc.err) return tShow('st', { err: calc.err });
     var n = calc.count, riser = calc.riser, rDec = calc.riserDec;
-    var tread = calc.tread, run = calc.run;
-    var rows = [{ k: 'Riser Exact', v: '≈ ' + decStr(riser, 3) + '″' }];
-    var sr = snapRow16(riser); if (sr) rows.push(sr);
-    rows.push({ k: 'Riser / Tread Reference', v: calc.passesDimensionalCheck ? 'WITHIN SELECTED RANGE' : 'OUTSIDE RANGE' });
+    var tread = calc.tread;
+    var rows = [
+      { k: 'Calculated Riser · Exact', v: fmtMixed(riser) + '″' },
+      { k: 'Calculated Riser · Decimal', v: '≈ ' + decStr(riser, 3) + '″' }
+    ];
+    rows.push({ k: 'Riser / Tread Reference', v: calc.withinDimensionalReference ? 'WITHIN SELECTED RANGE' : 'OUTSIDE RANGE' });
     rows.push({ k: 'Model Code Source', v: code.source });
     rows.push({ k: 'Treads', v: String(calc.treads) });
     rows.push({ k: 'Tread Suggestion', v: tnum(tread, 2) + '″ (min ' + code.minTread + '″)' });
-    rows.push({ k: 'Aggregate Tread Run', v: fmtFtIn(fr(Math.round(run * 16), 16)).main + ' · LANDINGS EXCLUDED' });
+    rows.push({ k: 'Aggregate Tread Run', v: fmtFtIn(calc.runFraction).main + ' · LANDINGS EXCLUDED' });
     rows.push({ k: 'Comfort Heuristic · Not Code', v: '2R + T ≈ ' + tnum(calc.comfort, 1) + '″' });
     if (calc.alternativeCount) rows.push({ k: 'Alt · ' + calc.alternativeCount + ' Risers', v: '≈ ' + decStr(calc.alternativeRiser, 2) + '″ each' });
     if (calc.flightWarning) rows.push({ k: 'Flight Warning', v: calc.flightWarning });
     rows.push({ k: 'Scope', v: code.scope });
-    return tShow('st', { kind: 'STAIR · ' + code.label, main: n + ' RISERS @ ' + decStr(riser, 2) + '″', rows: rows });
+    return tShow('st', { kind: 'STAIR · ' + code.label, main: n + ' RISERS @ ≈ ' + decStr(riser, 2) + '″', rows: rows });
   }
 
   // ---- Scale Measure ----
@@ -1113,7 +1064,8 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
     }
     var paper = fMul(fDiv(f, fr(12)), sc);
     if (!paper) return tShow('sm', { err: 'Numbers got too large.' });
-    var r32 = fr(Math.round(paper.n / paper.d * 32), 32);
+    var r32 = Core.roundToDenominator(paper, 32);
+    if (!r32) return tShow('sm', { err: 'Rounded result is outside the supported range.' });
     return tShow('sm', {
       kind: 'ACTUAL → PAPER', main: fmtMixed(paper) + '″ ON PAPER', rows: [
         { k: 'Nearest 1/32″', v: fmtMixed(r32) + '″' },
@@ -1141,30 +1093,28 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
   var SLMODES = ['x : 12', 'Percent', 'Degrees', 'Rise / Run'];
   function slCalc() {
     var aS = ($('sl-a').value || '').trim();
-    var slope;
+    var analysis;
     if (T.slMode === 3) {
       var bS = ($('sl-b').value || '').trim();
       if (!aS || !bS) return tShow('sl', null);
       var rise = parseLen(aS), run = parseLen(bS);
       if (!rise || !run) return tShow('sl', { err: 'Enter rise and run as lengths — e.g. 4" and 12\'-0"' });
-      if (run.n <= 0) return tShow('sl', { err: 'Run must be greater than 0.' });
-      slope = (rise.n / rise.d) / (run.n / run.d);
+      analysis = Core.analyzeSlope('riseRun', rise, run);
     } else {
       if (!aS) return tShow('sl', null);
       var num = parseNum(aS);
       if (!num) return tShow('sl', { err: 'Enter a number.' });
-      var v = num.n / num.d;
-      if (T.slMode === 2 && v >= 90) return tShow('sl', { err: 'Degrees must be from 0 up to, but not including, 90°.' });
-      slope = T.slMode === 0 ? v / 12 : T.slMode === 1 ? v / 100 : Math.tan(v * Math.PI / 180);
+      analysis = Core.analyzeSlope(['pitch', 'percent', 'degrees'][T.slMode], num);
     }
-    if (!(slope >= 0) || !isFinite(slope)) return tShow('sl', { err: 'Slope must be 0 or more.' });
+    if (analysis.err) return tShow('sl', { err: analysis.err });
+    var slope = analysis.slope;
     return tShow('sl', {
       kind: 'SLOPE', main: tnum(slope * 12, 2) + ' : 12', rows: [
         { k: 'Percent', v: tnum(slope * 100, 2) + '%' },
         { k: 'Degrees', v: tnum(Math.atan(slope) * 180 / Math.PI, 2) + '°' },
         { k: 'Ratio', v: slope > 0 ? '1 : ' + tnum(1 / slope, 1) : 'FLAT' },
         { k: 'Slope Factor', v: tnum(Math.sqrt(1 + slope * slope), 4) },
-        { k: '2010 ADA §405.2 Reference', v: slope <= 1 / 12 + 1e-9 ? 'AT / BELOW 1:12' : 'STEEPER THAN 1:12' },
+        { k: '2010 ADA §405.2 Running-Slope Reference', v: analysis.atOrBelowOneInTwelve ? 'AT / BELOW 1:12' : 'STEEPER THAN 1:12' },
         { k: 'Accessibility', v: 'RUNNING-SLOPE SCREEN ONLY · NOT A COMPLIANCE DETERMINATION' }
       ]
     });
@@ -1218,7 +1168,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
     }
     list.textContent = lines.join('\n');
     list.hidden = false;
-    var tFt2 = fr(totalIn2.n, totalIn2.d * 144) || null;
+    var tFt2 = fDiv(totalIn2, fr(144));
     var totDec = totalIn2.n / totalIn2.d / 144;
     tShow('at', {
       kind: 'AREA TALLY · ' + T.at.length + (T.at.length > 1 ? ' ROOMS' : ' ROOM'),
@@ -1229,18 +1179,32 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
       ]
     });
   }
+
+  function atEntryError(message) {
+    setFieldError('at', true);
+    $('at-err').hidden = false;
+    $('at-err').textContent = message;
+    if (!T.at.length) $('at-res').hidden = true;
+    clearResultAnnouncement();
+  }
+
+  function clearAtEntryError() {
+    setFieldError('at', false);
+    $('at-err').hidden = true;
+  }
+
   function atAdd() {
     var s = ($('at-in').value || '').trim();
     if (!s) return;
     var p = parseExpr(s);
-    if (p.err) return tShow('at', { err: p.err });
-    if (p.res.type !== 'area') return tShow('at', { err: 'Enter Length × Length — e.g. 12\'6" × 14\'' });
+    if (p.err) return atEntryError(p.err);
+    if (p.res.type !== 'area') return atEntryError('Enter Length × Length — e.g. 12\'6" × 14\'');
     var pendingTotal = fr(0);
     for (var i = 0; i < T.at.length; i++) {
       pendingTotal = fAdd(pendingTotal, T.at[i].f);
-      if (!pendingTotal) return tShow('at', { err: 'Area total is outside the supported numeric range.' });
+      if (!pendingTotal) return atEntryError('Area total is outside the supported numeric range.');
     }
-    if (!fAdd(pendingTotal, p.res.f)) return tShow('at', { err: 'This room would make the area total exceed the supported range.' });
+    if (!fAdd(pendingTotal, p.res.f)) return atEntryError('This room would make the area total exceed the supported range.');
     T.at.push({ label: s, f: p.res.f });
     $('at-in').value = '';
     atRender();
@@ -1354,7 +1318,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
     var scIn = PRE[T.sbScale][1] / PRE[T.sbScale][2];
     var wIn = ft * scIn;
     var W = wIn * 96, H = 34, seg = W / 4;
-    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + tnum(wIn, 3) + 'in" height="0.354in" viewBox="0 0 ' + tnum(W, 2) + ' ' + H + '" font-family="Menlo,monospace">';
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Scale bar from 0 to ' + ft + ' feet at ' + PRE[T.sbScale][0] + ' scale" width="' + tnum(wIn, 3) + 'in" height="0.354in" viewBox="0 0 ' + tnum(W, 2) + ' ' + H + '" font-family="Menlo,monospace">';
     for (var i = 0; i < 4; i++)
       svg += '<rect x="' + tnum(i * seg, 2) + '" y="0" width="' + tnum(seg, 2) + '" height="14" fill="' + (i % 2 ? '#fff' : '#22242B') + '" stroke="#22242B" stroke-width="1"/>';
     for (var j = 0; j <= 4; j++) {
@@ -1366,6 +1330,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
     prev.innerHTML = svg;
     prev.hidden = false;
     dl.hidden = false;
+    if (!$('tv-sb').hidden) announceResult('Scale bar', ft + ' feet at ' + PRE[T.sbScale][0] + ' scale');
   }
   function sbDownload() {
     if (!T.sbSvg) return;
@@ -1433,6 +1398,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
 
     $('at-add').addEventListener('click', atAdd);
     $('at-in').addEventListener('keydown', function (e) { if (e.key === 'Enter') atAdd(); });
+    $('at-in').addEventListener('input', clearAtEntryError);
     $('at-undo').addEventListener('click', function () { T.at.pop(); atRender(); });
     $('at-clear').addEventListener('click', function () { T.at = []; atRender(); });
     $('at-list').style.whiteSpace = 'pre-line';
@@ -1453,6 +1419,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #2563A8;outline-offse
     sbCalc();
   }
 
+  updateCopyLabels();
   renderTabs();
   renderHint();
   renderScale();

@@ -1,3 +1,4 @@
 wechat-miniprogram/
 上架指南.md
 .DS_Store
+node_modules/
