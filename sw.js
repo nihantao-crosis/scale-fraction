@@ -1,5 +1,5 @@
 /* 离线缓存:安装时全量缓存,之后缓存优先。改动文件后把版本号 +1 即可让客户端更新 */
-var CACHE = 'sf-calc-v4';
+var CACHE = 'sf-calc-v5';
 var ASSETS = [
   './',
   './index.html',

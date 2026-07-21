@@ -90,11 +90,34 @@ button,input{text-transform:uppercase}
 .copy-sm:active{transform:scale(.96)}
 .s-note{font-size:10.5px;line-height:1.5;color:#9A6614;background:#FDF3DD;border-radius:8px;padding:7px 10px;margin-top:6px}
 
+/* ---- Tools tab ---- */
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tcard{display:flex;flex-direction:column;gap:3px;align-items:flex-start;text-align:left;padding:11px 12px;border:1px solid rgba(0,0,0,.05);border-radius:12px;background:#fff;cursor:pointer;font-family:inherit;box-shadow:0 2px 10px rgba(18,18,22,.04)}
+.tcard:active{transform:scale(.97)}
+.tcard .tn{font-size:12px;font-weight:700;color:#A61E4D}
+.tcard .td{font-size:9.5px;color:#9AA0AB;line-height:1.35}
+.back-btn{align-self:flex-start;padding:5px 12px;border-radius:999px;border:1.5px solid #EFD5E1;background:#fff;color:#4A4D57;cursor:pointer;font-size:11px;font-weight:600;font-family:inherit}
+.tool{display:flex;flex-direction:column;gap:12px}
+.tin{width:100%;padding:9px 12px;font-size:14px;font-family:inherit;color:#22242B;background:#FAF4F7;border:1.5px solid #EFD5E1;border-radius:10px;outline:none}
+.tin:focus{border-color:#D6336C;background:#fff}
+.lbl.mt{margin-top:10px}
+.res-main.sm{font-size:22px}
+.pos{max-height:130px;overflow:auto;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:#4A4D57;background:#fff;border-radius:12px;padding:10px 12px;line-height:1.7;box-shadow:0 2px 10px rgba(18,18,22,.06)}
+.mini-btn{padding:8px 12px;border:none;border-radius:8px;background:#FAF4F7;color:#4A4D57;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
+.mini-btn:active{transform:scale(.95)}
+.mini-btn.add{background:#D6336C;color:#fff}
+.at-btns{display:flex;gap:8px}
+.sb-prev{background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 10px rgba(18,18,22,.06);overflow-x:auto}
+.sb-prev svg{display:block;max-width:100%;height:auto}
+.ok-badge{color:#2B8A3E;font-weight:700}
+.bad-badge{color:#C92A2A;font-weight:700}
+
 [hidden]{display:none !important}
 
 @media (max-width:430px){
   .wrap{padding:12px 10px 40px}
   .card{width:100%;border-radius:14px}
+  .seg button{font-size:11px;white-space:nowrap}
 }
 </style>
 </head>
@@ -113,8 +136,9 @@ button,input{text-transform:uppercase}
     <div class="content">
 
       <div class="seg" id="tabs">
-        <button id="tab-len" class="on">Length &amp; Fractions</button>
+        <button id="tab-len" class="on">Calculator</button>
         <button id="tab-scale">Drawing Scale</button>
+        <button id="tab-tools">Tools</button>
       </div>
 
       <!-- ============ Length & fractions:表达式计算器 ============ -->
@@ -193,6 +217,197 @@ button,input{text-transform:uppercase}
             </span>
           </div>
           <div class="s-note">Relative Increment &mdash; Some Print Drivers Expect The Absolute % (The InDesign Value) In Their Scale Field. Check Yours Once.</div>
+        </div>
+      </div>
+
+      <!-- ============ Tools ============ -->
+      <div class="panel" id="panel-tools" hidden>
+
+        <div class="tgrid" id="tools-home">
+          <button class="tcard" data-tool="mc"><span class="tn">Metric &#8646; Imperial</span><span class="td">mm &middot; cm &middot; m &harr; ft-in 1/16&Prime;</span></button>
+          <button class="tcard" data-tool="sp"><span class="tn">Spacing &middot; Layout</span><span class="td">Equal parts &middot; 16&Prime; o.c.</span></button>
+          <button class="tcard" data-tool="st"><span class="tn">Stair Calculator</span><span class="td">Risers &middot; treads &middot; IRC/IBC</span></button>
+          <button class="tcard" data-tool="sm"><span class="tn">Scale Measure</span><span class="td">Paper &harr; actual size</span></button>
+          <button class="tcard" data-tool="sc2"><span class="tn">Sheet Coverage</span><span class="td">What fits on ARCH D</span></button>
+          <button class="tcard" data-tool="sl"><span class="tn">Slope &middot; Pitch</span><span class="td">x:12 &middot; % &middot; deg &middot; ADA</span></button>
+          <button class="tcard" data-tool="br"><span class="tn">Brick Coursing</span><span class="td">8&Prime; module check</span></button>
+          <button class="tcard" data-tool="at"><span class="tn">Area Tally</span><span class="td">Add up rooms ft&sup2; &middot; m&sup2;</span></button>
+          <button class="tcard" data-tool="cv"><span class="tn">Concrete</span><span class="td">Slab volume in yd&sup3;</span></button>
+          <button class="tcard" data-tool="sg"><span class="tn">Sheet Goods</span><span class="td">4&times;8 sheet count</span></button>
+          <button class="tcard" data-tool="dr"><span class="tn">Door Size</span><span class="td">3068 &rarr; 3&prime;-0&Prime;&times;6&prime;-8&Prime;</span></button>
+          <button class="tcard" data-tool="ps"><span class="tn">Print Scaling</span><span class="td">ARCH D &rarr; 11&times;17 %</span></button>
+          <button class="tcard" data-tool="ms"><span class="tn">Metric Scales</span><span class="td">1/8&Prime; &asymp; 1:100 chart</span></button>
+          <button class="tcard" data-tool="sb"><span class="tn">Scale Bar</span><span class="td">SVG download</span></button>
+        </div>
+
+        <div id="tool-view" hidden>
+          <button class="back-btn" id="tool-back">&larr; All Tools</button>
+
+          <div class="tool" id="tv-mc" hidden>
+            <div class="box">
+              <label class="lbl">Value <span class="hint">2440mm &middot; 2.44m &middot; 3'-6"</span></label>
+              <input id="mc-in" class="tin" placeholder="2440 mm">
+            </div>
+            <div class="err" id="mc-err" hidden></div>
+            <div class="result" id="mc-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
+          </div>
+
+          <div class="tool" id="tv-sp" hidden>
+            <div class="box">
+              <div class="chips" id="sp-mode"></div>
+              <label class="lbl mt">Total Length</label>
+              <input id="sp-len" class="tin" placeholder="12'-6&quot;">
+              <div id="sp-eq-row">
+                <label class="lbl mt">Parts</label>
+                <input id="sp-n" class="tin" inputmode="numeric" placeholder="5">
+              </div>
+              <div id="sp-oc-row" hidden>
+                <label class="lbl mt">Spacing</label>
+                <div class="chips" id="sp-oc"></div>
+                <input id="sp-cu" class="tin" style="margin-top:8px" placeholder='Custom &mdash; e.g. 32"' hidden>
+              </div>
+            </div>
+            <div class="err" id="sp-err" hidden></div>
+            <div class="result" id="sp-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
+            <div class="pos" id="sp-pos" hidden></div>
+          </div>
+
+          <div class="tool" id="tv-st" hidden>
+            <div class="box">
+              <label class="lbl">Total Rise <span class="hint">floor to floor</span></label>
+              <input id="st-rise" class="tin" placeholder="9'-1 1/2&quot;">
+              <label class="lbl mt">Code</label>
+              <div class="chips" id="st-code"></div>
+            </div>
+            <div class="err" id="st-err" hidden></div>
+            <div class="result" id="st-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
+          </div>
+
+          <div class="tool" id="tv-sm" hidden>
+            <div class="box">
+              <div class="chips" id="sm-mode"></div>
+              <label class="lbl mt">Scale</label>
+              <div class="chips" id="sm-scale"></div>
+              <label class="lbl mt" id="sm-lbl">Paper Measurement</label>
+              <input id="sm-in" class="tin" placeholder='2 3/8"'>
+            </div>
+            <div class="err" id="sm-err" hidden></div>
+            <div class="result" id="sm-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
+          </div>
+
+          <div class="tool" id="tv-sc2" hidden>
+            <div class="box">
+              <label class="lbl">Sheet</label>
+              <div class="chips" id="sc2-sheet"></div>
+              <label class="lbl mt">Scale</label>
+              <div class="chips" id="sc2-scale"></div>
+            </div>
+            <div class="result" id="sc2-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
+            <div class="err" id="sc2-err" hidden></div>
+          </div>
+
+          <div class="tool" id="tv-sl" hidden>
+            <div class="box">
+              <div class="chips" id="sl-mode"></div>
+              <label class="lbl mt" id="sl-lbl-a">x <span class="hint">in x:12</span></label>
+              <input id="sl-a" class="tin" placeholder="4">
+              <div id="sl-b-row" hidden>
+                <label class="lbl mt">Run</label>
+                <input id="sl-b" class="tin" placeholder="12'-0&quot;">
+              </div>
+            </div>
+            <div class="err" id="sl-err" hidden></div>
+            <div class="result" id="sl-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
+          </div>
+
+          <div class="tool" id="tv-br" hidden>
+            <div class="box">
+              <div class="chips" id="br-mode"></div>
+              <label class="lbl mt">Dimension</label>
+              <input id="br-in" class="tin" placeholder="8'-8&quot;">
+            </div>
+            <div class="err" id="br-err" hidden></div>
+            <div class="result" id="br-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
+          </div>
+
+          <div class="tool" id="tv-at" hidden>
+            <div class="box">
+              <label class="lbl">Room <span class="hint">e.g. 12'6" &times; 14'</span></label>
+              <input id="at-in" class="tin" placeholder="12'6&quot; &times; 14'">
+              <div class="at-btns" style="margin-top:10px">
+                <button class="mini-btn add" id="at-add">+ Add</button>
+                <button class="mini-btn" id="at-undo">Undo</button>
+                <button class="mini-btn" id="at-clear">Clear</button>
+              </div>
+            </div>
+            <div class="err" id="at-err" hidden></div>
+            <div class="result" id="at-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
+            <div class="pos" id="at-list" hidden></div>
+          </div>
+
+          <div class="tool" id="tv-cv" hidden>
+            <div class="box">
+              <label class="lbl">Length</label>
+              <input id="cv-l" class="tin" placeholder="20'">
+              <label class="lbl mt">Width</label>
+              <input id="cv-w" class="tin" placeholder="12'">
+              <label class="lbl mt">Thickness</label>
+              <input id="cv-t" class="tin" placeholder='4"'>
+            </div>
+            <div class="err" id="cv-err" hidden></div>
+            <div class="result" id="cv-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
+          </div>
+
+          <div class="tool" id="tv-sg" hidden>
+            <div class="box">
+              <label class="lbl">Length</label>
+              <input id="sg-l" class="tin" placeholder="40'">
+              <label class="lbl mt">Height / Width</label>
+              <input id="sg-w" class="tin" placeholder="9'">
+            </div>
+            <div class="err" id="sg-err" hidden></div>
+            <div class="result" id="sg-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
+          </div>
+
+          <div class="tool" id="tv-dr" hidden>
+            <div class="box">
+              <label class="lbl">Door Shorthand <span class="hint">4 digits</span></label>
+              <input id="dr-in" class="tin" inputmode="numeric" placeholder="3068">
+            </div>
+            <div class="err" id="dr-err" hidden></div>
+            <div class="result" id="dr-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
+          </div>
+
+          <div class="tool" id="tv-ps" hidden>
+            <div class="box">
+              <label class="lbl">From Sheet</label>
+              <div class="chips" id="ps-from"></div>
+              <label class="lbl mt">To Sheet</label>
+              <div class="chips" id="ps-to"></div>
+            </div>
+            <div class="result" id="ps-res" hidden><div class="res-tag"></div><div class="res-main sm"></div><div class="rows"></div></div>
+            <div class="err" id="ps-err" hidden></div>
+          </div>
+
+          <div class="tool" id="tv-ms" hidden>
+            <div class="result" id="ms-table">
+              <div class="res-tag">Imperial &harr; Metric Scales</div>
+              <div class="rows" id="ms-rows"></div>
+            </div>
+          </div>
+
+          <div class="tool" id="tv-sb" hidden>
+            <div class="box">
+              <label class="lbl">Scale</label>
+              <div class="chips" id="sb-scale"></div>
+              <label class="lbl mt">Bar Length <span class="hint">feet, 4 segments</span></label>
+              <input id="sb-ft" class="tin" inputmode="numeric" value="40" placeholder="40">
+            </div>
+            <div class="err" id="sb-err" hidden></div>
+            <div class="sb-prev" id="sb-prev" hidden></div>
+            <div class="at-btns"><button class="mini-btn add" id="sb-dl" hidden>Download SVG</button></div>
+          </div>
+
         </div>
       </div>
 
@@ -339,7 +554,10 @@ button,input{text-transform:uppercase}
   function resultView(R) {
     if (R.type === 'len') {
       var m = fmtFtIn(R.f);
-      return { kind: 'RESULT · LENGTH', main: m.main, rows: [{ k: 'Total Inches', v: m.totalIn }, { k: 'Decimal', v: '≈ ' + m.dec }] };
+      var rows = [{ k: 'Total Inches', v: m.totalIn }, { k: 'Decimal', v: '≈ ' + m.dec }];
+      var sr = snapRow16(R.f);
+      if (sr) rows.push(sr);
+      return { kind: 'RESULT · LENGTH', main: m.main, rows: rows };
     }
     if (R.type === 'area') {
       var sqin = R.f, sqft = fr(sqin.n, sqin.d * 144);
@@ -522,13 +740,16 @@ button,input{text-transform:uppercase}
   function renderTabs() {
     $('tab-len').classList.toggle('on', S.tab === 'length');
     $('tab-scale').classList.toggle('on', S.tab === 'scale');
+    $('tab-tools').classList.toggle('on', S.tab === 'tools');
     $('panel-len').hidden = S.tab !== 'length';
     $('panel-scale').hidden = S.tab !== 'scale';
+    $('panel-tools').hidden = S.tab !== 'tools';
   }
 
   // ---- wiring ----
   $('tab-len').addEventListener('click', function () { S.tab = 'length'; renderTabs(); });
   $('tab-scale').addEventListener('click', function () { S.tab = 'scale'; renderTabs(); });
+  $('tab-tools').addEventListener('click', function () { S.tab = 'tools'; renderTabs(); });
 
   (function buildKeypad() {
     var box = $('keypad');
@@ -564,9 +785,550 @@ button,input{text-transform:uppercase}
     renderScale();
   });
 
+  // ================= TOOLS =================
+  var T = {
+    open: null,
+    spMode: 0, spOc: 1,
+    stCode: 0,
+    smMode: 0, smScale: 4,
+    sc2Sheet: 3, sc2Scale: 2,
+    slMode: 0,
+    brMode: 0,
+    at: [],
+    psFrom: 3, psTo: 6,
+    sbScale: 4, sbSvg: ''
+  };
+
+  var SHEETS = [
+    ['ARCH A 9×12', 9, 12], ['ARCH B 12×18', 12, 18], ['ARCH C 18×24', 18, 24],
+    ['ARCH D 24×36', 24, 36], ['ARCH E 36×48', 36, 48], ['ARCH E1 30×42', 30, 42],
+    ['11×17', 11, 17], ['LETTER 8.5×11', 8.5, 11]
+  ];
+
+  // 浮点显示:toFixed 后去尾零(与 decStr 同规则)
+  function tnum(x, dp) {
+    var s = x.toFixed(dp);
+    if (s.indexOf('.') >= 0) s = s.replace(/0+$/, '').replace(/\.$/, '');
+    return s;
+  }
+
+  // 结果不在 1/16 网格上时,给出最近 1/16″ 及误差
+  function snapRow16(f) {
+    if (16 % f.d === 0) return null;
+    var r = fr(Math.round(f.n / f.d * 16), 16);
+    var delta = r.n / r.d - f.n / f.d;
+    if (Math.abs(delta) < 1e-12) return null;
+    return { k: 'Nearest 1/16″', v: fmtFtIn(r).main + ' (' + (delta >= 0 ? '+' : '−') + tnum(Math.abs(delta), 3) + '″)' };
+  }
+
+  function tShow(prefix, out) {
+    var eb = $(prefix + '-err'), rb = $(prefix + '-res');
+    if (!out) { if (eb) eb.hidden = true; if (rb) rb.hidden = true; return; }
+    if (out.err) {
+      if (eb) { eb.hidden = false; eb.textContent = out.err; }
+      if (rb) rb.hidden = true;
+      return;
+    }
+    if (eb) eb.hidden = true;
+    if (!rb) return;
+    rb.hidden = false;
+    rb.querySelector('.res-tag').textContent = out.kind || 'RESULT';
+    rb.querySelector('.res-main').textContent = out.main;
+    var rows = rb.querySelector('.rows');
+    rows.textContent = '';
+    for (var i = 0; i < (out.rows || []).length; i++) {
+      var d = document.createElement('div'); d.className = 'row';
+      var k = document.createElement('span'); k.className = 'k'; k.textContent = out.rows[i].k;
+      var v = document.createElement('span'); v.className = 'v'; v.textContent = out.rows[i].v;
+      d.appendChild(k); d.appendChild(v); rows.appendChild(d);
+    }
+  }
+
+  function mkChips(id, labels, cur, cb) {
+    var box = $(id); box.textContent = '';
+    labels.forEach(function (lb, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip' + (i === cur ? ' on' : '');
+      b.textContent = lb;
+      b.addEventListener('click', function () {
+        var bs = box.querySelectorAll('.chip');
+        for (var j = 0; j < bs.length; j++) bs[j].classList.remove('on');
+        b.classList.add('on');
+        cb(i);
+      });
+      box.appendChild(b);
+    });
+  }
+
+  function openTool(id) {
+    T.open = id;
+    $('tools-home').hidden = true;
+    $('tool-view').hidden = false;
+    var tools = document.querySelectorAll('#tool-view .tool');
+    for (var i = 0; i < tools.length; i++) tools[i].hidden = tools[i].id !== 'tv-' + id;
+  }
+  function closeTool() {
+    T.open = null;
+    $('tools-home').hidden = false;
+    $('tool-view').hidden = true;
+  }
+
+  // ---- Metric ⇄ Imperial ----
+  function mcCalc() {
+    var s = ($('mc-in').value || '').trim();
+    if (!s) return tShow('mc', null);
+    var m = s.match(/^([\d.\s\/]+?)\s*(mm|cm|m)$/i);
+    if (m) {
+      var num = parseNum(m[1].trim());
+      if (!num) return tShow('mc', { err: 'Could not read the number — try 2440mm, 244cm or 2.44m' });
+      var mmv = fMul(num, fr({ mm: 1, cm: 10, m: 1000 }[m[2].toLowerCase()]));
+      var inches = mmv ? fMul(mmv, fr(5, 127)) : null;
+      if (!inches) return tShow('mc', { err: 'Numbers got too large — try smaller values.' });
+      var r = fr(Math.round(inches.n / inches.d * 16), 16);
+      var dMm = (r.n / r.d - inches.n / inches.d) * 25.4;
+      return tShow('mc', {
+        kind: 'METRIC → IMPERIAL', main: fmtFtIn(r).main, rows: [
+          { k: 'Rounding Error', v: (dMm >= 0 ? '+' : '−') + Math.abs(dMm).toFixed(2) + ' mm' },
+          { k: 'Exact', v: '≈ ' + decStr(inches, 3) + '″' },
+          { k: 'Input', v: decStr(fDiv(mmv, fr(1000)), 4) + ' m' }
+        ]
+      });
+    }
+    var f = parseLen(s);
+    if (!f) return tShow('mc', { err: 'Could not read “' + s + '” — add mm/cm/m for metric, ′/″ for imperial' });
+    var mm2 = fMul(f, fr(127, 5));
+    if (!mm2) return tShow('mc', { err: 'Numbers got too large — try smaller values.' });
+    return tShow('mc', {
+      kind: 'IMPERIAL → METRIC', main: decStr(mm2, 1) + ' mm', rows: [
+        { k: 'Meters', v: '≈ ' + decStr(fDiv(mm2, fr(1000)), 4) + ' m' },
+        { k: 'Input', v: fmtFtIn(f).main + ' = ' + decStr(f, 3) + '″' }
+      ]
+    });
+  }
+
+  // ---- Spacing / Layout ----
+  function spCalc() {
+    var pos = $('sp-pos');
+    pos.hidden = true;
+    var lenS = ($('sp-len').value || '').trim();
+    if (!lenS) return tShow('sp', null);
+    var L = parseLen(lenS);
+    if (!L) return tShow('sp', { err: 'Could not read the total length — try 12\'-6"' });
+    if (L.n <= 0) return tShow('sp', { err: 'Total length must be greater than 0.' });
+    if (T.spMode === 0) {
+      var nS = ($('sp-n').value || '').trim();
+      if (!nS) return tShow('sp', null);
+      if (!/^\d+$/.test(nS)) return tShow('sp', { err: 'Parts must be a whole number.' });
+      var n = parseInt(nS, 10);
+      if (n < 2 || n > 500) return tShow('sp', { err: 'Parts must be between 2 and 500.' });
+      var seg = fDiv(L, fr(n));
+      var rows = [{ k: 'Decimal', v: '≈ ' + decStr(seg, 3) + '″' }];
+      var sr = snapRow16(seg); if (sr) rows.push(sr);
+      rows.push({ k: 'Division Points', v: String(n - 1) });
+      var pts = [];
+      for (var i = 1; i < n && i <= 120; i++) pts.push(fmtFtIn(fMul(seg, fr(i))).main);
+      if (n - 1 > 120) pts.push('…');
+      pos.textContent = pts.join('  ·  ');
+      pos.hidden = false;
+      return tShow('sp', { kind: 'EQUAL PARTS', main: n + ' × ' + fmtFtIn(seg).main, rows: rows });
+    }
+    var OC = [fr(12), fr(16), fr(96, 5), fr(24)];
+    var sFr;
+    if (T.spOc === 4) {
+      var cuS = ($('sp-cu').value || '').trim();
+      if (!cuS) return tShow('sp', null);
+      sFr = parseLen(cuS);
+      if (!sFr) return tShow('sp', { err: 'Could not read the custom spacing — try 32"' });
+    } else sFr = OC[T.spOc];
+    if (sFr.n <= 0) return tShow('sp', { err: 'Spacing must be greater than 0.' });
+    var bays = Math.floor((L.n / L.d) / (sFr.n / sFr.d) + 1e-9);
+    var used = fMul(sFr, fr(bays));
+    var rem = fAdd(L, fr(-used.n, used.d));
+    var rows2 = [
+      { k: 'Full Bays @ ' + fmtMixed(sFr) + '″', v: String(bays) },
+      { k: 'End Remainder', v: rem.n === 0 ? 'ON MODULE' : fmtFtIn(rem).main }
+    ];
+    var pts2 = [];
+    for (var j = 0; j <= bays && j <= 120; j++) pts2.push(fmtFtIn(fMul(sFr, fr(j))).main);
+    if (bays > 120) pts2.push('…');
+    pos.textContent = pts2.join('  ·  ');
+    pos.hidden = false;
+    return tShow('sp', { kind: 'ON-CENTER', main: (bays + 1) + ' @ ' + fmtMixed(sFr) + '″ O.C.', rows: rows2 });
+  }
+
+  // ---- Stairs ----
+  var STCODES = [
+    { label: 'IRC · Max 7 3/4″', max: 7.75, minT: 10 },
+    { label: 'IBC · Max 7″', max: 7, minT: 11 }
+  ];
+  function stCalc() {
+    var s = ($('st-rise').value || '').trim();
+    if (!s) return tShow('st', null);
+    var rise = parseLen(s);
+    if (!rise) return tShow('st', { err: 'Could not read the rise — try 9\'-1 1/2"' });
+    if (rise.n <= 0) return tShow('st', { err: 'Rise must be greater than 0.' });
+    var code = STCODES[T.stCode];
+    var riseDec = rise.n / rise.d;
+    var n = Math.ceil(riseDec / code.max - 1e-9);
+    if (n < 2) n = 2;
+    var riser = fDiv(rise, fr(n));
+    var rDec = riser.n / riser.d;
+    var tread = Math.max(code.minT, Math.round((25 - 2 * rDec) * 4) / 4);
+    var run = (n - 1) * tread;
+    var rows = [{ k: 'Riser Exact', v: '≈ ' + decStr(riser, 3) + '″' }];
+    var sr = snapRow16(riser); if (sr) rows.push(sr);
+    rows.push({ k: 'Code Check', v: rDec <= code.max + 1e-9 ? 'OK · ≤ ' + code.max + '″' : 'OVER MAX' });
+    rows.push({ k: 'Treads', v: String(n - 1) });
+    rows.push({ k: 'Tread Suggestion', v: tnum(tread, 2) + '″ (min ' + code.minT + '″)' });
+    rows.push({ k: 'Total Run', v: fmtFtIn(fr(Math.round(run * 16), 16)).main });
+    rows.push({ k: '2R + T Comfort', v: '≈ ' + tnum(2 * rDec + tread, 1) + '″ (24–26 ideal)' });
+    rows.push({ k: 'Alt · ' + (n + 1) + ' Risers', v: '≈ ' + decStr(fDiv(rise, fr(n + 1)), 2) + '″ each' });
+    return tShow('st', { kind: 'STAIR · ' + code.label, main: n + ' RISERS @ ' + decStr(riser, 2) + '″', rows: rows });
+  }
+
+  // ---- Scale Measure ----
+  function smCalc() {
+    var s = ($('sm-in').value || '').trim();
+    if (!s) return tShow('sm', null);
+    var sc = fr(PRE[T.smScale][1], PRE[T.smScale][2]);
+    var f = parseLen(s);
+    if (!f) return tShow('sm', { err: 'Could not read “' + s + '”' });
+    if (T.smMode === 0) {
+      var act = fMul(fDiv(f, sc), fr(12));
+      if (!act) return tShow('sm', { err: 'Numbers got too large.' });
+      return tShow('sm', {
+        kind: 'PAPER → ACTUAL', main: fmtFtIn(act).main, rows: [
+          { k: 'Decimal', v: '≈ ' + decStr(fDiv(act, fr(12)), 2) + '′' },
+          { k: 'At Scale', v: PRE[T.smScale][0] + ' = 1′-0″' }
+        ]
+      });
+    }
+    var paper = fMul(fDiv(f, fr(12)), sc);
+    if (!paper) return tShow('sm', { err: 'Numbers got too large.' });
+    var r32 = fr(Math.round(paper.n / paper.d * 32), 32);
+    return tShow('sm', {
+      kind: 'ACTUAL → PAPER', main: fmtMixed(paper) + '″ ON PAPER', rows: [
+        { k: 'Nearest 1/32″', v: fmtMixed(r32) + '″' },
+        { k: 'Decimal', v: '≈ ' + decStr(paper, 3) + '″' },
+        { k: 'At Scale', v: PRE[T.smScale][0] + ' = 1′-0″' }
+      ]
+    });
+  }
+
+  // ---- Sheet Coverage ----
+  function sc2Calc() {
+    var sh = SHEETS[T.sc2Sheet];
+    var sc = fr(PRE[T.sc2Scale][1], PRE[T.sc2Scale][2]);
+    var wf = fDiv(fr(Math.round(sh[1] * 2), 2), sc);
+    var hf = fDiv(fr(Math.round(sh[2] * 2), 2), sc);
+    tShow('sc2', {
+      kind: sh[0] + ' @ ' + PRE[T.sc2Scale][0], main: decStr(wf, 1) + '′ × ' + decStr(hf, 1) + '′', rows: [
+        { k: '1″ On Paper', v: decStr(fDiv(fr(1), sc), 2) + '′' },
+        { k: 'Sheet', v: sh[1] + '″ × ' + sh[2] + '″' }
+      ]
+    });
+  }
+
+  // ---- Slope / Pitch ----
+  var SLMODES = ['x : 12', 'Percent', 'Degrees', 'Rise / Run'];
+  function slCalc() {
+    var aS = ($('sl-a').value || '').trim();
+    var slope;
+    if (T.slMode === 3) {
+      var bS = ($('sl-b').value || '').trim();
+      if (!aS || !bS) return tShow('sl', null);
+      var rise = parseLen(aS), run = parseLen(bS);
+      if (!rise || !run) return tShow('sl', { err: 'Enter rise and run as lengths — e.g. 4" and 12\'-0"' });
+      if (run.n <= 0) return tShow('sl', { err: 'Run must be greater than 0.' });
+      slope = (rise.n / rise.d) / (run.n / run.d);
+    } else {
+      if (!aS) return tShow('sl', null);
+      var num = parseNum(aS);
+      if (!num) return tShow('sl', { err: 'Enter a number.' });
+      var v = num.n / num.d;
+      slope = T.slMode === 0 ? v / 12 : T.slMode === 1 ? v / 100 : Math.tan(v * Math.PI / 180);
+    }
+    if (!(slope >= 0) || !isFinite(slope)) return tShow('sl', { err: 'Slope must be 0 or more.' });
+    return tShow('sl', {
+      kind: 'SLOPE', main: tnum(slope * 12, 2) + ' : 12', rows: [
+        { k: 'Percent', v: tnum(slope * 100, 2) + '%' },
+        { k: 'Degrees', v: tnum(Math.atan(slope) * 180 / Math.PI, 2) + '°' },
+        { k: 'Ratio', v: slope > 0 ? '1 : ' + tnum(1 / slope, 1) : 'FLAT' },
+        { k: 'Slope Factor', v: tnum(Math.sqrt(1 + slope * slope), 4) },
+        { k: 'ADA Ramp ≤ 1:12', v: slope <= 1 / 12 + 1e-9 ? 'OK' : 'OVER' }
+      ]
+    });
+  }
+
+  // ---- Brick Coursing ----
+  var BRMODES = [
+    { label: 'Brick Height · 2 2/3″', m: [8, 3], unit: 'COURSES' },
+    { label: 'CMU Height · 8″', m: [8, 1], unit: 'COURSES' },
+    { label: 'Brick Length · 8″', m: [8, 1], unit: 'UNITS' },
+    { label: 'CMU Length · 16″', m: [16, 1], unit: 'UNITS' }
+  ];
+  function brCalc() {
+    var s = ($('br-in').value || '').trim();
+    if (!s) return tShow('br', null);
+    var mode = BRMODES[T.brMode];
+    var mFr = fr(mode.m[0], mode.m[1]);
+    var d = parseLen(s);
+    if (!d) return tShow('br', { err: 'Could not read the dimension.' });
+    if (d.n <= 0) return tShow('br', { err: 'Dimension must be greater than 0.' });
+    var q = fDiv(d, mFr);
+    var qDec = q.n / q.d;
+    var lo = Math.floor(qDec + 1e-9), hi = Math.ceil(qDec - 1e-9);
+    var rows = [{ k: 'On Module', v: q.d === 1 ? 'YES' : 'NO' }];
+    if (lo === hi) rows.push({ k: lo + ' × Module', v: fmtFtIn(fMul(mFr, fr(lo))).main });
+    else {
+      if (lo > 0) rows.push({ k: lo + ' × Module', v: fmtFtIn(fMul(mFr, fr(lo))).main });
+      rows.push({ k: hi + ' × Module', v: fmtFtIn(fMul(mFr, fr(hi))).main });
+    }
+    rows.push({ k: 'Module', v: fmtMixed(mFr) + '″' });
+    return tShow('br', { kind: mode.label, main: tnum(qDec, 2) + ' ' + mode.unit, rows: rows });
+  }
+
+  // ---- Area Tally ----
+  function atRender() {
+    var list = $('at-list');
+    if (!T.at.length) { list.hidden = true; tShow('at', null); return; }
+    var totalIn2 = fr(0);
+    var lines = [];
+    for (var i = 0; i < T.at.length; i++) {
+      var nt = fAdd(totalIn2, T.at[i].f);
+      if (nt) totalIn2 = nt;
+      var ft2 = T.at[i].f.n / T.at[i].f.d / 144;
+      lines.push((i + 1) + '. ' + T.at[i].label + '  =  ' + tnum(ft2, 2) + ' ft²');
+    }
+    list.textContent = lines.join('\n');
+    list.hidden = false;
+    var tFt2 = fr(totalIn2.n, totalIn2.d * 144) || null;
+    var totDec = totalIn2.n / totalIn2.d / 144;
+    tShow('at', {
+      kind: 'AREA TALLY · ' + T.at.length + (T.at.length > 1 ? ' ROOMS' : ' ROOM'),
+      main: (tFt2 ? fmtMixed(tFt2) : tnum(totDec, 2)) + ' ft²',
+      rows: [
+        { k: 'Decimal', v: '≈ ' + tnum(totDec, 2) + ' ft²' },
+        { k: 'Metric', v: '≈ ' + tnum(totalIn2.n / totalIn2.d * 0.00064516, 2) + ' m²' }
+      ]
+    });
+  }
+  function atAdd() {
+    var s = ($('at-in').value || '').trim();
+    if (!s) return;
+    var p = parseExpr(s);
+    if (p.err) return tShow('at', { err: p.err });
+    if (p.res.type !== 'area') return tShow('at', { err: 'Enter Length × Length — e.g. 12\'6" × 14\'' });
+    T.at.push({ label: s, f: p.res.f });
+    $('at-in').value = '';
+    atRender();
+  }
+
+  // ---- Concrete ----
+  function cvCalc() {
+    var filled = ['cv-l', 'cv-w', 'cv-t'].every(function (id) { return ($(id).value || '').trim(); });
+    if (!filled) return tShow('cv', null);
+    var L = parseLen($('cv-l').value), W = parseLen($('cv-w').value), Th = parseLen($('cv-t').value);
+    if (!L || !W || !Th || L.n <= 0 || W.n <= 0 || Th.n <= 0) return tShow('cv', { err: 'Enter three lengths — e.g. 20′, 12′ and 4″' });
+    var in3 = fMul(fMul(L, W) || fr(0), Th);
+    if (!in3) return tShow('cv', { err: 'Numbers got too large.' });
+    var ft3 = in3.n / in3.d / 1728;
+    var yd3 = ft3 / 27;
+    return tShow('cv', {
+      kind: 'CONCRETE VOLUME', main: tnum(yd3, 2) + ' yd³', rows: [
+        { k: 'Cubic Feet', v: '≈ ' + tnum(ft3, 2) + ' ft³' },
+        { k: '+5% Waste', v: tnum(yd3 * 1.05, 2) + ' yd³' },
+        { k: '+10% Waste', v: tnum(yd3 * 1.1, 2) + ' yd³' }
+      ]
+    });
+  }
+
+  // ---- Sheet Goods ----
+  function sgCalc() {
+    var filled = ['sg-l', 'sg-w'].every(function (id) { return ($(id).value || '').trim(); });
+    if (!filled) return tShow('sg', null);
+    var L = parseLen($('sg-l').value), W = parseLen($('sg-w').value);
+    if (!L || !W || L.n <= 0 || W.n <= 0) return tShow('sg', { err: 'Enter two lengths — e.g. 40′ and 9′' });
+    var in2 = fMul(L, W);
+    if (!in2) return tShow('sg', { err: 'Numbers got too large.' });
+    var ft2 = in2.n / in2.d / 144;
+    return tShow('sg', {
+      kind: '4×8 SHEET GOODS', main: Math.ceil(ft2 / 32 - 1e-9) + ' SHEETS', rows: [
+        { k: 'Area', v: '≈ ' + tnum(ft2, 1) + ' ft²' },
+        { k: '+10% Waste', v: Math.ceil(ft2 * 1.1 / 32 - 1e-9) + ' SHEETS' },
+        { k: 'Per Sheet', v: '32 ft²' }
+      ]
+    });
+  }
+
+  // ---- Door Size ----
+  function drCalc() {
+    var s = ($('dr-in').value || '').trim();
+    if (!s) return tShow('dr', null);
+    var m = s.match(/^(\d)(\d)(\d)(\d)$/);
+    if (!m) return tShow('dr', { err: 'Enter 4 digits — e.g. 3068 = 3′-0″ × 6′-8″' });
+    var wIn = parseInt(m[1], 10) * 12 + parseInt(m[2], 10);
+    var hIn = parseInt(m[3], 10) * 12 + parseInt(m[4], 10);
+    return tShow('dr', {
+      kind: 'DOOR ' + s, main: fmtFtIn(fr(wIn)).main + ' × ' + fmtFtIn(fr(hIn)).main, rows: [
+        { k: 'Width', v: wIn + '″ = ' + tnum(wIn * 25.4, 0) + ' mm' },
+        { k: 'Height', v: hIn + '″ = ' + tnum(hIn * 25.4, 0) + ' mm' }
+      ]
+    });
+  }
+
+  // ---- Print Scaling ----
+  function psCalc() {
+    var A = SHEETS[T.psFrom], B = SHEETS[T.psTo];
+    var f = Math.min(
+      Math.max(B[1], B[2]) / Math.max(A[1], A[2]),
+      Math.min(B[1], B[2]) / Math.min(A[1], A[2])
+    );
+    tShow('ps', {
+      kind: A[0] + ' → ' + B[0], main: tnum(f * 100, 1) + '%', rows: [
+        { k: 'Exact Factor', v: '× ' + tnum(f, 4) },
+        { k: '1″ Becomes', v: tnum(f, 3) + '″' },
+        { k: 'Drawing Scales', v: 'Multiply by ' + tnum(f, 3) }
+      ]
+    });
+  }
+
+  // ---- Metric Scales chart ----
+  function msBuild() {
+    var METRIC = [1, 2, 5, 10, 20, 25, 50, 100, 125, 200, 250, 500];
+    var rows = $('ms-rows');
+    rows.textContent = '';
+    for (var i = 0; i < PRE.length; i++) {
+      var ratio = 12 * PRE[i][2] / PRE[i][1];
+      var best = METRIC[0];
+      for (var j = 0; j < METRIC.length; j++) if (Math.abs(METRIC[j] - ratio) < Math.abs(best - ratio)) best = METRIC[j];
+      var d = document.createElement('div'); d.className = 'row';
+      var k = document.createElement('span'); k.className = 'k';
+      k.textContent = PRE[i][0].replace(' 1:1', '') + ' = 1′-0″ · 1:' + tnum(ratio, 0);
+      var v = document.createElement('span'); v.className = 'v';
+      v.textContent = (best === ratio ? '= ' : '≈ ') + '1:' + best;
+      d.appendChild(k); d.appendChild(v); rows.appendChild(d);
+    }
+  }
+
+  // ---- Scale Bar ----
+  function sbCalc() {
+    var prev = $('sb-prev'), dl = $('sb-dl');
+    var ftS = ($('sb-ft').value || '').trim();
+    if (!ftS || !/^\d+$/.test(ftS)) {
+      prev.hidden = true; dl.hidden = true;
+      return tShow('sb', ftS ? { err: 'Bar length must be a whole number of feet.' } : null);
+    }
+    var ft = parseInt(ftS, 10);
+    if (ft < 4 || ft > 400) {
+      prev.hidden = true; dl.hidden = true;
+      return tShow('sb', { err: 'Bar length must be 4–400 ft.' });
+    }
+    tShow('sb', null);
+    var scIn = PRE[T.sbScale][1] / PRE[T.sbScale][2];
+    var wIn = ft * scIn;
+    var W = wIn * 96, H = 34, seg = W / 4;
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + tnum(wIn, 3) + 'in" height="0.354in" viewBox="0 0 ' + tnum(W, 2) + ' ' + H + '" font-family="Menlo,monospace">';
+    for (var i = 0; i < 4; i++)
+      svg += '<rect x="' + tnum(i * seg, 2) + '" y="0" width="' + tnum(seg, 2) + '" height="14" fill="' + (i % 2 ? '#fff' : '#22242B') + '" stroke="#22242B" stroke-width="1"/>';
+    for (var j = 0; j <= 4; j++) {
+      var anchor = j === 0 ? 'start' : (j === 4 ? 'end' : 'middle');
+      svg += '<text x="' + tnum(j * seg, 2) + '" y="' + (H - 4) + '" font-size="11" fill="#4A4D57" text-anchor="' + anchor + '">' + tnum(ft * j / 4, 1) + (j === 4 ? '′' : '') + '</text>';
+    }
+    svg += '</svg>';
+    T.sbSvg = svg;
+    prev.innerHTML = svg;
+    prev.hidden = false;
+    dl.hidden = false;
+  }
+  function sbDownload() {
+    if (!T.sbSvg) return;
+    var blob = new Blob([T.sbSvg], { type: 'image/svg+xml' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'scale-bar.svg';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  // ---- tools wiring ----
+  function toolsInit() {
+    var cards = document.querySelectorAll('#tools-home .tcard');
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].addEventListener('click', function () { openTool(this.dataset.tool); });
+    }
+    $('tool-back').addEventListener('click', closeTool);
+
+    $('mc-in').addEventListener('input', mcCalc);
+
+    mkChips('sp-mode', ['Equal Parts', 'On-Center'], 0, function (i) {
+      T.spMode = i;
+      $('sp-eq-row').hidden = i !== 0;
+      $('sp-oc-row').hidden = i !== 1;
+      spCalc();
+    });
+    mkChips('sp-oc', ['12″', '16″', '19.2″', '24″', 'Custom…'], 1, function (i) {
+      T.spOc = i;
+      $('sp-cu').hidden = i !== 4;
+      spCalc();
+    });
+    ['sp-len', 'sp-n', 'sp-cu'].forEach(function (id) { $(id).addEventListener('input', spCalc); });
+
+    mkChips('st-code', STCODES.map(function (c) { return c.label; }), 0, function (i) { T.stCode = i; stCalc(); });
+    $('st-rise').addEventListener('input', stCalc);
+
+    mkChips('sm-mode', ['Paper → Actual', 'Actual → Paper'], 0, function (i) {
+      T.smMode = i;
+      $('sm-lbl').textContent = i === 0 ? 'Paper Measurement' : 'Actual Length';
+      $('sm-in').placeholder = i === 0 ? '2 3/8"' : "19'-0\"";
+      smCalc();
+    });
+    mkChips('sm-scale', PRE.map(function (p) { return p[0]; }), T.smScale, function (i) { T.smScale = i; smCalc(); });
+    $('sm-in').addEventListener('input', smCalc);
+
+    mkChips('sc2-sheet', SHEETS.map(function (sh) { return sh[0]; }), T.sc2Sheet, function (i) { T.sc2Sheet = i; sc2Calc(); });
+    mkChips('sc2-scale', PRE.map(function (p) { return p[0]; }), T.sc2Scale, function (i) { T.sc2Scale = i; sc2Calc(); });
+    sc2Calc();
+
+    mkChips('sl-mode', SLMODES, 0, function (i) {
+      T.slMode = i;
+      $('sl-b-row').hidden = i !== 3;
+      $('sl-lbl-a').textContent = i === 0 ? 'x (in x : 12)' : i === 1 ? 'Percent %' : i === 2 ? 'Degrees °' : 'Rise';
+      $('sl-a').placeholder = i === 0 ? '4' : i === 1 ? '8.33' : i === 2 ? '18.4' : '4"';
+      slCalc();
+    });
+    ['sl-a', 'sl-b'].forEach(function (id) { $(id).addEventListener('input', slCalc); });
+
+    mkChips('br-mode', BRMODES.map(function (b) { return b.label; }), 0, function (i) { T.brMode = i; brCalc(); });
+    $('br-in').addEventListener('input', brCalc);
+
+    $('at-add').addEventListener('click', atAdd);
+    $('at-in').addEventListener('keydown', function (e) { if (e.key === 'Enter') atAdd(); });
+    $('at-undo').addEventListener('click', function () { T.at.pop(); atRender(); });
+    $('at-clear').addEventListener('click', function () { T.at = []; atRender(); });
+    $('at-list').style.whiteSpace = 'pre-line';
+
+    ['cv-l', 'cv-w', 'cv-t'].forEach(function (id) { $(id).addEventListener('input', cvCalc); });
+    ['sg-l', 'sg-w'].forEach(function (id) { $(id).addEventListener('input', sgCalc); });
+    $('dr-in').addEventListener('input', drCalc);
+
+    mkChips('ps-from', SHEETS.map(function (sh) { return sh[0]; }), T.psFrom, function (i) { T.psFrom = i; psCalc(); });
+    mkChips('ps-to', SHEETS.map(function (sh) { return sh[0]; }), T.psTo, function (i) { T.psTo = i; psCalc(); });
+    psCalc();
+
+    msBuild();
+
+    mkChips('sb-scale', PRE.map(function (p) { return p[0]; }), T.sbScale, function (i) { T.sbScale = i; sbCalc(); });
+    $('sb-ft').addEventListener('input', sbCalc);
+    $('sb-dl').addEventListener('click', sbDownload);
+    sbCalc();
+  }
+
   renderTabs();
   renderHint();
   renderScale();
+  toolsInit();
 
   // PWA:HTTPS 或 localhost 下注册离线缓存;直接以 file:// 打开单文件仍可正常使用
   if ('serviceWorker' in navigator &&
